@@ -1,0 +1,15 @@
+677111 [rbus] W [b80c2300]<=02020c19 [dcmc1  ]<-[vcpu]  >>677111是時間可以忽略 請解讀等同於rtd_outl(0xb80c2300, 0x02020c19); 
+678322 [rbus] R [b8007008]=>02000200 [dc     ]->[vcpu] >> 678322 是時間可以忽略   R=>這是read 請忽略
+
+請也支援以下格式
+677551 [rbus] W [b80c2208]<=10272780 [dcmc1  ]<-[vcpu]
+677671 [rbus] W [b80c2210]<=06121729 [dcmc1  ]<-[vcpu]
+677791 [rbus] W [b80c2218]<=40006c3a [dcmc1  ]<-[vcpu]
+678207 [rbus] W [b80c2220]<=82d17106 [dcmc1  ]<-[vcpu]
+678322 [rbus] R [b8007008]=>02000200 [dc     ]->[vcpu]
+679807 [rbus] W [b80c22a0]<=2088032b [dcmc1  ]<-[vcpu]
+679902 [rbus] W [b80c2090]<=00002727 [dcmc1  ]<-[vcpu]
+680154 [rbus] W [b80c2098]<=00004e4e [dcmc1  ]<-[vcpu]
+683122 [rbus] W [b80c22a8]<=18411195 [dcmc1  ]<-[vcpu]
+683818 [rbus] W [b80c22ac]<=001ba0c0 [dcmc1  ]<-[vcpu]
+684184 [rbus] W [b80c22a4]<=20882088 [dcmc1  ]<-[vcpu]

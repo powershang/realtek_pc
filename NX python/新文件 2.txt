@@ -1,0 +1,63 @@
+✅【G) 申請專利範圍（範例 Claim Set）】
+【請求項 1】（最廣、核心 Claim）
+
+一種 USB-over-IP 系統中之 USB 裝置虛擬化方法，其特徵在於，包括：
+
+(A) 接收一 USB Host 所送出的 USB Token，其包含裝置位址（Device Address）與端點編號（Endpoint Number）；
+(B) 透過一虛擬集線器（Virtual Hub）解析上述 USB Token；
+(C) 根據一映射關係（Mapping Relation），將前述裝置位址與端點編號重新對應至任一一組裝置上下文（Device Context）與端點上下文（Endpoint Context）；
+(D) 將前述裝置上下文與端點上下文載入至一實體 USB 裝置電路（Physical USB Device Circuit）中；以及
+(E) 由該實體 USB 裝置電路執行對應之 USB 協定處理，以回應該 USB Token。
+
+藉此，使多組 USB 裝置或多組端點之行為可由單一實體 USB 裝置電路分時共享而達成。
+
+✅【請求項 2】
+
+如請求項 1 所述之 USB 裝置虛擬化方法，其中：
+前述裝置上下文包含 USB 裝置位址、描述元（descriptor）、組態（configuration）、介面（interface）及控制端點（EP0）之狀態。
+
+✅【請求項 3】
+
+如請求項 1 所述之 USB 裝置虛擬化方法，其中：
+前述端點上下文包含端點型別（control/bulk/interrupt/isochronous）、資料切換狀態（data toggle）、FIFO 指標、STALL 狀態與傳輸間隔參數。
+
+✅【請求項 4】
+
+如請求項 1 所述之 USB 裝置虛擬化方法，其中：
+前述映射關係可將任一 USB Token 所包含之（Device Address, Endpoint Number）重新對應至任一 Device Context 與任一 Endpoint Context。
+
+（此條即涵蓋：share device + share endpoint）
+
+✅【請求項 5】
+
+如請求項 1 所述之 USB 裝置虛擬化方法，其中：
+前述載入步驟包含將選定之 Device Context 與 Endpoint Context 的內容分別寫入實體 USB 裝置電路中的暫存器組或狀態記憶體。
+
+✅【請求項 6】
+
+如請求項 1 所述之 USB 裝置虛擬化方法，其中：
+前述實體 USB 裝置電路僅提供單一 USB 裝置 pipeline，並以時間分割方式（time division multiplexing）執行多組 Device Context 與 Endpoint Context 相關之 USB 動作。
+
+✅【請求項 7】
+
+如請求項 1 所述之 USB 裝置虛擬化方法，其中：
+在 USB 傳輸完成後，將更新後之 Endpoint Context 寫回至上下文記憶體，以供後續 USB Token 使用。
+
+（此點表達 Context Store）
+
+✅【請求項 8】
+
+如請求項 1 所述之 USB 裝置虛擬化方法，其中：
+前述虛擬集線器（Virtual Hub）負責根據 USB Host 請求執行裝置位址與端點號碼之邏輯導向，而不執行 USB token、data 或 handshake 之協定處理。
+
+✅【請求項 9】
+
+如請求項 1 所述之 USB 裝置虛擬化方法，其中：
+前述 USB Token 對應之 USB 資料可透過 IP 封包自 talker 端傳送至 listener 端，由 listener 再透過載入之上下文於實體 USB 裝置電路進行 USB 回應。
+
+✅【請求項 10】
+
+如請求項 1 所述之 USB 裝置虛擬化方法，其中：
+前述方法可使多個外部 USB 裝置之行為於 listener 端以多組 Device Context 模擬呈現，而無需於 listener 端配置對應數量之 USB 裝置控制器硬體。
+
+（這條反映你的面積節省與核心價值）

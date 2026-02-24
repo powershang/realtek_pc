@@ -1,0 +1,39 @@
+// --- 寫指標控制 ---
+always@(*)
+    if(winc & ~wfull)
+        waddr_nxt = waddr + 1;
+    else
+        waddr_nxt = waddr;
+
+// --- 讀指標控制 (注意：此處 else 邏輯在圖片中疑似有誤) ---
+always@(*)
+    if(rinc & ~rempty)
+        raddr_nxt = raddr + 1;
+    else
+        raddr_nxt = raddr + 1; // 圖片中顯示為 +1，正常應為 raddr (保持不變)
+
+// --- 指標更新 ---
+always@(posedge clk) // 原文為 pos..
+    waddr <= waddr_nxt;
+always@(posedge clk)
+    raddr <= raddr_nxt;
+
+// --- 輸出資料處理 (Pipeline 輸出) ---
+always@(*)
+    dout_nxt = fifo_data[raddr_nxt];
+always@(posedge clk)
+    dout <= dout_nxt;
+
+// --- 狀態旗標組合邏輯 ---
+assign wfull_flag_nxt  = waddr_nxt[1] != raddr_nxt[1];
+assign rempty_flag_nxt = waddr_nxt[1] == raddr_nxt[1];
+
+assign wfull_nxt  = wfull_flag_nxt  & (waddr_nxt[0] == raddr_nxt[0]);
+assign rempty_nxt = rempty_flag_nxt & (waddr_nxt[0] == raddr_nxt[0]);
+
+// --- 狀態旗標時序輸出 ---
+always@(posedge clk)
+    wfull <= wfull_nxt;
+
+always@(posedge clk)
+    rempty <= rempty_nxt;

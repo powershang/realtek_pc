@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# PyInstaller build outputs
+build/
+dist/
+*.spec
+
+# Environment variables (sensitive)
+.env
+.env.*
+
+# IDE / Editor
+.claude/
+*.lnk
+
+# Binary / compressed
+*.rar
+*.exe
+*.zip
+
+# Misc
+nul
+x
+y

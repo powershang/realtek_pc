@@ -1,0 +1,53 @@
+{
+    "chromedriver_path": "D:/python_work/side_project/chromedriver-win64/chromedriver.exe",
+    "chrome_user_data_dir": "D:/python_work/side_project/chrome_user_data",
+    "chrome_profile": "Default",
+    "window_size": {
+        "width": 800,
+        "height": 1020
+    },
+    "concert": {
+        "date": "2025/09/21",
+        "date2": "*",
+        "allow_alternative_date": true,
+        "switch_date_attempt": 2,
+        "card_auth": {
+            "enabled": true,
+            "card_number": "524251"
+        }
+    },
+    "ticket_config": {
+        "ticket_numbers": {
+            "max_tickets": "1"
+        },
+        "target_price": 4280,
+        "retry": {
+            "max_attempts": 100,
+            "delay": 0.02
+        }
+    },
+    "website": {
+        "base_url": "https://tixcraft.com/activity/detail/25_wakintp",
+        "login_url": "https://tixcraft.com/login",
+        "activity_url": "https://tixcraft.com/activity/detail/25_wakintp"
+    },
+    "debug": {
+        "enabled": false,
+        "force_captcha_error": false,
+        "first_captcha_value": "aabb",
+        "error_attempts": 1,
+        "verbose": true,
+        "save_screenshots": false,
+        "save_html_source": false,
+        "html_save_path": "D:/python work/side project/搶票機器人/dumphtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumpshtml_dumps"
+    },
+    "wait_times": {
+        "after_page_load": 2.0,
+        "after_click_buy": 0.5,
+        "after_date_select": 0.1,
+        "after_click_order": 0.1,
+        "ticket_page_load": 0.1,
+        "after_submit": 0.3,
+        "captcha_update": 0.2
+    }
+}

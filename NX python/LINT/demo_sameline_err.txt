@@ -1,0 +1,2 @@
+[0001]  W164a               N.A               error   demo_sameline_input.v
+        8  10   LHS: 'inline_reg' width 8 is less than RHS: '(data_in + 8'd1)' width 9 in assignment

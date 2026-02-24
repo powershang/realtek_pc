@@ -1,0 +1,15 @@
+
+Read the spec @spec/sq1-puzzle.md carefully.
+Your job is to implement the two kinds of movements of the puzzle
+described in the spec.
+Your predecessor recorded @IMPLEMENTATION_NOTES.md while implementing the previous specs.
+The note contains background information, rationales, design decisions,
+and caveats that may be helpful.
+
+
+
+交接.
+Create a concise note in a Markdown file describing what you have done.
+**DO NOT** include anything that could be inferred by tracing the code.
+The note should only record items that cannot be determined by reading the code,
+such as mindset, caveats, or things not mentioned in the previous spec

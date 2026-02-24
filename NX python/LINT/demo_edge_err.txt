@@ -1,0 +1,4 @@
+[0001]  W164a               N.A               error   demo_edge_input.v
+        14  10   LHS: 'simple_reg' width 8 is less than RHS: '(data_in + 8'd1)' width 9 in assignment
+        18  10   LHS: 'reg_a' width 8 is less than RHS: '(data_in + 8'd1)' width 9 in assignment
+        19  10   LHS: 'reg_b' width 8 is less than RHS: '(reg_a + 8'd1)' width 9 in assignment

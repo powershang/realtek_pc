@@ -1,0 +1,307 @@
+====================================================================================================
+Register Signal Analysis Results
+====================================================================================================
+
+=== Address 0x180C2800 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_0                 = reg180c2800[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_0               = reg180c2800[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_0                     = reg180c2800[23:20]      = 0      (0x0)
+limit_cmd_extend_num_0                   = reg180c2800[19:16]      = 0      (0x0)
+limit_ref_list_0                         = reg180c2800[15:2]       = 0      (0x0)
+limit_en_0                               = reg180c2800[1:0]        = 0      (0x0)
+
+=== Address 0x180C2804 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_1                 = reg180c2804[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_1               = reg180c2804[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_1                     = reg180c2804[23:20]      = 0      (0x0)
+limit_cmd_extend_num_1                   = reg180c2804[19:16]      = 0      (0x0)
+limit_ref_list_1                         = reg180c2804[15:2]       = 0      (0x0)
+limit_en_1                               = reg180c2804[1:0]        = 0      (0x0)
+
+=== Address 0x180C2808 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_2                 = reg180c2808[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_2               = reg180c2808[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_2                     = reg180c2808[23:20]      = 0      (0x0)
+limit_cmd_extend_num_2                   = reg180c2808[19:16]      = 0      (0x0)
+limit_ref_list_2                         = reg180c2808[15:2]       = 0      (0x0)
+limit_en_2                               = reg180c2808[1:0]        = 0      (0x0)
+
+=== Address 0x180C280C (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_3                 = reg180c280c[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_3               = reg180c280c[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_3                     = reg180c280c[23:20]      = 0      (0x0)
+limit_cmd_extend_num_3                   = reg180c280c[19:16]      = 0      (0x0)
+limit_ref_list_3                         = reg180c280c[15:2]       = 0      (0x0)
+limit_en_3                               = reg180c280c[1:0]        = 0      (0x0)
+
+=== Address 0x180C2810 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_4                 = reg180c2810[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_4               = reg180c2810[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_4                     = reg180c2810[23:20]      = 0      (0x0)
+limit_cmd_extend_num_4                   = reg180c2810[19:16]      = 0      (0x0)
+limit_ref_list_4                         = reg180c2810[15:2]       = 0      (0x0)
+limit_en_4                               = reg180c2810[1:0]        = 0      (0x0)
+
+=== Address 0x180C2814 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_5                 = reg180c2814[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_5               = reg180c2814[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_5                     = reg180c2814[23:20]      = 0      (0x0)
+limit_cmd_extend_num_5                   = reg180c2814[19:16]      = 0      (0x0)
+limit_ref_list_5                         = reg180c2814[15:2]       = 0      (0x0)
+limit_en_5                               = reg180c2814[1:0]        = 0      (0x0)
+
+=== Address 0x180C2818 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_6                 = reg180c2818[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_6               = reg180c2818[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_6                     = reg180c2818[23:20]      = 0      (0x0)
+limit_cmd_extend_num_6                   = reg180c2818[19:16]      = 0      (0x0)
+limit_ref_list_6                         = reg180c2818[15:2]       = 0      (0x0)
+limit_en_6                               = reg180c2818[1:0]        = 0      (0x0)
+
+=== Address 0x180C281C (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_7                 = reg180c281c[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_7               = reg180c281c[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_7                     = reg180c281c[23:20]      = 0      (0x0)
+limit_cmd_extend_num_7                   = reg180c281c[19:16]      = 0      (0x0)
+limit_ref_list_7                         = reg180c281c[15:2]       = 0      (0x0)
+limit_en_7                               = reg180c281c[1:0]        = 0      (0x0)
+
+=== Address 0x180C2820 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_8                 = reg180c2820[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_8               = reg180c2820[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_8                     = reg180c2820[23:20]      = 0      (0x0)
+limit_cmd_extend_num_8                   = reg180c2820[19:16]      = 0      (0x0)
+limit_ref_list_8                         = reg180c2820[15:2]       = 0      (0x0)
+limit_en_8                               = reg180c2820[1:0]        = 0      (0x0)
+
+=== Address 0x180C2824 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_9                 = reg180c2824[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_9               = reg180c2824[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_9                     = reg180c2824[23:20]      = 0      (0x0)
+limit_cmd_extend_num_9                   = reg180c2824[19:16]      = 0      (0x0)
+limit_ref_list_9                         = reg180c2824[15:2]       = 0      (0x0)
+limit_en_9                               = reg180c2824[1:0]        = 0      (0x0)
+
+=== Address 0x180C2840 (Value: 0x0) ===
+limit_data_num_lv2_0                     = reg180c2840[31:16]      = 0      (0x0)
+limit_data_num_0                         = reg180c2840[15:0]       = 0      (0x0)
+
+=== Address 0x180C2844 (Value: 0x0) ===
+limit_data_num_lv2_1                     = reg180c2844[31:16]      = 0      (0x0)
+limit_data_num_1                         = reg180c2844[15:0]       = 0      (0x0)
+
+=== Address 0x180C2848 (Value: 0x0) ===
+limit_data_num_lv2_2                     = reg180c2848[31:16]      = 0      (0x0)
+limit_data_num_2                         = reg180c2848[15:0]       = 0      (0x0)
+
+=== Address 0x180C284C (Value: 0x0) ===
+limit_data_num_lv2_3                     = reg180c284c[31:16]      = 0      (0x0)
+limit_data_num_3                         = reg180c284c[15:0]       = 0      (0x0)
+
+=== Address 0x180C2850 (Value: 0x0) ===
+limit_data_num_lv2_4                     = reg180c2850[31:16]      = 0      (0x0)
+limit_data_num_4                         = reg180c2850[15:0]       = 0      (0x0)
+
+=== Address 0x180C2854 (Value: 0x0) ===
+limit_data_num_lv2_5                     = reg180c2854[31:16]      = 0      (0x0)
+limit_data_num_5                         = reg180c2854[15:0]       = 0      (0x0)
+
+=== Address 0x180C2858 (Value: 0x0) ===
+limit_data_num_lv2_6                     = reg180c2858[31:16]      = 0      (0x0)
+limit_data_num_6                         = reg180c2858[15:0]       = 0      (0x0)
+
+=== Address 0x180C285C (Value: 0x0) ===
+limit_data_num_lv2_7                     = reg180c285c[31:16]      = 0      (0x0)
+limit_data_num_7                         = reg180c285c[15:0]       = 0      (0x0)
+
+=== Address 0x180C2860 (Value: 0x0) ===
+limit_data_num_lv2_8                     = reg180c2860[31:16]      = 0      (0x0)
+limit_data_num_8                         = reg180c2860[15:0]       = 0      (0x0)
+
+=== Address 0x180C2864 (Value: 0x0) ===
+limit_data_num_lv2_9                     = reg180c2864[31:16]      = 0      (0x0)
+limit_data_num_9                         = reg180c2864[15:0]       = 0      (0x0)
+
+=== Address 0x180C2880 (Value: 0x0) ===
+limit_timer_cycle_0                      = reg180c2880[15:0]       = 0      (0x0)
+
+=== Address 0x180C2884 (Value: 0x0) ===
+limit_timer_cycle_1                      = reg180c2884[15:0]       = 0      (0x0)
+
+=== Address 0x180C2888 (Value: 0x0) ===
+limit_timer_cycle_2                      = reg180c2888[15:0]       = 0      (0x0)
+
+=== Address 0x180C288C (Value: 0x0) ===
+limit_timer_cycle_3                      = reg180c288c[15:0]       = 0      (0x0)
+
+=== Address 0x180C2890 (Value: 0x0) ===
+limit_timer_cycle_4                      = reg180c2890[15:0]       = 0      (0x0)
+
+=== Address 0x180C2894 (Value: 0x0) ===
+limit_timer_cycle_5                      = reg180c2894[15:0]       = 0      (0x0)
+
+=== Address 0x180C2898 (Value: 0x0) ===
+limit_timer_cycle_6                      = reg180c2898[15:0]       = 0      (0x0)
+
+=== Address 0x180C289C (Value: 0x0) ===
+limit_timer_cycle_7                      = reg180c289c[15:0]       = 0      (0x0)
+
+=== Address 0x180C28A0 (Value: 0x0) ===
+limit_timer_cycle_8                      = reg180c28a0[15:0]       = 0      (0x0)
+
+=== Address 0x180C28A4 (Value: 0x0) ===
+limit_timer_cycle_9                      = reg180c28a4[15:0]       = 0      (0x0)
+
+=== Address 0x180C4800 (Value: 0x4c40000) ===
+limit_ostd_cmd_max_lv2_0                 = reg180c4800[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_0               = reg180c4800[27:24]      = 4      (0x4)
+limit_ostd_cmd_max_0                     = reg180c4800[23:20]      = 12     (0xc)
+limit_cmd_extend_num_0                   = reg180c4800[19:16]      = 4      (0x4)
+limit_ref_list_0                         = reg180c4800[15:2]       = 0      (0x0)
+limit_en_0                               = reg180c4800[1:0]        = 0      (0x0)
+
+=== Address 0x180C4804 (Value: 0x4c40000) ===
+limit_ostd_cmd_max_lv2_1                 = reg180c4804[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_1               = reg180c4804[27:24]      = 4      (0x4)
+limit_ostd_cmd_max_1                     = reg180c4804[23:20]      = 12     (0xc)
+limit_cmd_extend_num_1                   = reg180c4804[19:16]      = 4      (0x4)
+limit_ref_list_1                         = reg180c4804[15:2]       = 0      (0x0)
+limit_en_1                               = reg180c4804[1:0]        = 0      (0x0)
+
+=== Address 0x180C4808 (Value: 0x4c40000) ===
+limit_ostd_cmd_max_lv2_2                 = reg180c4808[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_2               = reg180c4808[27:24]      = 4      (0x4)
+limit_ostd_cmd_max_2                     = reg180c4808[23:20]      = 12     (0xc)
+limit_cmd_extend_num_2                   = reg180c4808[19:16]      = 4      (0x4)
+limit_ref_list_2                         = reg180c4808[15:2]       = 0      (0x0)
+limit_en_2                               = reg180c4808[1:0]        = 0      (0x0)
+
+=== Address 0x180C480C (Value: 0x4c40000) ===
+limit_ostd_cmd_max_lv2_3                 = reg180c480c[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_3               = reg180c480c[27:24]      = 4      (0x4)
+limit_ostd_cmd_max_3                     = reg180c480c[23:20]      = 12     (0xc)
+limit_cmd_extend_num_3                   = reg180c480c[19:16]      = 4      (0x4)
+limit_ref_list_3                         = reg180c480c[15:2]       = 0      (0x0)
+limit_en_3                               = reg180c480c[1:0]        = 0      (0x0)
+
+=== Address 0x180C4810 (Value: 0x4c40000) ===
+limit_ostd_cmd_max_lv2_4                 = reg180c4810[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_4               = reg180c4810[27:24]      = 4      (0x4)
+limit_ostd_cmd_max_4                     = reg180c4810[23:20]      = 12     (0xc)
+limit_cmd_extend_num_4                   = reg180c4810[19:16]      = 4      (0x4)
+limit_ref_list_4                         = reg180c4810[15:2]       = 0      (0x0)
+limit_en_4                               = reg180c4810[1:0]        = 0      (0x0)
+
+=== Address 0x180C4814 (Value: 0x4c40000) ===
+limit_ostd_cmd_max_lv2_5                 = reg180c4814[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_5               = reg180c4814[27:24]      = 4      (0x4)
+limit_ostd_cmd_max_5                     = reg180c4814[23:20]      = 12     (0xc)
+limit_cmd_extend_num_5                   = reg180c4814[19:16]      = 4      (0x4)
+limit_ref_list_5                         = reg180c4814[15:2]       = 0      (0x0)
+limit_en_5                               = reg180c4814[1:0]        = 0      (0x0)
+
+=== Address 0x180C4818 (Value: 0x4c40000) ===
+limit_ostd_cmd_max_lv2_6                 = reg180c4818[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_6               = reg180c4818[27:24]      = 4      (0x4)
+limit_ostd_cmd_max_6                     = reg180c4818[23:20]      = 12     (0xc)
+limit_cmd_extend_num_6                   = reg180c4818[19:16]      = 4      (0x4)
+limit_ref_list_6                         = reg180c4818[15:2]       = 0      (0x0)
+limit_en_6                               = reg180c4818[1:0]        = 0      (0x0)
+
+=== Address 0x180C481C (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_7                 = reg180c481c[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_7               = reg180c481c[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_7                     = reg180c481c[23:20]      = 0      (0x0)
+limit_cmd_extend_num_7                   = reg180c481c[19:16]      = 0      (0x0)
+limit_ref_list_7                         = reg180c481c[15:2]       = 0      (0x0)
+limit_en_7                               = reg180c481c[1:0]        = 0      (0x0)
+
+=== Address 0x180C4820 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_8                 = reg180c4820[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_8               = reg180c4820[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_8                     = reg180c4820[23:20]      = 0      (0x0)
+limit_cmd_extend_num_8                   = reg180c4820[19:16]      = 0      (0x0)
+limit_ref_list_8                         = reg180c4820[15:2]       = 0      (0x0)
+limit_en_8                               = reg180c4820[1:0]        = 0      (0x0)
+
+=== Address 0x180C4824 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_9                 = reg180c4824[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_9               = reg180c4824[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_9                     = reg180c4824[23:20]      = 0      (0x0)
+limit_cmd_extend_num_9                   = reg180c4824[19:16]      = 0      (0x0)
+limit_ref_list_9                         = reg180c4824[15:2]       = 0      (0x0)
+limit_en_9                               = reg180c4824[1:0]        = 0      (0x0)
+
+=== Address 0x180C4840 (Value: 0x0) ===
+limit_data_num_lv2_0                     = reg180c4840[31:16]      = 0      (0x0)
+limit_data_num_0                         = reg180c4840[15:0]       = 0      (0x0)
+
+=== Address 0x180C4844 (Value: 0x4c40000) ===
+limit_data_num_lv2_1                     = reg180c4844[31:16]      = 1220   (0x4c4)
+limit_data_num_1                         = reg180c4844[15:0]       = 0      (0x0)
+
+=== Address 0x180C4848 (Value: 0x0) ===
+limit_data_num_lv2_2                     = reg180c4848[31:16]      = 0      (0x0)
+limit_data_num_2                         = reg180c4848[15:0]       = 0      (0x0)
+
+=== Address 0x180C484C (Value: 0x0) ===
+limit_data_num_lv2_3                     = reg180c484c[31:16]      = 0      (0x0)
+limit_data_num_3                         = reg180c484c[15:0]       = 0      (0x0)
+
+=== Address 0x180C4850 (Value: 0x4c40000) ===
+limit_data_num_lv2_4                     = reg180c4850[31:16]      = 1220   (0x4c4)
+limit_data_num_4                         = reg180c4850[15:0]       = 0      (0x0)
+
+=== Address 0x180C4854 (Value: 0x0) ===
+limit_data_num_lv2_5                     = reg180c4854[31:16]      = 0      (0x0)
+limit_data_num_5                         = reg180c4854[15:0]       = 0      (0x0)
+
+=== Address 0x180C4858 (Value: 0x0) ===
+limit_data_num_lv2_6                     = reg180c4858[31:16]      = 0      (0x0)
+limit_data_num_6                         = reg180c4858[15:0]       = 0      (0x0)
+
+=== Address 0x180C485C (Value: 0x4c40000) ===
+limit_data_num_lv2_7                     = reg180c485c[31:16]      = 1220   (0x4c4)
+limit_data_num_7                         = reg180c485c[15:0]       = 0      (0x0)
+
+=== Address 0x180C4860 (Value: 0x0) ===
+limit_data_num_lv2_8                     = reg180c4860[31:16]      = 0      (0x0)
+limit_data_num_8                         = reg180c4860[15:0]       = 0      (0x0)
+
+=== Address 0x180C4864 (Value: 0x4c40000) ===
+limit_data_num_lv2_9                     = reg180c4864[31:16]      = 1220   (0x4c4)
+limit_data_num_9                         = reg180c4864[15:0]       = 0      (0x0)
+
+=== Address 0x180C4880 (Value: 0x0) ===
+limit_timer_cycle_0                      = reg180c4880[15:0]       = 0      (0x0)
+
+=== Address 0x180C4884 (Value: 0x0) ===
+limit_timer_cycle_1                      = reg180c4884[15:0]       = 0      (0x0)
+
+=== Address 0x180C4888 (Value: 0x0) ===
+limit_timer_cycle_2                      = reg180c4888[15:0]       = 0      (0x0)
+
+=== Address 0x180C488C (Value: 0x4c40000) ===
+limit_timer_cycle_3                      = reg180c488c[15:0]       = 0      (0x0)
+
+=== Address 0x180C4890 (Value: 0x0) ===
+limit_timer_cycle_4                      = reg180c4890[15:0]       = 0      (0x0)
+
+=== Address 0x180C4894 (Value: 0x0) ===
+limit_timer_cycle_5                      = reg180c4894[15:0]       = 0      (0x0)
+
+=== Address 0x180C4898 (Value: 0x0) ===
+limit_timer_cycle_6                      = reg180c4898[15:0]       = 0      (0x0)
+
+=== Address 0x180C489C (Value: 0x0) ===
+limit_timer_cycle_7                      = reg180c489c[15:0]       = 0      (0x0)
+
+=== Address 0x180C48A0 (Value: 0x0) ===
+limit_timer_cycle_8                      = reg180c48a0[15:0]       = 0      (0x0)
+
+=== Address 0x180C48A4 (Value: 0x0) ===
+limit_timer_cycle_9                      = reg180c48a4[15:0]       = 0      (0x0)
+
+====================================================================================================
+Summary: 180 signals across 60 addresses (filtered by 'limit')
+====================================================================================================

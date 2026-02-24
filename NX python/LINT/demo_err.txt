@@ -1,0 +1,4 @@
+[0001]  W164a               N.A               error   demo_input.v
+        19  10   LHS: 'counter_a' width 8 is less than RHS: '(data_in + 8'd1)' width 9 in assignment
+        29  10   LHS: 'counter_b' width 8 is less than RHS: '(counter_a + 8'd1)' width 9 in assignment
+        39  10   LHS: 'acc_reg' width 8 is less than RHS: '(acc_reg + 8'd1)' width 9 in assignment

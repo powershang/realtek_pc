@@ -1,0 +1,63 @@
+module axi_bridge
+(
+input   clk,
+input   rst_n,
+
+input   winc,
+output  wfull,
+input   din,
+
+input   rinc,
+output  rempty,
+output  dout
+);
+
+reg [1:0] waddr;
+reg [1:0] raddr;
+reg       wfull;
+reg       rempty;
+reg       dout;
+
+wire [1:0] next_waddr = (winc & ~wfull)  ? waddr + 1 : waddr;
+wire [1:0] next_raddr = (rinc & ~rempty) ? raddr + 1 : raddr;
+
+wire next_wfull  = (next_waddr[1] != next_raddr[1]) & (next_waddr[0] == next_raddr[0]);
+wire next_rempty = (next_waddr[1] == next_raddr[1]) & (next_waddr[0] == next_raddr[0]);
+
+always@(posedge clk or negedge rst_n)
+    if(!rst_n)
+        waddr <= 2'b0;
+    else if(winc & ~wfull)
+        waddr <= waddr + 1;
+
+always@(posedge clk or negedge rst_n)
+    if(!rst_n)
+        raddr <= 2'b0;
+    else if(rinc & ~rempty)
+        raddr <= raddr + 1;
+
+always@(posedge clk or negedge rst_n)
+    if(!rst_n)
+        wfull <= 1'b0;
+    else
+        wfull <= next_wfull;
+
+always@(posedge clk or negedge rst_n)
+    if(!rst_n)
+        rempty <= 1'b1;
+    else
+        rempty <= next_rempty;
+
+always@(posedge clk or negedge rst_n)
+    if(!rst_n)
+        dout <= 1'b0;
+    else if(rinc & ~rempty)
+        dout <= fifo_data[next_raddr];
+    else if(rempty)
+        dout <= fifo_data[raddr];
+
+always@(posedge clk)
+    if(winc & ~wfull)
+        fifo_data[waddr] <= din;
+
+endmodule

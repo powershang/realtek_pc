@@ -1,0 +1,14 @@
+[1001]  W164a  N.A  error  test_input.v  30  10  LHS: 'sig_reg_pure' width 8 is less than RHS: 'sig_reg_pure + 8'd1' width 9
+[1002]  W164a  N.A  error  test_input.v  39  10  LHS: 'sig_out_reg' width 8 is less than RHS: 'data_in' width 9
+[1003]  W164a  N.A  error  test_input.v  48  10  LHS: 'sig_out_sep' width 8 is less than RHS: 'data_in' width 9
+[1004]  W164a  N.A  error  test_input.v  57  10  LHS: 'sig_body_only' width 8 is less than RHS: 'data_in' width 9
+[1005]  W164a  N.A  error  test_input.v  66  10  LHS: 'sig_param' width 8 is less than RHS: 'data_in' width 9
+[1006]  W164a  N.A  error  test_input.v  71  10  LHS: 'sig_wire' width 8 is less than RHS: 'data_in' width 9
+[1007]  W164a  N.A  error  test_input.v  50  10  LHS: 'sig_missing' width 8 is less than RHS: 'data_in' width 9
+[1008]  W164a  N.A  error  test_input.v  74  10  LHS: 'sig_wire_inline' width 8 is less than RHS: 'data_in' width 9
+[1009]  W164a  N.A  error  test_input.v  84  10  LHS: 'sig_signed' width 8 is less than RHS: 'data_in' width 9
+[1010]  W164a  N.A  error  test_input.v  98  10  LHS: 'sig_nospace' width 8 is less than RHS: 'data_in' width 9
+[1011]  W164a  N.A  error  test_input.v  111  10  LHS: 'sig_arr[0]' width 8 is less than RHS: 'data_in' width 9
+[1012]  W164a  N.A  error  test_input.v  112  10  LHS: 'sig_arr[1]' width 8 is less than RHS: 'data_in' width 9
+[1013]  W164a  N.A  error  test_input.v  124  10  LHS: 'sig_multi' width 8 is less than RHS: 'data_in' width 9
+[1014]  W164a  N.A  error  test_input.v  126  10  LHS: 'sig_multi' width 8 is less than RHS: '{4'd0, data_in}' width 13

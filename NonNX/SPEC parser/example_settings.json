@@ -1,0 +1,14 @@
+{
+  "enable_multi_channel": true,
+  "base_prefix": "180c6",
+  "address_prefixes": [
+    "180c2",
+    "180c3",
+    "180c4",
+    "180c5",
+    "180c6"
+  ],
+  "version": "1.2",
+  "saved_at": "2024-01-15T10:30:00",
+  "description": "Enhanced Register Signal Analyzer Settings - Example for 180c6 base"
+} 

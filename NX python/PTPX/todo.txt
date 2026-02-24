@@ -1,0 +1,25 @@
+人類原本要做的事情:
+下是根據規範整理出的晶片功耗波形分析與提取完整流程，其主要目的是為了準備 final signoff 所需的波形檔案（包含 typical、idle2busy、busy200 與 idle2busy200）：
+第一階段：環境與設定準備
+1. 更新腳本：執行 svn up hardware/script & hardware/syn/common 來更新硬體與合成腳本。
+2. 確認讀取設定：在分析 busy200 與 idle2busy200 之前，必須確保 sta_tcl/${module}_read_fsdb.tcl 檔案中只存在一個 mm2_read_fsdb 指令。
+第二階段：波形檔案準備 3. 確認路徑與格式：確認波形格式路徑是否正確（例如 /project/RL6990/work/common_dic/power_fsdb/${FSDB_SEL}/${IP}_${FSDB_SEL}.fsdb）。 4. 準備基礎波形檔：準備好 typical 與 idle2busy 情境的 .fsdb 基礎檔案。
+第三階段：初步波形分析 5. 分析 busy200：執行 run_pre_pwr_anal_busy200，這會針對 non-scenario busy200 分析 typical 波形檔。 6. 分析 idle2busy200：執行 run_pre_pwr_anal_idle2busy200，這會針對 non-scenario idle2busy200 分析 idle2busy 波形檔。
+第四階段：功耗波形區間確認 7. 尋找粗略區間：執行 run_waveform_analysis 來找出 busy200 或 idle2busy200 的粗略時間區間。 8. 決定起始時間：在設定起始時間（begin time）時，請盡可能選擇匯流排時脈（bus clock）的正緣觸發點（posedge）。
+第五階段：提取與輸出波形 9. 提取 busy200 波形：執行 mm2_fsdbextract –s=${STRIP_PATH} –bt=${BEGIN_TIME} –ip=${IP} –type=busy200，從 typical 波形中提取，並複製到 busy200 資料夾下。 10. 提取 idle2busy200 波形：執行 mm2_fsdbextract –s=${STRIP_PATH} –bt=${BEGIN_TIME} –ip=${IP} –type=idle2busy200，從 idle2busy 波形中提取，並複製到 idle2busy200 資料夾下。
+補充注意事項：多 IP 合併 (Multi-IP Merge)
+• 如果有多個 IP 想要合併並只提供單一一個波形，Block Integrator 必須更新 sta_tcl/{BLOCK}_busy200_read_fsdb.tcl 或 sta_tcl/{BLOCK}_idle2busy200_read_fsdb.tcl 檔案
+
+我需要你自動化的事情:
+修正後的 AI Prompt：
+我希望有一個sciprt自動執行1234
+1. 執行 run_pre_pwr_anal_busy200 會針對 non-scenario busy200 分析 typical 波形檔。
+2. 執行 run_waveform_analysis 會顯示 busy200 的粗略時間區間（roughly interval）。 =>請你要撈出時間訊息給3
+3. 自動擷取起始時間 (-bt)： 執行提取時，你必須自動解析 run_waveform_analysis 執行結果中的區間，將其起始時間撈出作為 -bt 的參數值（提醒：根據規範，起始時間應盡量選擇匯流排時脈的正緣 posedge of bus clock）。
+4. 確認提取範圍 (-s)： 提取指令 mm2_fsdbextract 需帶入 -s (strip path)、-bt (begin time)、-ip 與 -type 參數。其中 -s 的預設值為 top/u_midas/main_top_apr_inst/main_top_inst/dc_mc_top_inst。在執行提取指令前，必須先中斷並詢問使用者是否要修改此 scope。
+4-1. mm2_fsdbextract -s=top/u_midas/main_top_apr_inst/main_top_inst/dc_mc_top_inst -bt=569616 -ip=dc_mc_top -type=busy200
+do you want copy dc_mc_top_busy200.fsdb to /project/RL7087/work/common_dic/power_fsdb/busy200/ (Y/N)
+copy done 會跳出要不要copy fsdb to path , 請自動選yes
+ 
+提示 run_pre_pwr_anal_busy200  run_waveform_analysis mm2_fsdbextract你需要判斷他們執行完成在做下一部
+其實我就是要你扮演一個人去控scipt的腳色, 透過script去操作script

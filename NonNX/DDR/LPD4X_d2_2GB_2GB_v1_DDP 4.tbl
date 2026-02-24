@@ -1,0 +1,1788 @@
+//-------- PLL NNIP, 760.45M-------------------------------------------------
+//Fout=Fref*((NCODE+4)+(FCODE/2048))/(PREDIV+1)/(2^O)
+rtd_outl(0x180004BC,0x00010019);	//[30:28]PLLNNIP_O=0,[24]BPSPI=0(through PI),[21]PLLNNIP_WDSET=0,[20]PLLNNIP_WDRST=0
+									//[14]CP=b'0,[10:8]ICP=b'000,[3:0]RS=b'1001,[5:4]PLLNNIP_Prediv=0x1
+rtd_outl(0x180004C0,0x00000004);	//PLLNNIP pll power down
+rtd_outl(0x180004C0,0x02A33405);	//PLLNNIP pll power on,F=675,N=52,760.45MHz, set 27*((N+4)+(F/2048))/(prediv+1)/1=760.45MHz
+rtd_outl(0x180004C4,0x50200805);	//Low Speed mode,oc_step=0x80,EN_PI_DEBUG=1,OC_EN=1,PI_CUR_SEL=0x0
+ScalerTimer_DelayXms(0x1);							//at least > 100us
+rtd_outl(0x180004C0,0x02A33407);	//release PLLNNIP reset
+ScalerTimer_DelayXms(0x1);							//at least > 100us
+rtd_outl(0x180004C0,0x02A33403);	//PLLNNIP output enable
+
+//DRM
+rtd_inl(0x18038880);	//0x18038880=0x69C35AC6
+// rtd_outl(0x18038884,0x00000000);	//DRM password word1
+// rtd_outl(0x18038888,0x00000000);	//DRM password word2
+// rtd_outl(0x1803888c,0x00000000);	//DRM password word3
+// rtd_outl(0x18038890,0x00000000);	//DRM password word4
+rtd_outl(0x18038820,0x00000003);	//CRC_EN
+ScalerTimer_DelayXms(0x200);
+rtd_inl(0x18038894);	//[2]=1:done
+rtd_maskl(0x18038894,0xfffffffe,0x00000001);	//password compare
+rtd_inl(0x18038894);	//=0x6:password correct
+
+//LG PCB enable DDR power supply
+//POWER_ON/OFF1 ; +1.0V_DDR_SOC , DDR_0.6V , +1.2V_DDR_SOC(PIF)
+rtd_part_outl(0x18060204,31,28, 0xF);  //set ST_GPIO4 pinmux to GPIO
+rtd_part_outl(0x18061100,5,5, 0x1);    //set ST_GPIO4 to GPO
+rtd_part_outl(0x18061108,5,5, 0x1);    //set ST_GPIO4 to high
+//POWER_ON/OFF2_4 ; +1.8V_DDR    +1.1V_DDR_SoC
+rtd_part_outl(0x18060208,31,28, 0xF);  //set ST_GPIO8 pinmux to GPIO
+rtd_part_outl(0x18061100,9,9, 0x1);    //set ST_GPIO8 to GPO
+rtd_part_outl(0x18061108,9,9, 0x1);    //set ST_GPIO8 to high
+
+// ** Pre_CRT ** //
+//LPD4X/LPD5 4MC
+rtd_outl(0x18000104, 0x02000001);  //[25]RSTN_DCPHY1
+rtd_outl(0x18000114, 0x02000001);  //[25]CLKEN_DCPHY1
+
+rtd_outl(0x1800010c, 0x02000001);  //[25]RSTN_DCPHY2
+rtd_outl(0x1800011c, 0x02000001);  //[25]CLKEN_DCPHY2
+
+rtd_outl(0x1800010c, 0x00800001);  //[23]RSTN_DC_MC1
+rtd_outl(0x18000124, 0x00000021);  //[5]RSTN_DC_MC2
+rtd_outl(0x18000120, 0x01000001);  //[24]RSTN_DC_MC3
+rtd_outl(0x18000124, 0x00000081);  //[7]RSTN_DC_MC4
+
+rtd_outl(0x1800011c, 0x04000001);  //[26]CLKEN_DC_MC1_MCK
+rtd_outl(0x18000134, 0x00000041);  //[6]CLKEN_DC_MC2_MCK
+rtd_outl(0x18000130, 0x02000001);  //[25]CLKEN_DC_MC3_MCK
+rtd_outl(0x18000134, 0x00000101);  //[8]CLKEN_DC_MC4_MCK
+
+rtd_outl(0x1800011c, 0x00800001);  //[23]CLKEN_DC_MC1
+rtd_outl(0x18000134, 0x00000021);  //[5]CLKEN_DC_MC2
+rtd_outl(0x18000130, 0x01000001);  //[24]CLKEN_DC_MC3
+rtd_outl(0x18000134, 0x00000081);  //[7]CLKEN_DC_MC4
+
+rtd_outl(0x18000100, 0x00040001);  //[18]RSTN_DC_MC_EXP
+rtd_outl(0x18000124, 0x00010001);  //[16]Rstn_dcmc_exp2
+rtd_outl(0x18000124, 0x00020001);  //[17]RSTN_dcmc_exp3
+
+rtd_outl(0x18000110, 0x00040001);  //[18]CLKEN_DC_MC_EXP
+rtd_outl(0x18000134, 0x00010001);  //[16]CLKEN_dcmc_exp2
+rtd_outl(0x18000134, 0x00020001);  //[17]CLKEN_dcmc_exp3
+
+//LPD4X
+rtd_outl(0x18000134, 0x3c000001);  //[29:26]CLKEN_dc_mc4_lp4,CLKEN_dc_mc3_lp4,CLKEN_dc_mc2_lp4,CLKEN_dc_mc1_lp4
+rtd_outl(0x18000134, 0x20000001);  //Clken_dc_mc1_lp4
+rtd_outl(0x18000134, 0x10000001);  //Clken_dc_mc2_lp4
+rtd_outl(0x18000134, 0x08000001);  //Clken_dc_mc3_lp4
+rtd_outl(0x18000134, 0x04000001);  //Clken_dc_mc4_lp4
+
+// //LPD5
+// rtd_outl(0x18000138, 0xf0000001);  //[31:28]CLKEN_dc_mc4_lp5,CLKEN_dc_mc3_lp5,CLKEN_dc_mc2_lp5,CLKEN_dc_mc1_lp5
+// rtd_outl(0x18000138, 0x10000001);  //CLKEN_dc_mc1_lp5
+// rtd_outl(0x18000138, 0x20000001);  //CLKEN_dc_mc2_lp5
+// rtd_outl(0x18000138, 0x40000001);  //CLKEN_dc_mc3_lp5
+// rtd_outl(0x18000138, 0x80000001);  //CLKEN_dc_mc4_lp5
+
+// rtd_outl(0x18007600, 0x00000000);  //no register
+// rtd_outl(0x18007030, 0x40000000);  //[31:30]wdone_fifo_margin=01:fifo_depth > 22
+
+rtd_outl(0x18007004, 0x61000200);
+
+//rtd_outl(0x18007008, 0x00000000);  //LPD4X_1rank,[25:24]=2b00:8bank/1rank, [9:8]=2b00:8bank/1rank
+rtd_outl(0x18007008, 0x02000200);  //LPD4X_2rank,[25:24]=2b00:8bank/2rank, [9:8]=2b00:8bank/2rank
+// rtd_outl(0x18007008, 0x01000100);  //LPD5_1rank,[25:24]=2b00:16bank/1rank, [9:8]=2b00:16bank/1rank
+// rtd_outl(0x18007008, 0x03000300);  //LPD5_2rank,[25:24]=2b00:16bank/2rank, [9:8]=2b00:16bank/2rank
+
+//IB
+rtd_maskl(0x18007004,0xbfffffff,0x00000000);  //[30]:dcib_8_region_en=0, 4_region
+
+// //case 1: all mc1
+//rtd_outl(0x18007844, 0x03030303);  //IB0: all IB1, slice=1024 bytes
+//rtd_outl(0x1800786C, 0x03030303);  //IB1: all mc1, slice=1024 bytes
+//rtd_outl(0x18007894, 0x00000000);  //IB2
+ 
+//////case 2: mc1:mc2=1:1, mc3/mc4 NULL
+//rtd_outl(0x18007844, 0x03030303);  //IB0: all IB1, slice=1024 bytes
+//rtd_outl(0x1800786C, 0x33333333);  //IB1: mc1:mc2=1:1 scramble, slice=1024 bytes
+//rtd_outl(0x18007894, 0x00000000);  //IB2
+
+ //case 3: mc1:mc2:mc3:mc4=1:1:1:1
+ rtd_outl(0x18007844, 0x33333333);  //IB0: IB1:IB2=1:1 scramble, slice=1024 bytes
+ rtd_outl(0x1800786C, 0x33333333);  //IB1: mc1:mc2=1:1 scramble, slice=1024 bytes
+ rtd_outl(0x18007894, 0x33333333);  //IB2: mc3:mc4=1:1 scramble, slice=1024 bytes 
+
+//=====[Pre_CRT_DC1]=====//
+//DC1
+rtd_maskl(0x180c9028, 0xfbffffff, 0x00000000); //[26]oc_en=0
+rtd_maskl(0x180c9020, 0xff8fffff, 0x00400000); //[22:20]dot_gran=4
+
+// #elif defined(CONFIG_DCU1_DDR_798MHz)
+// rtd_maskl(0x180c9024, 0xf800ffff, 0x04710000); // dpi_f_code_t = 1137
+// rtd_maskl(0x180c9028, 0xffff00ff, 0x00001A00); // dpi_n_code_t = 26
+// //target=798, SSCG=1%,30KHz
+// rtd_maskl(0x180c9028, 0xffffff00, 0x0000001A); //[7:0]Ncode_ssc=26
+// rtd_maskl(0x180c9024, 0xfffff800, 0x00000214); //[10:0]Fcode_ssc=532
+// rtd_maskl(0x180c9020, 0xfff80000, 0x00000AA9); //[18:0]Gran_set=2729(30k)
+
+// #elif defined(CONFIG_DCU1_DDR_933MHz)
+// rtd_maskl(0x180c9024, 0xf800ffff, 0x04710000); // dpi_f_code_t = 1137
+// rtd_maskl(0x180c9028, 0xffff00ff, 0x00001F00); // dpi_n_code_t = 31
+// //target=933, SSCG=1%,30KHz
+// rtd_maskl(0x180c9028, 0xffffff00, 0x0000001F); //[7:0]Ncode_ssc=31
+// rtd_maskl(0x180c9024, 0xfffff800, 0x000001AE); //[10:0]Fcode_ssc=430
+// rtd_maskl(0x180c9020, 0xfff80000, 0x00000C7D); //[18:0]Gran_set=3197(30k)
+
+// //#elif defined(CONFIG_DCU1_DDR_1066MHz)
+// rtd_maskl(0x180c9024, 0xf800ffff, 0x03DA0000); // dpi_f_code_t = 986
+// rtd_maskl(0x180c9028, 0xffff00ff, 0x00002400); // dpi_n_code_t = 36
+// //target=1066, SSCG=1%,30KHz
+// rtd_maskl(0x180c9028, 0xffffff00, 0x00000024); //[7:0]Ncode_ssc=36
+// rtd_maskl(0x180c9024, 0xfffff800, 0x000000B1); //[10:0]Fcode_ssc=177
+// rtd_maskl(0x180c9020, 0xfff80000, 0x00000E59); //[18:0]Gran_set=3673(30k)
+
+// #elif defined(CONFIG_DCU1_DDR_1200MHz)
+// rtd_maskl(0x180c9024, 0xf800ffff, 0x038E0000); // dpi_f_code_t = 910
+// rtd_maskl(0x180c9028, 0xffff00ff, 0x00002900); // dpi_n_code_t = 41
+// //target=1200, SSCG=1%,30KHz
+// rtd_maskl(0x180c9028, 0xffffff00, 0x00000029); //[7:0]Ncode_ssc=41
+// rtd_maskl(0x180c9024, 0xfffff800, 0x00000000); //[10:0]Fcode_ssc=0
+// rtd_maskl(0x180c9020, 0xfff80000, 0x0000102D); //[18:0]Gran_set=4141(30k)
+
+// //#elif defined(CONFIG_DCU1_DDR_1333MHz)
+// rtd_maskl(0x180c9024, 0xf800ffff, 0x02F60000); // dpi_f_code_t = 758
+// rtd_maskl(0x180c9028, 0xffff00ff, 0x00002E00); // dpi_n_code_t = 46
+// //target=1333, SSCG=1%,30KHz
+// rtd_maskl(0x180c9028, 0xffffff00, 0x0000002D); //[7:0]Ncode_ssc=45
+// rtd_maskl(0x180c9024, 0xfffff800, 0x00000703); //[10:0]Fcode_ssc=1795
+// rtd_maskl(0x180c9020, 0xfff80000, 0x000011A7); //[18:0]Gran_set=4519(30k)
+
+// //#elif defined(CONFIG_DCU1_DDR_1400MHz)
+// rtd_maskl(0x180c9024, 0xf800ffff, 0x06D00000); // dpi_f_code_t = 1744
+// rtd_maskl(0x180c9028, 0xffff00ff, 0x00003000); // dpi_n_code_t = 48
+// //target=1400, SSCG=1%,30KHz
+// rtd_maskl(0x180c9028, 0xffffff00, 0x00000030); //[7:0]Ncode_ssc=48
+// rtd_maskl(0x180c9024, 0xfffff800, 0x000002AA); //[10:0]Fcode_ssc=682
+// rtd_maskl(0x180c9020, 0xfff80000, 0x000012C2); //[18:0]Gran_set=4802(30k)
+
+// //#elif defined(CONFIG_DCU1_DDR_1466MHz)
+// rtd_maskl(0x180c9024, 0xf800ffff, 0x025E0000); // dpi_f_code_t = 606
+// rtd_maskl(0x180c9028, 0xffff00ff, 0x00003300); // dpi_n_code_t = 51
+// //target=1466, SSCG=1%,30KHz
+// rtd_maskl(0x180c9028, 0xffffff00, 0x00000032); //[7:0]Ncode_ssc=50
+// rtd_maskl(0x180c9024, 0xfffff800, 0x00000606); //[10:0]Fcode_ssc=1542
+// rtd_maskl(0x180c9020, 0xfff80000, 0x0000137E); //[18:0]Gran_set=4990(30k)
+
+// #elif defined(CONFIG_DCU1_DDR_1500MHz)
+// rtd_maskl(0x180c9024, 0xf800ffff, 0x04710000); // dpi_f_code_t = 1137
+// rtd_maskl(0x180c9028, 0xffff00ff, 0x00003400); // dpi_n_code_t = 52
+// //target=1500, SSCG=1%,30KHz
+// rtd_maskl(0x180c9028, 0xffffff00, 0x00000034); //[7:0]Ncode_ssc=52
+// rtd_maskl(0x180c9024, 0xfffff800, 0x00000000); //[10:0]Fcode_ssc=0
+// rtd_maskl(0x180c9020, 0xfff80000, 0x00001436); //[18:0]Gran_set=5174(30k)
+
+// //#elif defined(CONFIG_DCU1_DDR_1600MHz)
+// rtd_maskl(0x180c9024, 0xf800ffff, 0x02120000); // dpi_f_code_t = 530
+// rtd_maskl(0x180c9028, 0xffff00ff, 0x00003800); // dpi_n_code_t = 56
+// //target=1600, SSCG=1%,30KHz
+// rtd_maskl(0x180c9028, 0xffffff00, 0x00000037); //[7:0]Ncode_ssc=55
+// rtd_maskl(0x180c9024, 0xfffff800, 0x00000555); //[10:0]Fcode_ssc=1365
+// rtd_maskl(0x180c9020, 0xfff80000, 0x00001552); //[18:0]Gran_set=5458(30k)
+
+// //#elif defined(CONFIG_DCU1_DDR_1800MHz)
+// rtd_maskl(0x180c9024, 0xf800ffff, 0x05550000); // dpi_f_code_t = 1365
+// rtd_maskl(0x180c9028, 0xffff00ff, 0x00003F00); // dpi_n_code_t = 63
+// //target=1800, SSCG=0.5%,30KHz
+// rtd_maskl(0x180c9028, 0xffffff00, 0x0000003F); //[7:0]Ncode_ssc=63
+// rtd_maskl(0x180c9024, 0xfffff800, 0x000002AA); //[10:0]Fcode_ssc=682
+// rtd_maskl(0x180c9020, 0xfff80000, 0x00000C14); //[18:0]Gran_set=3092(30k)
+
+// //#elif defined(CONFIG_DCU1_DDR_1866MHz)
+// rtd_maskl(0x180c9024, 0xf800ffff, 0x01090000); // dpi_f_code_t = 265
+// rtd_maskl(0x180c9028, 0xffff00ff, 0x00004200); // dpi_n_code_t = 66
+// //target=1866.5, SSCG=0.5%, 30KHz
+// rtd_maskl(0x180c9028, 0xffffff00, 0x00000041); //[7:0]Ncode_ssc= 65
+// rtd_maskl(0x180c9024, 0xfffff800, 0x00000645); //[10:0]Fcode_ssc=1605
+// rtd_maskl(0x180c9020, 0xfff80000, 0x00000C71); //[18:0]Gran_set =3185(30k)
+
+// //#elif defined(CONFIG_DCU1_DDR_2000MHz)
+// rtd_maskl(0x180c9024, 0xf800ffff, 0x00970000); // dpi_f_code_t = 151
+// rtd_maskl(0x180c9028, 0xffff00ff, 0x00004700); // dpi_n_code_t = 71
+// //target=2000, SSCG=0.5%,30KHz
+// rtd_maskl(0x180c9028, 0xffffff00, 0x00000046); //[7:0]Ncode_ssc=70
+// rtd_maskl(0x180c9024, 0xfffff800, 0x000005A1); //[10:0]Fcode_ssc=1441
+// rtd_maskl(0x180c9020, 0xfff80000, 0x00000D58); //[18:0]Gran_set=3416(30k)
+
+ // #elif defined(CONFIG_DCU1_DDR_2133MHz)
+ rtd_maskl(0x180c9024, 0xf800ffff, 0x00000000); // dpi_f_code_t = 0
+ rtd_maskl(0x180c9028, 0xffff00ff, 0x00004C00); // dpi_n_code_t = 76
+ //target=2133, SSCG=0.5%,30KHz
+ rtd_maskl(0x180c9028, 0xffffff00, 0x0000004B); //[7:0]Ncode_ssc=75
+ rtd_maskl(0x180c9024, 0xfffff800, 0x000004D7); //[10:0]Fcode_ssc=1239
+ rtd_maskl(0x180c9020, 0xfff80000, 0x00000E45); //[18:0]Gran_set=3653(30k)
+
+// #elif defined(CONFIG_DCU1_DDR_2300MHz)
+// rtd_maskl(0x180c9024, 0xf800ffff, 0x017B0000); // dpi_f_code_t = 379
+// rtd_maskl(0x180c9028, 0xffff00ff, 0x00005200); // dpi_n_code_t = 82
+// //target=2300, SSCG=0.5%,30KHz
+// rtd_maskl(0x180c9028, 0xffffff00, 0x00000051); //[7:0]Ncode_ssc=81
+// rtd_maskl(0x180c9024, 0xfffff800, 0x00000612); //[10:0]Fcode_ssc=1554
+// rtd_maskl(0x180c9020, 0xfff80000, 0x00000F61); //[18:0]Gran_set=3937(30k)
+
+// #elif defined(CONFIG_DCU1_DDR_2500MHz)
+// rtd_maskl(0x180c9024, 0xf800ffff, 0x04BD0000); // dpi_f_code_t = 1213
+// rtd_maskl(0x180c9028, 0xffff00ff, 0x00005900); // dpi_n_code_t = 89
+// //target=2500, SSCG=0.5%,30KHz
+// rtd_maskl(0x180c9028, 0xffffff00, 0x00000059); //[7:0]Ncode_ssc=89
+// rtd_maskl(0x180c9024, 0xfffff800, 0x00000109); //[10:0]Fcode_ssc=265
+// rtd_maskl(0x180c9020, 0xfff80000, 0x000010D4); //[18:0]Gran_set=4308(30k)
+
+// #elif defined(CONFIG_DCU1_DDR_2750MHz)
+// rtd_maskl(0x180c9024, 0xf800ffff, 0x06D00000); // dpi_f_code_t = 1744
+// rtd_maskl(0x180c9028, 0xffff00ff, 0x00006200); // dpi_n_code_t = 98
+// //target=2750, SSCG=0.5%,30KHz
+// rtd_maskl(0x180c9028, 0xffffff00, 0x00000062); //[7:0]Ncode_ssc=98
+// rtd_maskl(0x180c9024, 0xfffff800, 0x000002BD); //[10:0]Fcode_ssc=701
+// rtd_maskl(0x180c9020, 0xfff80000, 0x0000127A); //[18:0]Gran_set=4730(30k)
+
+// #elif defined(CONFIG_DCU1_DDR_3000MHz)
+// rtd_maskl(0x180c9024, 0xf800ffff, 0x00E30000); // dpi_f_code_t = 227
+// rtd_maskl(0x180c9028, 0xffff00ff, 0x00006C00); // dpi_n_code_t = 108
+// //target=3000, SSCG=0.5%,30KHz
+// rtd_maskl(0x180c9028, 0xffffff00, 0x0000006B); //[7:0]Ncode_ssc=107
+// rtd_maskl(0x180c9024, 0xfffff800, 0x00000471); //[10:0]Fcode_ssc=1137
+// rtd_maskl(0x180c9020, 0xfff80000, 0x00001421); //[18:0]Gran_set=5153(30k)
+
+// #elif defined(CONFIG_DCU1_DDR_3200MHz)
+// rtd_maskl(0x180c9024, 0xf800ffff, 0x04250000); // dpi_f_code_t = 1061
+// rtd_maskl(0x180c9028, 0xffff00ff, 0x00007300); // dpi_n_code_t = 115
+// //target=3200, SSCG=0.5%,30KHz
+// rtd_maskl(0x180c9028, 0xffffff00, 0x00000072); //[7:0]Ncode_ssc=114
+// rtd_maskl(0x180c9024, 0xfffff800, 0x00000768); //[10:0]Fcode_ssc=1896
+// rtd_maskl(0x180c9020, 0xfff80000, 0x00001565); //[18:0]Gran_set=5477(30k)
+
+//DC2
+rtd_maskl(0x180ca028, 0xfbffffff, 0x00000000); //[26]oc_en=0
+rtd_maskl(0x180ca020, 0xff8fffff, 0x00400000); //[22:20]dot_gran=4
+
+// #elif defined(CONFIG_DCU2_DDR_798MHz)
+// rtd_maskl(0x180ca024, 0xf800ffff, 0x04710000); // dpi_f_code_t = 1137
+// rtd_maskl(0x180ca028, 0xffff00ff, 0x00001A00); // dpi_n_code_t = 26
+// //target=798, SSCG=1%,30KHz
+// rtd_maskl(0x180ca028, 0xffffff00, 0x0000001A); //[7:0]Ncode_ssc=26
+// rtd_maskl(0x180ca024, 0xfffff800, 0x00000214); //[10:0]Fcode_ssc=532
+// rtd_maskl(0x180ca020, 0xfff80000, 0x00000AA9); //[18:0]Gran_set=2729(30k)
+
+// #elif defined(CONFIG_DCU2_DDR_933MHz)
+// rtd_maskl(0x180ca024, 0xf800ffff, 0x04710000); // dpi_f_code_t = 1137
+// rtd_maskl(0x180ca028, 0xffff00ff, 0x00001F00); // dpi_n_code_t = 31
+// //target=933, SSCG=1%,30KHz
+// rtd_maskl(0x180ca028, 0xffffff00, 0x0000001F); //[7:0]Ncode_ssc=31
+// rtd_maskl(0x180ca024, 0xfffff800, 0x000001AE); //[10:0]Fcode_ssc=430
+// rtd_maskl(0x180ca020, 0xfff80000, 0x00000C7D); //[18:0]Gran_set=3197(30k)
+
+// //#elif defined(CONFIG_DCU2_DDR_1066MHz)
+// rtd_maskl(0x180ca024, 0xf800ffff, 0x03DA0000); // dpi_f_code_t = 986
+// rtd_maskl(0x180ca028, 0xffff00ff, 0x00002400); // dpi_n_code_t = 36
+// //target=1066, SSCG=1%,30KHz
+// rtd_maskl(0x180ca028, 0xffffff00, 0x00000024); //[7:0]Ncode_ssc=36
+// rtd_maskl(0x180ca024, 0xfffff800, 0x000000B1); //[10:0]Fcode_ssc=177
+// rtd_maskl(0x180ca020, 0xfff80000, 0x00000E59); //[18:0]Gran_set=3673(30k)
+
+// #elif defined(CONFIG_DCU2_DDR_1200MHz)
+// rtd_maskl(0x180ca024, 0xf800ffff, 0x038E0000); // dpi_f_code_t = 910
+// rtd_maskl(0x180ca028, 0xffff00ff, 0x00002900); // dpi_n_code_t = 41
+// //target=1200, SSCG=1%,30KHz
+// rtd_maskl(0x180ca028, 0xffffff00, 0x00000029); //[7:0]Ncode_ssc=41
+// rtd_maskl(0x180ca024, 0xfffff800, 0x00000000); //[10:0]Fcode_ssc=0
+// rtd_maskl(0x180ca020, 0xfff80000, 0x0000102D); //[18:0]Gran_set=4141(30k)
+
+// //#elif defined(CONFIG_DCU2_DDR_1333MHz)
+// rtd_maskl(0x180ca024, 0xf800ffff, 0x02F60000); // dpi_f_code_t = 758
+// rtd_maskl(0x180ca028, 0xffff00ff, 0x00002E00); // dpi_n_code_t = 46
+// //target=1333, SSCG=1%,30KHz
+// rtd_maskl(0x180ca028, 0xffffff00, 0x0000002D); //[7:0]Ncode_ssc=45
+// rtd_maskl(0x180ca024, 0xfffff800, 0x00000703); //[10:0]Fcode_ssc=1795
+// rtd_maskl(0x180ca020, 0xfff80000, 0x000011A7); //[18:0]Gran_set=4519(30k)
+
+// //#elif defined(CONFIG_DCU2_DDR_1400MHz)
+// rtd_maskl(0x180ca024, 0xf800ffff, 0x06D00000); // dpi_f_code_t = 1744
+// rtd_maskl(0x180ca028, 0xffff00ff, 0x00003000); // dpi_n_code_t = 48
+// //target=1400, SSCG=1%,30KHz
+// rtd_maskl(0x180ca028, 0xffffff00, 0x00000030); //[7:0]Ncode_ssc=48
+// rtd_maskl(0x180ca024, 0xfffff800, 0x000002AA); //[10:0]Fcode_ssc=682
+// rtd_maskl(0x180ca020, 0xfff80000, 0x000012C2); //[18:0]Gran_set=4802(30k)
+
+// //#elif defined(CONFIG_DCU2_DDR_1466MHz)
+// rtd_maskl(0x180ca024, 0xf800ffff, 0x025E0000); // dpi_f_code_t = 606
+// rtd_maskl(0x180ca028, 0xffff00ff, 0x00003300); // dpi_n_code_t = 51
+// //target=1466, SSCG=1%,30KHz
+// rtd_maskl(0x180ca028, 0xffffff00, 0x00000032); //[7:0]Ncode_ssc=50
+// rtd_maskl(0x180ca024, 0xfffff800, 0x00000606); //[10:0]Fcode_ssc=1542
+// rtd_maskl(0x180ca020, 0xfff80000, 0x0000137E); //[18:0]Gran_set=4990(30k)
+
+// #elif defined(CONFIG_DCU2_DDR_1500MHz)
+// rtd_maskl(0x180ca024, 0xf800ffff, 0x04710000); // dpi_f_code_t = 1137
+// rtd_maskl(0x180ca028, 0xffff00ff, 0x00003400); // dpi_n_code_t = 52
+// //target=1500, SSCG=1%,30KHz
+// rtd_maskl(0x180ca028, 0xffffff00, 0x00000034); //[7:0]Ncode_ssc=52
+// rtd_maskl(0x180ca024, 0xfffff800, 0x00000000); //[10:0]Fcode_ssc=0
+// rtd_maskl(0x180ca020, 0xfff80000, 0x00001436); //[18:0]Gran_set=5174(30k)
+
+// //#elif defined(CONFIG_DCU2_DDR_1600MHz)
+// rtd_maskl(0x180ca024, 0xf800ffff, 0x02120000); // dpi_f_code_t = 530
+// rtd_maskl(0x180ca028, 0xffff00ff, 0x00003800); // dpi_n_code_t = 56
+// //target=1600, SSCG=1%,30KHz
+// rtd_maskl(0x180ca028, 0xffffff00, 0x00000037); //[7:0]Ncode_ssc=55
+// rtd_maskl(0x180ca024, 0xfffff800, 0x00000555); //[10:0]Fcode_ssc=1365
+// rtd_maskl(0x180ca020, 0xfff80000, 0x00001552); //[18:0]Gran_set=5458(30k)
+
+// //#elif defined(CONFIG_DCU2_DDR_1800MHz)
+// rtd_maskl(0x180ca024, 0xf800ffff, 0x05550000); // dpi_f_code_t = 1365
+// rtd_maskl(0x180ca028, 0xffff00ff, 0x00003F00); // dpi_n_code_t = 63
+// //target=1800, SSCG=0.5%,30KHz
+// rtd_maskl(0x180ca028, 0xffffff00, 0x0000003F); //[7:0]Ncode_ssc=63
+// rtd_maskl(0x180ca024, 0xfffff800, 0x000002AA); //[10:0]Fcode_ssc=682
+// rtd_maskl(0x180ca020, 0xfff80000, 0x00000C14); //[18:0]Gran_set=3092(30k)
+
+// //#elif defined(CONFIG_DCU1_DDR_1866MHz)
+// rtd_maskl(0x180ca024, 0xf800ffff, 0x01090000); // dpi_f_code_t = 265
+// rtd_maskl(0x180ca028, 0xffff00ff, 0x00004200); // dpi_n_code_t = 66
+// //target=1866.5, SSCG=0.5%, 30KHz
+// rtd_maskl(0x180ca028, 0xffffff00, 0x00000041); //[7:0]Ncode_ssc= 65
+// rtd_maskl(0x180ca024, 0xfffff800, 0x00000645); //[10:0]Fcode_ssc=1605
+// rtd_maskl(0x180ca020, 0xfff80000, 0x00000C71); //[18:0]Gran_set =3185(30k)
+
+// //#elif defined(CONFIG_DCU2_DDR_2000MHz)
+// rtd_maskl(0x180ca024, 0xf800ffff, 0x00970000); // dpi_f_code_t = 151
+// rtd_maskl(0x180ca028, 0xffff00ff, 0x00004700); // dpi_n_code_t = 71
+// //target=2000, SSCG=0.5%,30KHz
+// rtd_maskl(0x180ca028, 0xffffff00, 0x00000046); //[7:0]Ncode_ssc=70
+// rtd_maskl(0x180ca024, 0xfffff800, 0x000005A1); //[10:0]Fcode_ssc=1441
+// rtd_maskl(0x180ca020, 0xfff80000, 0x00000D58); //[18:0]Gran_set=3416(30k)
+
+ // #elif defined(CONFIG_DCU2_DDR_2133MHz)
+ rtd_maskl(0x180ca024, 0xf800ffff, 0x00000000); // dpi_f_code_t = 0
+ rtd_maskl(0x180ca028, 0xffff00ff, 0x00004C00); // dpi_n_code_t = 76
+ //target=2133, SSCG=0.5%,30KHz
+ rtd_maskl(0x180ca028, 0xffffff00, 0x0000004B); //[7:0]Ncode_ssc=75
+ rtd_maskl(0x180ca024, 0xfffff800, 0x000004D7); //[10:0]Fcode_ssc=1239
+ rtd_maskl(0x180ca020, 0xfff80000, 0x00000E45); //[18:0]Gran_set=3653(30k)
+
+// #elif defined(CONFIG_DCU2_DDR_2300MHz)
+// rtd_maskl(0x180ca024, 0xf800ffff, 0x017B0000); // dpi_f_code_t = 379
+// rtd_maskl(0x180ca028, 0xffff00ff, 0x00005200); // dpi_n_code_t = 82
+// //target=2300, SSCG=0.5%,30KHz
+// rtd_maskl(0x180ca028, 0xffffff00, 0x00000051); //[7:0]Ncode_ssc=81
+// rtd_maskl(0x180ca024, 0xfffff800, 0x00000612); //[10:0]Fcode_ssc=1554
+// rtd_maskl(0x180ca020, 0xfff80000, 0x00000F61); //[18:0]Gran_set=3937(30k)
+
+// #elif defined(CONFIG_DCU2_DDR_2500MHz)
+// rtd_maskl(0x180ca024, 0xf800ffff, 0x04BD0000); // dpi_f_code_t = 1213
+// rtd_maskl(0x180ca028, 0xffff00ff, 0x00005900); // dpi_n_code_t = 89
+// //target=2500, SSCG=0.5%,30KHz
+// rtd_maskl(0x180ca028, 0xffffff00, 0x00000059); //[7:0]Ncode_ssc=89
+// rtd_maskl(0x180ca024, 0xfffff800, 0x00000109); //[10:0]Fcode_ssc=265
+// rtd_maskl(0x180ca020, 0xfff80000, 0x000010D4); //[18:0]Gran_set=4308(30k)
+
+// #elif defined(CONFIG_DCU2_DDR_2750MHz)
+// rtd_maskl(0x180ca024, 0xf800ffff, 0x06D00000); // dpi_f_code_t = 1744
+// rtd_maskl(0x180ca028, 0xffff00ff, 0x00006200); // dpi_n_code_t = 98
+// //target=2750, SSCG=0.5%,30KHz
+// rtd_maskl(0x180ca028, 0xffffff00, 0x00000062); //[7:0]Ncode_ssc=98
+// rtd_maskl(0x180ca024, 0xfffff800, 0x000002BD); //[10:0]Fcode_ssc=701
+// rtd_maskl(0x180ca020, 0xfff80000, 0x0000127A); //[18:0]Gran_set=4730(30k)
+
+// #elif defined(CONFIG_DCU2_DDR_3000MHz)
+// rtd_maskl(0x180ca024, 0xf800ffff, 0x00E30000); // dpi_f_code_t = 227
+// rtd_maskl(0x180ca028, 0xffff00ff, 0x00006C00); // dpi_n_code_t = 108
+// //target=3000, SSCG=0.5%,30KHz
+// rtd_maskl(0x180ca028, 0xffffff00, 0x0000006B); //[7:0]Ncode_ssc=107
+// rtd_maskl(0x180ca024, 0xfffff800, 0x00000471); //[10:0]Fcode_ssc=1137
+// rtd_maskl(0x180ca020, 0xfff80000, 0x00001421); //[18:0]Gran_set=5153(30k)
+
+// #elif defined(CONFIG_DCU2_DDR_3200MHz)
+// rtd_maskl(0x180ca024, 0xf800ffff, 0x04250000); // dpi_f_code_t = 1061
+// rtd_maskl(0x180ca028, 0xffff00ff, 0x00007300); // dpi_n_code_t = 115
+// //target=3200, SSCG=0.5%,30KHz
+// rtd_maskl(0x180ca028, 0xffffff00, 0x00000072); //[7:0]Ncode_ssc=114
+// rtd_maskl(0x180ca024, 0xfffff800, 0x00000768); //[10:0]Fcode_ssc=1896
+// rtd_maskl(0x180ca020, 0xfff80000, 0x00001565); //[18:0]Gran_set=5477(30k)
+
+//=====[DPI_CRT_DC1]=====//
+//pi setting
+rtd_maskl(0x180c9010, 0xe0e0e0e0, 0x1e050005); //DQS1[28:24],DQS0[20:16],CMD[12:8],CK0[4:0]
+rtd_maskl(0x180c9014, 0xe0e0e0e0, 0x00061e05); //DQ0[20:16],DQS3[12:8],DQS2[4:0]
+rtd_maskl(0x180c9098, 0xe0e0e0e0, 0x00030603); //CS0[28:24],DQ3[20:16],DQ2[12:8],DQ1[4:0]
+rtd_maskl(0x180c90a0, 0xe0e0e0e0, 0x05000000); //CK1[28:24],CS3[20:16],CS2[12:8],CS1[4:0]
+rtd_maskl(0x180c90f0, 0xe0e0e0e0, 0x00000000); //WCK3[28:24],WCK2[20:16],WCK1[12:8],WCK0[4:0]
+rtd_maskl(0x180c9008, 0xffff8000, 0x00000028); //oesync:CK1[14],CS3~0[13:10],DQ3~0[9:6],DQS3~0[5:2],CMD[1],CK0[0]
+rtd_maskl(0x180c90dc, 0xfffffff0, 0x00000000); //oesync:WCK3[3],WCK2[2],WCK1[1],WCK0[0]
+rtd_maskl(0x180c90dc, 0x000cffff, 0x55500000); //ck1_phsel[23:22]=0,ck0_phsel[21:20]=0,[17:16]=0:ck div1
+
+//=====[AFIFO_DC1]=====//
+rtd_maskl(0x180c9080, 0x00000000, 0x46564656); //txdqfifo:DQS3/DQ3/DQS2/DQ2/DQS1/DQ1/DQS0/DQ0
+rtd_maskl(0x180c9088, 0xffff0000, 0x00004444); //rxdqfifo:DQ3/DQ2/DQ1/DQ0 rxdqfifo+1=tm_dqsen-2
+rtd_maskl(0x180c90f8, 0xffff0000, 0x0000aaaa); //wck_afifo:WCK3/WCK2/WCK1/WCK0
+rtd_maskl(0x180c9084, 0xffffff00, 0x00000044); //txcmdfifo:ex_rd_str_num[6:4],rd_str_num[2:0]
+rtd_maskl(0x180c90e0, 0x00000000, 0x00000000); //txcmdfifo_sel_m[31:0]:1=ex_rd_str_num, 0=rd_str_num
+rtd_maskl(0x180c90e4, 0x00000000, 0x00000000); //txcmdfifo_sel_h[31:0]:1=ex_rd_str_num, 0=rd_str_num
+rtd_maskl(0x180c9094, 0x00000000, 0x00000000); //txcmdfifo_sel[31:0]:1=ex_rd_str_num,0=rd_str_num
+
+//pok update step1: dc1
+rtd_maskl(0x1805b0e0, 0xffff0000, 0xd0e1);
+//=====[CTS_FIFO_DC1]=====//
+rtd_maskl(0x180c9060, 0xffff9cff, 0x00006300); //[14:13]=1,[9:8]=1: mck_cs = cmd pi
+rtd_maskl(0x180c9000, 0xca02a780, 0x008c0044); //[2]=1:2to1 mode, set pin_mux mode=lpddr4,  set tx/rx cts_fifo_cnt, remove cke_a0 and cke_b0 fw force, [1:0]=2b00:LPD4
+rtd_maskl(0x180c905c, 0xfffcff00, 0x00000000); // remove cs_a0/cs_a1 and cs_b0/cs_b1 fw force
+
+//=====[DCC_DCD_DC1]=====//
+rtd_maskl(0x180c90a4, 0x48e08088, 0x15053834); //cs0 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180c90a8, 0x48e08088, 0x15053834); //cs1 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180c90b8, 0x48e08088, 0x15053834); //cs2 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180c90bc, 0x48e08088, 0x15053834); //cs3 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180c9030, 0x48e08088, 0x15053834); //cmd close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180c9034, 0xc8e08088, 0x15053834); //dqs0 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180c9038, 0xc8e08088, 0x15053834); //dqs1 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180c903c, 0xc8e08088, 0x15053834); //dqs2 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180c9040, 0xc8e08088, 0x15053834); //dqs3 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180c9044, 0xc8e08088, 0x15053834); //dq0~7 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180c9048, 0xc8e08088, 0x15053834); //dq8~15 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180c904c, 0xc8e08088, 0x15053834); //dq16~23 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180c9050, 0xc8e08088, 0x15053834); //dq24~31 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180c9054, 0xc8e08088, 0x15053834); //ck0 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180c9058, 0xc8e08088, 0x15053834); //ck1 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180c9104, 0xc8e08088, 0x15053834); //wck0 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180c9108, 0xc8e08088, 0x15053834); //wck1 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180c910c, 0xc8e08088, 0x15053834); //wck2 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180c9110, 0xc8e08088, 0x15053834); //wck3 close loop mode[29]=0,preset[6:4][2:0]
+
+//=====[PLL_INITIAL_VALUE_DC1]=====//
+//postpi power
+rtd_maskl(0x180c908c, 0xfffffffe, 0x00000001); //[0]pll_ldo_rst_n=1,release pll ldo reset
+ScalerTimer_DelayXms(5);
+rtd_maskl(0x180c9008, 0x7fffffff, 0x80000000); //dpi_ldo_pow[31]=0:AVDD,=1:postPI LDO
+ScalerTimer_DelayXms(80);
+//ck tree power,dpi_ck_pwr_sel[14:11]
+rtd_maskl(0x180c900c, 0x0ff0ff00, 0x70080000); //[31:28]=7:post PI bias, dpi_ldo_pow_ck[19]=1:LDO power on ,ldo_sel0:core power, 1:0.8V/2:0.85V/3:0.9V/4:0.95V/5:1.05V/6:1.1V/7:1.15V
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180c90d4, 0xffff07ff, 0x00000000); //[15:11]=0:select LDO for CK tree, ck tree DVDD open
+//4266Mbps
+rtd_maskl(0x180c9018, 0x00380008, 0x04405875); //PLL initial setting, [31:29]=3b000, postpi=LDO tracking AVDD (0.9V),[21:19]=?
+
+//=====[CRT_INITIAL_FLOW_DC1]=====//
+rtd_maskl(0x180c908c, 0xfffffffe, 0x00000001); //[0]pll_ldo_rst_n=1,release pll ldo reset
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180c908c, 0xfffffffd, 0x00000002); //[1]:pll_ssc_dig_rst_n=1,release reset PLL SSC circuit
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180c9008, 0xffff7fff, 0x00008000); //[31]mck_mc_en(for controller)
+rtd_maskl(0x180c9090, 0x7fffffcf, 0x80000000); //[31] lpddr5 wck always on, [5:4]: rw_blk clock is always on
+rtd_maskl(0x180c908c, 0xfffffff7, 0x00000000); //[3]:ptr_rst_n=0
+rtd_maskl(0x180c908c, 0xfffffff3, 0x0000000c); //[3]:ptr_rst_n=1,[2]:rst_n=1
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180c9028, 0xfbffffff, 0x04000000); //[26]dpi_oc_en=1
+rtd_maskl(0x180c9028, 0xfbffffff, 0x00000000); //[26]dpi_oc_en=0
+rtd_maskl(0x180c901c, 0xfffffff7, 0x00000008); //[3]dpi_ssc_flag_init=1
+rtd_maskl(0x180c901c, 0xfffffffd, 0x00000002); //[2]=1:enable ssc
+
+rtd_maskl(0x180c90d8, 0xfe00fe00, 0x00120012); //CK1_dly[24:16],CK0_dly[8:0]
+rtd_maskl(0x180c90d8, 0x7fff7fff, 0x80008000); //CK0/CK1 tree update                                                                            
+
+rtd_maskl(0x180c9004, 0xffff0000, 0x0000ffff);
+rtd_maskl(0x180c9008, 0xfffbffff, 0x00040000); //set dpi_clk_oe[18]=1, mck_ck1
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180c9008, 0xfffdffff, 0x00020000); //set dpi_clk_oe[17]=1, mck_cmd/mck_dq/mck_dqs/mck_cs/mck_cs2
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180c9008, 0xfffeffff, 0x00010000); //set dpi_clk_oe[16]=1, mck_ck
+
+//=====[DPI_DLL_DC1]=====//
+rtd_maskl(0x180c9310, 0xefffffff, 0x10000000); //[28]=1,set_reg_valid automatically
+rtd_maskl(0x180c9310, 0xffc0ffff, 0x001a0000); //rd_update_dly[21:16]=0x1a @2:1mode
+rtd_maskl(0x180c9310, 0xffff80ff, 0x00003000); //rd_update_dly_rx[14:8]=0x30
+rtd_maskl(0x180c9308, 0xffc1c0c0, 0x003e2000); //data_pre[21]=1,data_init[20]=1:lpddr5,ref_update_dly[13:8]=0x20, cal_dqsen_mode=disable
+rtd_maskl(0x180c9308, 0xefff7fff, 0x10008000); //rd_pre_2t=1, wr_pre_2t=1
+rtd_maskl(0x180c9254, 0xff7fffff, 0x00800000); //[23]=1:LPDDR4 DQS postamble 1.5 T
+rtd_maskl(0x180c9308, 0xfffffffc, 0x00000002); //2t_wr_pre[28]=1, 2t_rd_pre[15]=0 , fw_set delay[1:0]=2 immediately update
+
+//=====[PAD_BYPASSMODE]=====//
+rtd_maskl(0x180c928c, 0xffff0000, 0x0000ff55); //bit[1] : DQS BYPASSMODE =1 , RX VD18 power savibng disable, bit[0] : DQ BYPASSMODE =1 , RX VD18 power savibng disable
+
+//=====[PAD_ZQ_CALIBRATION]=====//
+// 50% VDD cal
+rtd_maskl(0x180c9240, 0xffffc0fe, 0x00000000); //zq_ena_nocd2[0]=0 disable NOCD2 for 0.5VDD
+rtd_maskl(0x180c92f4, 0x7ffffffc, 0x80000002); //en_dcc[31]=1, rx_ibias_sel[17:16]=2
+rtd_maskl(0x180c9234, 0xffff500e, 0x00008080); //rzq_ext_R240[15]=1,zq_vref_pd[13]=0,zq_vref_s_ini[10:4]=0x08(50%)
+rtd_maskl(0x180c9308, 0xfffffffc, 0x00000002); //fw_set delay[1:0]=2 immediately update
+rtd_maskl(0x180c9234, 0xfffeeffb, 0x00010000); //zq_vref_sel_ini[16]=1,zq_en_dmyi[12]=0,zq_vref_range_ini[2]=0
+rtd_maskl(0x180c92f8, 0xfffffcff, 0x00000000); //[9]=0: PD of CK1 PAD, [8]=0: PD of CK0 PAD
+rtd_maskl(0x180c9230, 0x00080080, 0x0c008c19); //[27]=1:zq auto update,[26:25]=2'b10:zclk/32,[19]=1:R240 external,zq_cal_cmd[7]=1
+rtd_maskl(0x180c930c, 0x00000000, 0x00000003); //update write delay tap
+ScalerTimer_DelayXms(80);
+//zq cal. for SET0
+rtd_maskl(0x180c9230, 0x8fffffff, 0x00000000); //Enable auto update OCD/ODT set0
+rtd_maskl(0x180c95c8, 0xf8c0f8c0, 0x00240024); //OCD=40, ODT=40
+rtd_maskl(0x180c95e8, 0xfffff8c0, 0x00000000); //nocd2_zprog=0
+rtd_maskl(0x180c9230, 0xfeffffff, 0x01000000); //Calibration Start
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180c9230, 0xfeffffff, 0x00000000); //Disable Calibration
+//zq cal. for SET1
+rtd_maskl(0x180c9230, 0x8fffffff, 0x10000000); //Enable auto update OCD/ODT set1
+rtd_maskl(0x180c95cc, 0xf8c0f8c0, 0x001d001d); //OCD=50, ODT=50
+rtd_maskl(0x180c95e8, 0xf8c0ffff, 0x00000000); //nocd2_zprog=0
+rtd_maskl(0x180c9230, 0xfeffffff, 0x01000000); //Calibration Start
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180c9230, 0xfeffffff, 0x00000000); //Disable Calibration
+//zq cal. for SET2
+rtd_maskl(0x180c9230, 0x8fffffff, 0x20000000); //Enable auto update OCD/ODT set2
+rtd_maskl(0x180c95d0, 0xf8c0f8c0, 0x00180018); //OCD=60, ODT=60
+rtd_maskl(0x180c95ec, 0xfffff8c0, 0x00000000); //nocd2_zprog=0
+rtd_maskl(0x180c9230, 0xfeffffff, 0x01000000); //Calibration Start
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180c9230, 0xfeffffff, 0x00000000); //Disable Calibration
+//zq cal. for SET3
+rtd_maskl(0x180c9230, 0x8fffffff, 0x30000000); //Enable auto update OCD/ODT set3
+rtd_maskl(0x180c95d4, 0xf8c0f8c0, 0x000e0012); //OCD=80, ODT=100
+rtd_maskl(0x180c95ec, 0xf8c0ffff, 0x00000000); //nocd2_zprog=0
+rtd_maskl(0x180c9230, 0xfeffffff, 0x01000000); //Calibration Start
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180c9230, 0xfeffffff, 0x00000000); //Disable Calibration
+//zq cal. for SET4
+rtd_maskl(0x180c9230, 0x8fffffff, 0x40000000); //Enable auto update OCD/ODT set4
+rtd_maskl(0x180c95d8, 0xf8c0f8c0, 0x000c0030); //OCD=30, ODT=120
+rtd_maskl(0x180c95f0, 0xfffff8c0, 0x00000000); //nocd2_zprog=0
+rtd_maskl(0x180c9230, 0xfeffffff, 0x01000000); //Calibration Start
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180c9230, 0xfeffffff, 0x00000000); //Disable Calibration
+//zq cal. for SET5
+rtd_maskl(0x180c9230, 0x8fffffff, 0x50000000); //Enable auto update OCD/ODT set5
+rtd_maskl(0x180c95dc, 0xf8c0f8c0, 0x000a002a); //OCD=34, ODT=150
+rtd_maskl(0x180c95f0, 0xf8c0ffff, 0x00000000); //nocd2_zprog=0
+rtd_maskl(0x180c9230, 0xfeffffff, 0x01000000); //Calibration Start
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180c9230, 0xfeffffff, 0x00000000); //Disable Calibration
+//zq cal. for SET6
+rtd_maskl(0x180c9230, 0x8fffffff, 0x60000000); //Enable auto update OCD/ODT set6
+rtd_maskl(0x180c95e0, 0xf8c0f8c0, 0x00100010); //OCD=90, ODT=90
+rtd_maskl(0x180c95f4, 0xfffff8c0, 0x00000000); //nocd2_zprog=0
+rtd_maskl(0x180c9230, 0xfeffffff, 0x01000000); //Calibration Start
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180c9230, 0xfeffffff, 0x00000000); //Disable Calibration
+//set7 ocd =0
+rtd_maskl(0x180c9294, 0xc0ffffff, 0x00000000); //odt_ttcp_set_7_pre
+rtd_maskl(0x180c929c, 0xc0ffffff, 0x00000000); //odt_ttcn_set_7_pre
+rtd_maskl(0x180c92a4, 0xc0ffffff, 0x00000000); //ocdp_set_7_pre
+rtd_maskl(0x180c92ac, 0xc0ffffff, 0x00000000); //ocdn_set_7_pre
+
+
+////for bring-up (P=965.4, N=891.4)
+//rtd_outl(0x180c9290,0x0d101318);	//P-ODT set_3~0 [75,60,50,40]
+//rtd_outl(0x180c9294,0x000b0308);	//P-ODT set_7~4 [open,90,300,120]
+//rtd_outl(0x180c9298,0x0c0f1216);	//N-ODT set_3~0 [75,60,50,40]
+//rtd_outl(0x180c929c,0x000a0307);	//N-ODT set_7~4 [open,90,300,120]
+//rtd_outl(0x180c92a0,0x0c101318);	//P-OCD set_3~0 [80,60,50,40]
+//rtd_outl(0x180c92a4,0x000b1c20);	//P-OCD set_7~4 [open,90,34,30]
+//rtd_outl(0x180c92a8,0x0b0f1216);	//N-OCD set_3~0 [80,60,50,40]
+//rtd_outl(0x180c92ac,0x000a1a1e);	//N-OCD set_7~4 [open,90,34,30]
+
+rtd_maskl(0x180c9230, 0xfffbffff, 0x00040000); //bit[18],auto update during refresh
+rtd_maskl(0x180c9230, 0xf7ffffff, 0x08000000); //bit[27],auto update calibration done
+rtd_maskl(0x180c9234, 0xffffdffe, 0x00002001); //zq_pd_ini=1, zq_vef_pd=1, set zq pad power down
+//=====[PAD_OCD_ODT_SEL]=====//
+//DQ ODT (p/n=open/120)
+rtd_maskl(0x180c92d4, 0x00000000, 0x44447777); //dq1n/0n/1p/0p/dq3n/2n/3p/2p odt set sel
+
+//DQ OCD (34)
+rtd_maskl(0x180c92d8, 0x00000000, 0x55555555); //dq3n/2n/3p/2p ocd set sel
+
+//DQS ODT PUPD3 = -250mV
+rtd_maskl(0x180c92dc, 0x00000000, 0x22227777); //dqs3n/2n/1n/0n/3p/2p/1p/0p odt set sel
+//rtd_maskl(0x180c92e0, 0x00000000, 0x33335555); //dqs#3n/#2n/#1n/#0n/#3p/#2p/#1p/#0p odt set sel
+rtd_maskl(0x180c92e0, 0x00000000, 0x55555555); //dqs#3n/#2n/#1n/#0n/#3p/#2p/#1p/#0p odt set sel
+
+//DQS OCD (40)
+rtd_maskl(0x180c92e4, 0x00000000, 0x00000000); //dqs1#n/0#n/1#p/0#p/dqs1n/0n/1p/0p ocd set sel
+rtd_maskl(0x180c92e8, 0x00000000, 0x00000000); //dqs3#n/2#n/3#p/2#p/dqs3n/2n/3p/2p ocd set sel
+
+//CK&CA&CS OCD
+rtd_maskl(0x180c92c0, 0x00000000, 0x00000000); //cke_b0_n/cke_b0_p/cke_a0_n/cke_a0_p ocd set sel
+rtd_maskl(0x180c92ec, 0x00000000, 0x00000000); //cs_b0_n/cs_b0_p/cs_a0_n/cs_a0_p ocd set sel
+rtd_maskl(0x180c92f0, 0x00000000, 0x00000000); //ck1#n/ck#n/ck1#p/ck#p/ck1n/ckn/ck1p/ckp ocd set sel
+rtd_maskl(0x180c94c4, 0x00000000, 0x00000000); //addr0n/0p/1n/1p/2n/2p/3n/3p ocd set sel
+rtd_maskl(0x180c94c8, 0x00000000, 0x00000000); //addr4n/4p/5n/5p/6n/6p/7n/7p ocd set sel
+rtd_maskl(0x180c94cc, 0x00000000, 0x00000000); //addr8n/8p/9n/9p/10n/10p/11n/11p ocd set sel
+rtd_maskl(0x180c94d0, 0x00000000, 0x00000000); //addr12n/12p/13n/13p/14n/14p/15n/15p ocd set sel
+rtd_maskl(0x180c94d4, 0x00ffff00, 0x00000000); //addr16n/16p/4exn/4exp/5exn/5exp/ba0n/ba0p ocd set sel
+rtd_maskl(0x180c94d8, 0x00000000, 0x00000000); //ba1n/1p/2n/2p/rasn/rasp/casn/casp ocd set sel
+rtd_maskl(0x180c94dc, 0x00000000, 0x00000000); //wen/wep/odtn/odtp/rstn/rstp/parn/parp ocd set sel
+rtd_maskl(0x180c94e0, 0x00000000, 0x00000000); //par1n/par1p/actn/actp/bg0n/bg0p/tenn/tenp ocd set sel
+rtd_maskl(0x180c94e4, 0x000000ff, 0x00000000); //alertn/alertp/alert1n/alert1p/odt_1n/odt_1p ocd set sel
+
+//=====[COMMAND_ADDRESS_DELAY_TAP]=====//
+rtd_maskl(0x180c9200, 0x80808080, 0x08080808); //a3/a2/a1/a0 dly
+rtd_maskl(0x180c9204, 0x80808080, 0x08080808); //a7/a6/a5/a4 dly
+rtd_maskl(0x180c9278, 0x80808080, 0x08080808); //a11/a10/a9/a8 dly
+rtd_maskl(0x180c93ec, 0x80808080, 0x08080808); //a15/a14/a13/a12 dly
+rtd_maskl(0x180c920c, 0x80ffff80, 0x08080808); //cke_a0/odt dly
+rtd_maskl(0x180c9668, 0x80808080, 0x08080808); //cke_a1/odt_1/cs_n_a1/cs_n_a0 dly
+rtd_maskl(0x180c94e8, 0x80808080, 0x08080808); //cke_b1/cke_b0/cs_n_b1/cs_n_b0_dly
+
+//=====[TX_WRITE_DELAY_TAP]=====//
+rtd_maskl(0x180c9750, 0x80808080, 0x03030305); //byte0:dq(3~0) dly
+rtd_maskl(0x180c9928, 0x80808080, 0x05070405); //byte0:dq(7~4) dly
+rtd_maskl(0x180c9754, 0x80808080, 0x05040605); //byte1:dq(11~8) dly
+rtd_maskl(0x180c992c, 0x80808080, 0x06060708); //byte1:dq(15~12) dly
+rtd_maskl(0x180c9a50, 0x80808080, 0x04040009); //byte2:dq(19~16) dly
+rtd_maskl(0x180c9c28, 0x80808080, 0x02040805); //byte2:dq(23~20) dly
+rtd_maskl(0x180c9a54, 0x80808080, 0x02050601); //byte3:dq(27~24) dly
+rtd_maskl(0x180c9c2c, 0x80808080, 0x03030707); //byte3:dq(31~28) dly
+rtd_maskl(0x180c9758, 0x80808080, 0x00040a04); //byte0:wck0/dqs0oe/dm0/dqs0 dly
+rtd_maskl(0x180c9968, 0xffffff80, 0x00000000); //byte0:wck0_oe dly
+rtd_maskl(0x180c975c, 0x80808080, 0x00040304); //byte1:wck1/dqs1oe/dm1/dqs1 dly
+rtd_maskl(0x180c996c, 0xffffff80, 0x00000000); //byte1:wck1_oe dly
+rtd_maskl(0x180c9a58, 0x80808080, 0x00040304); //byte2:wck2/dqs2oe/dm2/dqs2 dly
+rtd_maskl(0x180c9c68, 0xffffff80, 0x00000000); //byte2:wck2_oe dly
+rtd_maskl(0x180c9a5c, 0x80808080, 0x00040204); //byte3:wck3/dqs3oe/dm3/dqs3 dly
+rtd_maskl(0x180c9c6c, 0xffffff80, 0x00000000); //byte3:wck3_oe dly
+
+////=====[DELAY_TAP_CONTROL]=====//
+rtd_maskl(0x180c966c, 0xff00ffff, 0x00200000);  //cmd:reg_acc_init_delay[24:16]
+rtd_maskl(0x180c9980, 0xff00ffff, 0x00200000);  //byte0:reg_acc_init_delay[24:16]
+rtd_maskl(0x180c9984, 0xff00ffff, 0x00200000);  //byte1:reg_acc_init_delay[24:16]
+rtd_maskl(0x180c9c80, 0xff00ffff, 0x00200000);  //byte2:reg_acc_init_delay[24:16]
+rtd_maskl(0x180c9c84, 0xff00ffff, 0x00200000);  //byte3:reg_acc_init_delay[24:16]
+rtd_maskl(0x180c966c, 0xffffde00, 0x000001ff);  //cmd:ddc_en[13],reg_acc_manual_delay[8:0]
+rtd_maskl(0x180c9980, 0xffffde00, 0x000001ff);  //byte0:ddc_en[13],reg_acc_manual_delay[8:0]
+rtd_maskl(0x180c9984, 0xffffde00, 0x000001ff);  //byte1:ddc_en[13],reg_acc_manual_delay[8:0]
+rtd_maskl(0x180c9c80, 0xffffde00, 0x000001ff);  //byte2:ddc_en[13],reg_acc_manual_delay[8:0]
+rtd_maskl(0x180c9c84, 0xffffde00, 0x000001ff);  //byte3:ddc_en[13],reg_acc_manual_delay[8:0]
+
+//=====[RX_READ_DQS_EN]=====//
+//dqsen autok on
+//rtd_maskl(0x180c9308, 0xfff9ffff, 0x00060000); //[18:17]=2b11:disable auto calibration
+rtd_maskl(0x180c9308, 0xfff9ffff, 0x00000000); //[18:17]=2b00:auto calibration during no read
+rtd_maskl(0x180c9308, 0xfff7ffff, 0x00080000); //cal_dqsen_update_ena[19]=1
+//rtd_maskl(0x180c9308, 0xfff7ffff, 0x00000000); //cal_dqsen_update_ena[19]=0
+
+//dqs_en_dly_sel=4T
+rtd_maskl(0x180c99f8, 0x83000004, 0x0000003b); //byte0:byte0:dqs_rc1in_dly_sel[30:26],no dqs_en_dly[13:8],tm_dqs_en[7:3],tm_dqs_en_ftun[2:0]
+rtd_maskl(0x180c99fc, 0x83000004, 0x00000040); //byte1:byte1:dqs_rc1in_dly_sel[30:26],no dqs_en_dly[13:8],tm_dqs_en[7:3],tm_dqs_en_ftun[2:0]
+rtd_maskl(0x180c9cf8, 0x83000004, 0x0000003b); //byte2:byte2:dqs_rc1in_dly_sel[30:26],no dqs_en_dly[13:8],tm_dqs_en[7:3],tm_dqs_en_ftun[2:0]
+rtd_maskl(0x180c9cfc, 0x83000004, 0x00000040); //byte3:byte3:dqs_rc1in_dly_sel[30:26],no dqs_en_dly[13:8],tm_dqs_en[7:3],tm_dqs_en_ftun[2:0]
+rtd_maskl(0x180c9274, 0x43fff8c0, 0x1400000e); //rddata_en_dly_sel[29:28]=1:dly 4T,tm_rd_fifo[5:0]=4
+//tm_dqsen_cal_pre[20:16]=tm_dqs_en-1
+rtd_maskl(0x180c9710, 0xffe0ffff, 0x00060000);
+rtd_maskl(0x180c9714, 0xffe0ffff, 0x00070000);
+rtd_maskl(0x180c9a10, 0xffe0ffff, 0x00060000);
+rtd_maskl(0x180c9a14, 0xffe0ffff, 0x00070000);
+//tm_dqsen_early_ph[13:8]=2T, tm_dqsen_late_ph[5:0]=1T
+rtd_maskl(0x180c9710, 0xffff8080, 0x00000001); //// LPDDR4 slice0 : L1= 1T, L2=1T
+rtd_maskl(0x180c9714, 0xffff8080, 0x00000001); //// LPDDR4 slice1 : L1= 1T, L2=1T
+rtd_maskl(0x180c9a10, 0xffff8080, 0x00000001); //// LPDDR4 slice2 : L1= 1T, L2=1T
+rtd_maskl(0x180c9a14, 0xffff8080, 0x00000001); //// LPDDR4 slice3 : L1= 1T, L2=1T
+
+//=====[RX_READ_ODT_CTRL]=====//
+rtd_maskl(0x180c9708, 0xf83ffff0, 0x03000004); //byte0:force_odt(dqs[25:24],dq[23:22]),tm_odt_pre[3:2],tm_odt_pos[1:0]
+rtd_maskl(0x180c970c, 0xf83ffff0, 0x03000004); //byte1:force_odt(dqs[25:24],dq[23:22]),tm_odt_pre[3:2],tm_odt_pos[1:0]
+rtd_maskl(0x180c9a08, 0xf83ffff0, 0x03000004); //byte2:force_odt(dqs[25:24],dq[23:22]),tm_odt_pre[3:2],tm_odt_pos[1:0]
+rtd_maskl(0x180c9a0c, 0xf83ffff0, 0x03000004); //byte3:force_odt(dqs[25:24],dq[23:22]),tm_odt_pre[3:2],tm_odt_pos[1:0]
+rtd_maskl(0x180c9718, 0x00000000, 0x0000fffe); //byte0:odt_en
+rtd_maskl(0x180c971c, 0x00000000, 0x0000fffe); //byte1:odt_en
+rtd_maskl(0x180c9a18, 0x00000000, 0x0000fffe); //byte2:odt_en
+rtd_maskl(0x180c9a1c, 0x00000000, 0x0000fffe); //byte3:odt_en
+
+//=====[RX_READ_INPUT_ENABLE]=====//
+rtd_maskl(0x180c97d8, 0x003fff30, 0x00000000); //byte0:ie_sig[1],ie_frc_en[0](dbi enable)
+rtd_maskl(0x180c97dc, 0x003fff30, 0x00000000); //byte1:ie_sig[1],ie_frc_en[0](dbi enable)
+rtd_maskl(0x180c9ad8, 0x003fff30, 0x00000000); //byte2:ie_sig[1],ie_frc_en[0](dbi enable)
+rtd_maskl(0x180c9adc, 0x003fff30, 0x00000000); //byte3:ie_sig[1],ie_frc_en[0](dbi enable)
+rtd_maskl(0x180c98c0, 0xfdff0c00, 0x00001000); //byte0: dq/dm:pre 0.5T enable
+rtd_maskl(0x180c98c4, 0xfdff0c00, 0x00001000); //byte1: dq/dm:pre 0.5T enable
+rtd_maskl(0x180c9bc0, 0xfdff0c00, 0x00001000); //byte2: dq/dm:pre 0.5T enable
+rtd_maskl(0x180c9bc4, 0xfdff0c00, 0x00001000); //byte3: dq/dm:pre 0.5T enable
+
+//=====[RX_3_POINT_CALIBRATION_DELTA]=====//
+//left delta
+rtd_maskl(0x180c9820, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180c9800, 0xe0e0e0e0, 0x02020202); //byte0:dqs0(7:0) rd_cal_range of pos edge
+rtd_maskl(0x180c9824, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180c9804, 0xe0e0e0e0, 0x02020202); //byte1:dqs1(7:0) rd_cal_range of pos edge
+rtd_maskl(0x180c9b20, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180c9b00, 0xe0e0e0e0, 0x02020202); //byte2:dqs2(7:0) rd_cal_range of pos edge
+rtd_maskl(0x180c9b24, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180c9b04, 0xe0e0e0e0, 0x02020202); //byte3:dqs3(7:0) rd_cal_range of pos edge
+rtd_maskl(0x180c9828, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180c9940, 0xe0e0e0e0, 0x02020202); //byte0:dqs0(7:0) rd_cal_range of neg edge
+rtd_maskl(0x180c982c, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180c9944, 0xe0e0e0e0, 0x02020202); //byte1:dqs1(7:0) rd_cal_range of neg edge
+rtd_maskl(0x180c9b28, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180c9c40, 0xe0e0e0e0, 0x02020202); //byte2:dqs2(7:0) rd_cal_range of neg edge
+rtd_maskl(0x180c9b2c, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180c9c44, 0xe0e0e0e0, 0x02020202); //byte3:dqs3(7:0) rd_cal_range of neg edge
+rtd_maskl(0x180c9840, 0xffffe0e0, 0x00000202); //byte0:dm0(3:0) dm rd_cal_range of neg edge and pos edge
+rtd_maskl(0x180c9844, 0xffffe0e0, 0x00000202); //byte1:dm1(3:0) dm rd_cal_range of neg edge and pos edge
+rtd_maskl(0x180c9b40, 0xffffe0e0, 0x00000202); //byte2:dm2(3:0) dm rd_cal_range of neg edge and pos edge
+rtd_maskl(0x180c9b44, 0xffffe0e0, 0x00000202); //byte3:dm3(3:0) dm rd_cal_range of neg edge and pos edge
+//right delta
+rtd_maskl(0x180c9830, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180c9808, 0xe0e0e0e0, 0x02020202); //byte0:dqs0(7:0) rd_cal_range of pos edge
+rtd_maskl(0x180c9834, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180c980c, 0xe0e0e0e0, 0x02020202); //byte1:dqs1(7:0) rd_cal_range of pos edge
+rtd_maskl(0x180c9b30, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180c9b08, 0xe0e0e0e0, 0x02020202); //byte2:dqs2(7:0) rd_cal_range of pos edge
+rtd_maskl(0x180c9b34, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180c9b0c, 0xe0e0e0e0, 0x02020202); //byte3:dqs3(7:0) rd_cal_range of pos edge
+rtd_maskl(0x180c9838, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180c9948, 0xe0e0e0e0, 0x02020202); //byte0:dqs0(7:0) rd_cal_range of neg edge
+rtd_maskl(0x180c983c, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180c994c, 0xe0e0e0e0, 0x02020202); //byte1:dqs1(7:0) rd_cal_range of neg edge
+rtd_maskl(0x180c9b38, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180c9c48, 0xe0e0e0e0, 0x02020202); //byte2:dqs2(7:0) rd_cal_range of neg edge
+rtd_maskl(0x180c9b3c, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180c9c4c, 0xe0e0e0e0, 0x02020202); //byte3:dqs3(7:0) rd_cal_range of neg edge
+rtd_maskl(0x180c9840, 0xe0e0ffff, 0x02020000); //byte0:dm0(3:0) dm rd_cal_range of neg edge and pos edge
+rtd_maskl(0x180c9844, 0xe0e0ffff, 0x02020000); //byte1:dm1(3:0) dm rd_cal_range of neg edge and pos edge
+rtd_maskl(0x180c9b40, 0xe0e0ffff, 0x02020000); //byte2:dm2(3:0) dm rd_cal_range of neg edge and pos edge
+rtd_maskl(0x180c9b44, 0xe0e0ffff, 0x02020000); //byte3:dm3(3:0) dm rd_cal_range of neg edge and pos edge
+
+//=====[RX_TE]=====//
+rtd_maskl(0x180c9730, 0xffffffc0, 0x0000000D); //byte0:dqs0 dbi(p) dly
+rtd_maskl(0x180c9734, 0xffffffc0, 0x0000000E); //byte1:dqs1 dbi(p) dly
+rtd_maskl(0x180c9a30, 0xffffffc0, 0x0000000D); //byte2:dqs2 dbi(p) dly
+rtd_maskl(0x180c9a34, 0xffffffc0, 0x00000010); //byte3:dqs3 dbi(p) dly
+rtd_maskl(0x180c9720, 0xc0c0c0c0, 0x0D0F0D0E); //byte0:dqs0p(3:0) dly
+rtd_maskl(0x180c9728, 0xc0c0c0c0, 0x0E0C0F0D); //byte0:dqs0p(7:4) dly
+rtd_maskl(0x180c9724, 0xc0c0c0c0, 0x100F0F0E); //byte1:dqs1p(3:0) dly
+rtd_maskl(0x180c972c, 0xc0c0c0c0, 0x0C0D0E0F); //byte1:dqs1p(7:4) dly
+rtd_maskl(0x180c9a20, 0xc0c0c0c0, 0x0D0C0F0C); //byte2:dqs2p(3:0) dly
+rtd_maskl(0x180c9a28, 0xc0c0c0c0, 0x0E0D0C0D); //byte2:dqs2p(7:4) dly
+rtd_maskl(0x180c9a24, 0xc0c0c0c0, 0x0F0F0E0E); //byte3:dqs3p(3:0) dly
+rtd_maskl(0x180c9a2c, 0xc0c0c0c0, 0x0E0D0E0F); //byte3:dqs3p(7:4) dly
+rtd_maskl(0x180c9748, 0xffffffc0, 0x0000000D); //byte0:dqs0 dbi(n) dly
+rtd_maskl(0x180c974c, 0xffffffc0, 0x0000000E); //byte1:dqs1 dbi(n) dly
+rtd_maskl(0x180c9a48, 0xffffffc0, 0x0000000C); //byte2:dqs2 dbi(n) dly
+rtd_maskl(0x180c9a4c, 0xffffffc0, 0x00000010); //byte3:dqs3 dbi(n) dly
+rtd_maskl(0x180c9738, 0xc0c0c0c0, 0x0D0F0E0F); //byte0:dqs0n(3:0) dly
+rtd_maskl(0x180c9740, 0xc0c0c0c0, 0x0E0C0E0D); //byte0:dqs0n(7:4) dly
+rtd_maskl(0x180c973c, 0xc0c0c0c0, 0x0F0E0E0E); //byte1:dqs1n(3:0) dly
+rtd_maskl(0x180c9744, 0xc0c0c0c0, 0x0D0E0D0E); //byte1:dqs1n(7:4) dly
+rtd_maskl(0x180c9a38, 0xc0c0c0c0, 0x0D0C100C); //byte2:dqs2n(3:0) dly
+rtd_maskl(0x180c9a40, 0xc0c0c0c0, 0x0E0C0C0E); //byte2:dqs2n(7:4) dly
+rtd_maskl(0x180c9a3c, 0xc0c0c0c0, 0x100F0E0E); //byte3:dqs3n(3:0) dly
+rtd_maskl(0x180c9a44, 0xc0c0c0c0, 0x0E0D0E0F); //byte3:dqs3n(7:4) dly
+
+
+//=====[RX_VREF]=====//
+rtd_outl(0x180c92fc,0x1d1d1d1d);  //s1_vref[22:16],s0_vref[6:0],0x1c=10+25%
+rtd_outl(0x180c9470,0x1d1d1d1d);  //s3_vref[22:16],s2_vref[6:0]
+
+
+// //SCT
+// rtd_maskl(0x180c9308, 0xfeffffff, 0x01000000); //alpha_en[24]
+// rtd_maskl(0x180c9910, 0x97ffffff, 0x28000000); //rx_dfe_en[27]=1,dfe_mode[30:29]=1
+// rtd_maskl(0x180c9914, 0x97ffffff, 0x28000000); //rx_dfe_en[27]=1,dfe_mode[30:29]=1
+// rtd_maskl(0x180c9c10, 0x97ffffff, 0x28000000); //rx_dfe_en[27]=1,dfe_mode[30:29]=1
+// rtd_maskl(0x180c9c14, 0x97ffffff, 0x28000000); //rx_dfe_en[27]=1,dfe_mode[30:29]=1
+// rtd_maskl(0x180c9910, 0xf8888888, 0x00000000); //dfe_dly_sel_=0
+// rtd_maskl(0x180c9914, 0xf8888888, 0x00000000); //dfe_dly_sel_=0
+// rtd_maskl(0x180c9c10, 0xf8888888, 0x00000000); //dfe_dly_sel_=0
+// rtd_maskl(0x180c9c14, 0xf8888888, 0x00000000); //dfe_dly_sel_=0
+
+//DFE
+rtd_maskl(0x180c9308, 0xfeffffff, 0x01000000); //alpha_en[24]
+rtd_maskl(0x180c9910, 0x97ffffff, 0x08000000); //rx_dfe_en[27]=1,dfe_mode[30:29]=0
+rtd_maskl(0x180c9914, 0x97ffffff, 0x08000000); //rx_dfe_en[27]=1,dfe_mode[30:29]=0
+rtd_maskl(0x180c9c10, 0x97ffffff, 0x08000000); //rx_dfe_en[27]=1,dfe_mode[30:29]=0
+rtd_maskl(0x180c9c14, 0x97ffffff, 0x08000000); //rx_dfe_en[27]=1,dfe_mode[30:29]=0
+        
+//=====[RX_DELTA_K]=====//
+rtd_maskl(0x180c946c, 0xf0f8fcdf, 0x0f010020); //[27:24]fw_vr_upd=0xf,[18:16]vr_src_sel=1,[9:8]=2b00:disable rx off-line k,[5]fw_delta_force=1
+rtd_maskl(0x180c94f8, 0xf0f0f0f0, 0x05050505); //vref_garget
+//online k
+rtd_maskl(0x180c946c, 0xfffffcdf, 0x00000020); //[9:8]=2b00:disable rx off-line k,[5]fw_delta_force=1
+rtd_maskl(0x180c946c, 0xfffffcdf, 0x00000000); //[9:8]=2b00:disable rx off-line k,[5]fw_delta_force=0
+rtd_maskl(0x180c9468, 0xffffc0ff, 0x00000000); //[13:8]=0,RX_vref autoK off
+rtd_maskl(0x180c98c8, 0xff00f80f, 0x007700d0); //fw_delta_lmt_neg[23:20]fw_delta_lmt_pos[23:20]delta_cal_mode[4] = 1 & burst_obvs_num[10:5] = 6
+rtd_maskl(0x180c98cc, 0xff00f80f, 0x007700d0); //fw_delta_lmt_neg[23:20]fw_delta_lmt_pos[23:20]delta_cal_mode[4] = 1 & burst_obvs_num[10:5] = 6
+rtd_maskl(0x180c9bc8, 0xff00f80f, 0x007700d0); //fw_delta_lmt_neg[23:20]fw_delta_lmt_pos[23:20]delta_cal_mode[4] = 1 & burst_obvs_num[10:5] = 6
+rtd_maskl(0x180c9bcc, 0xff00f80f, 0x007700d0); //fw_delta_lmt_neg[23:20]fw_delta_lmt_pos[23:20]delta_cal_mode[4] = 1 & burst_obvs_num[10:5] = 6
+
+//id_map_sel LPD4
+rtd_maskl(0x180c90e8, 0xff00ff00, 0x00270027); //LDP4:0x27, LPD5:0x36
+
+//pok update step2: dc1
+rtd_maskl(0x1805b0e0, 0xffff0000, 0xd0e2);
+//===== [DEALY_UPDATE_MODE] =====//
+rtd_maskl(0x180c930c, 0x00000000, 0x00000003); //update write delay tap
+rtd_maskl(0x180c930c, 0x00000000, 0x0000000c); //update read delay tap
+rtd_maskl(0x180c9308, 0xfffffffc, 0x00000000); //fw_set[1:0]=0, read:update at no read read / write: during refresh
+
+
+//=====[DPI_CRT_DC2]=====//
+//pi setting
+rtd_maskl(0x180ca010, 0xe0e0e0e0, 0x060a0000); //DQS1[28:24],DQS0[20:16],CMD[12:8],CK0[4:0]
+rtd_maskl(0x180ca014, 0xe0e0e0e0, 0x00090409); //DQ0[20:16],DQS3[12:8],DQS2[4:0]
+rtd_maskl(0x180ca098, 0xe0e0e0e0, 0x00090909); //CS0[28:24],DQ3[20:16],DQ2[12:8],DQ1[4:0]
+rtd_maskl(0x180ca0a0, 0xe0e0e0e0, 0x01000000); //CK1[28:24],CS3[20:16],CS2[12:8],CS1[4:0]
+rtd_maskl(0x180ca0f0, 0xe0e0e0e0, 0x00000000); //WCK3[28:24],WCK2[20:16],WCK1[12:8],WCK0[4:0]
+rtd_maskl(0x180ca008, 0xffff8000, 0x00000000); //oesync:CK1[14],CS3~0[13:10],DQ3~0[9:6],DQS3~0[5:2],CMD[1],CK0[0]
+rtd_maskl(0x180ca0dc, 0xfffffff0, 0x00000000); //oesync:WCK3[3],WCK2[2],WCK1[1],WCK0[0]
+rtd_maskl(0x180ca0dc, 0x000cffff, 0x55500000); //ck1_phsel[23:22]=0,ck0_phsel[21:20]=0,[17:16]=0:ck div1
+
+//=====[AFIFO_DC2]=====//           
+rtd_maskl(0x180ca080, 0x00000000, 0x56565656); //txdqfifo:DQS3/DQ3/DQS2/DQ2/DQS1/DQ1/DQS0/DQ0
+rtd_maskl(0x180ca088, 0xffff0000, 0x00004444); //rxdqfifo:DQ3/DQ2/DQ1/DQ0 rxdqfifo+1=tm_dqsen-2
+rtd_maskl(0x180ca0f8, 0xffff0000, 0x0000aaaa); //wck_afifo:WCK3/WCK2/WCK1/WCK0
+rtd_maskl(0x180ca084, 0xffffff00, 0x00000044); //txcmdfifo:ex_rd_str_num[6:4],rd_str_num[2:0]
+rtd_maskl(0x180ca0e0, 0x00000000, 0x00000000); //txcmdfifo_sel_m[31:0]:1=ex_rd_str_num, 0=rd_str_num
+rtd_maskl(0x180ca0e4, 0x00000000, 0x00000000); //txcmdfifo_sel_h[31:0]:1=ex_rd_str_num, 0=rd_str_num
+rtd_maskl(0x180ca094, 0x00000000, 0x00000000); //txcmdfifo_sel[31:0]:1=ex_rd_str_num,0=rd_str_num
+
+//pok update step3: dc2
+rtd_maskl(0x1805b0e0, 0xffff0000, 0xd0e3);
+
+//=====[CTS_FIFO_DC2]=====//
+rtd_maskl(0x180ca060, 0xffff9cff, 0x00006300); //[14:13]=1,[9:8]=1: mck_cs = cmd pi
+rtd_maskl(0x180ca000, 0xca02a780, 0x008c0044); //[2]=1:2to1 mode, set pin_mux mode=lpddr4,  set tx/rx cts_fifo_cnt, remove cke_a0 and cke_b0 fw force, [1:0]=2b00:LPD4
+rtd_maskl(0x180ca05c, 0xfffcff00, 0x00000000); // remove cs_a0/cs_a1 and cs_b0/cs_b1 fw force
+
+//=====[DCC_DCD_DC2]=====//
+rtd_maskl(0x180ca0a4, 0x48e08088, 0x15053834); //cs0 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180ca0a8, 0x48e08088, 0x15053834); //cs1 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180ca0b8, 0x48e08088, 0x15053834); //cs2 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180ca0bc, 0x48e08088, 0x15053834); //cs3 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180ca030, 0x48e08088, 0x15053834); //cmd close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180ca034, 0xc8e08088, 0x15053834); //dqs0 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180ca038, 0xc8e08088, 0x15053834); //dqs1 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180ca03c, 0xc8e08088, 0x15053834); //dqs2 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180ca040, 0xc8e08088, 0x15053834); //dqs3 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180ca044, 0xc8e08088, 0x15053834); //dq0~7 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180ca048, 0xc8e08088, 0x15053834); //dq8~15 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180ca04c, 0xc8e08088, 0x15053834); //dq16~23 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180ca050, 0xc8e08088, 0x15053834); //dq24~31 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180ca054, 0xc8e08088, 0x15053834); //ck0 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180ca058, 0xc8e08088, 0x15053834); //ck1 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180ca104, 0xc8e08088, 0x15053834); //wck0 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180ca108, 0xc8e08088, 0x15053834); //wck1 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180ca10c, 0xc8e08088, 0x15053834); //wck2 close loop mode[29]=0,preset[6:4][2:0]
+rtd_maskl(0x180ca110, 0xc8e08088, 0x15053834); //wck3 close loop mode[29]=0,preset[6:4][2:0]
+
+//=====[PLL_INITIAL_VALUE_DC2]=====//
+//postpi power
+rtd_maskl(0x180ca08c, 0xfffffffe, 0x00000001); //[0]pll_ldo_rst_n=1,release pll ldo reset
+ScalerTimer_DelayXms(5);
+rtd_maskl(0x180ca008, 0x7fffffff, 0x80000000); //dpi_ldo_pow[31]=0:AVDD,=1:postPI LDO
+ScalerTimer_DelayXms(80);
+//ck tree power,dpi_ck_pwr_sel[14:11]
+rtd_maskl(0x180ca00c, 0x0ff0ff00, 0x70080000); //[31:28]=7:post PI bias, dpi_ldo_pow_ck[19]=1:LDO power on ,ldo_sel0:core power, 1:0.8V/2:0.85V/3:0.9V/4:0.95V/5:1.05V/6:1.1V/7:1.15V
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180ca0d4, 0xffff07ff, 0x00000000); //[15:11]=0:select LDO for CK tree, ck tree DVDD open
+//4266Mbps
+rtd_maskl(0x180ca018, 0x00380008, 0x04405875); //PLL initial setting, [31:29]=3b000, postpi=LDO tracking AVDD (0.9V),[21:19]=?                                                                          
+
+//=====[CRT_INITIAL_FLOW_DC2]=====//
+rtd_maskl(0x180ca08c, 0xfffffffe, 0x00000001); //[0]pll_ldo_rst_n=1,release pll ldo reset
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180ca08c, 0xfffffffd, 0x00000002); //[1]:pll_ssc_dig_rst_n=1,release reset PLL SSC circuit
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180ca008, 0xffff7fff, 0x00008000); //[31]mck_mc_en(for controller)
+rtd_maskl(0x180ca090, 0x7fffffcf, 0x80000000); //[31] lpddr5 wck always on, [5:4]: rw_blk clock is always on
+rtd_maskl(0x180ca08c, 0xfffffff7, 0x00000000); //[3]:ptr_rst_n=0
+rtd_maskl(0x180ca08c, 0xfffffff3, 0x0000000c); //[3]:ptr_rst_n=1,[2]:rst_n=1
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180ca028, 0xfbffffff, 0x04000000); //[26]dpi_oc_en=1
+rtd_maskl(0x180ca028, 0xfbffffff, 0x00000000); //[26]dpi_oc_en=0
+rtd_maskl(0x180ca01c, 0xfffffff7, 0x00000008); //[3]dpi_ssc_flag_init=1
+rtd_maskl(0x180ca01c, 0xfffffffd, 0x00000002); //[2]=1:enable ssc
+
+rtd_maskl(0x180ca0d8, 0xfe00fe00, 0x00120012); //CK1_dly[24:16],CK0_dly[8:0]
+rtd_maskl(0x180ca0d8, 0x7fff7fff, 0x80008000); //CK0/CK1 tree update
+
+rtd_maskl(0x180ca004, 0xffff0000, 0x0000ffff);
+rtd_maskl(0x180ca008, 0xfffbffff, 0x00040000); //set dpi_clk_oe[18]=1, mck_ck1
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180ca008, 0xfffdffff, 0x00020000); //set dpi_clk_oe[17]=1, mck_cmd/mck_dq/mck_dqs/mck_cs/mck_cs2
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180ca008, 0xfffeffff, 0x00010000); //set dpi_clk_oe[16]=1, mck_ck
+
+//=====[DPI_DLL_DC2]=====//
+rtd_maskl(0x180ca310, 0xefffffff, 0x10000000); //[28]=1,set_reg_valid automatically
+rtd_maskl(0x180ca310, 0xffc0ffff, 0x001a0000); //rd_update_dly[21:16]=0x1a @2:1mode
+rtd_maskl(0x180ca310, 0xffff80ff, 0x00003000); //rd_update_dly_rx[14:8]=0x30
+rtd_maskl(0x180ca308, 0xffc1c0c0, 0x003e2000); //data_pre[21]=1,data_init[20]=1:lpddr5,ref_update_dly[13:8]=0x20, cal_dqsen_mode=disable
+rtd_maskl(0x180ca308, 0xefff7fff, 0x10008000); //rd_pre_2t=1, wr_pre_2t=1
+rtd_maskl(0x180ca254, 0xff7fffff, 0x00800000); //[23]=1:LPDDR4 DQS postamble 1.5 T
+rtd_maskl(0x180ca308, 0xfffffffc, 0x00000002); //2t_wr_pre[28]=1, 2t_rd_pre[15]=0 , fw_set delay[1:0]=2 immediately update
+
+//=====[PAD_BYPASSMODE]=====//
+rtd_maskl(0x180ca28c, 0xffff0000, 0x0000ff55); //bit[1] : DQS BYPASSMODE =1 , RX VD18 power savibng disable, bit[0] : DQ BYPASSMODE =1 , RX VD18 power savibng disable
+
+//=====[PAD_ZQ_CALIBRATION]=====//
+// 50% VDD cal
+rtd_maskl(0x180ca240, 0xffffc0fe, 0x00000000); //zq_ena_nocd2[0]=0 disable NOCD2 for 0.5VDD
+rtd_maskl(0x180ca2f4, 0x7ffffffc, 0x80000002); //en_dcc[31]=1, rx_ibias_sel[17:16]=2
+rtd_maskl(0x180ca234, 0xffff500e, 0x00008080); //rzq_ext_R240[15]=1,zq_vref_pd[13]=0,zq_vref_s_ini[10:4]=0x08(50%)
+rtd_maskl(0x180ca308, 0xfffffffc, 0x00000002); //fw_set delay[1:0]=2 immediately update
+rtd_maskl(0x180ca234, 0xfffeeffb, 0x00010000); //zq_vref_sel_ini[16]=1,zq_en_dmyi[12]=0,zq_vref_range_ini[2]=0
+rtd_maskl(0x180ca2f8, 0xfffffcff, 0x00000000); //[9]=0: PD of CK1 PAD, [8]=0: PD of CK0 PAD
+rtd_maskl(0x180ca230, 0x00080080, 0x0c008c19); //[27]=1:zq auto update,[26:25]=2'b10:zclk/32,[19]=1:R240 external,zq_cal_cmd[7]=1
+rtd_maskl(0x180ca30c, 0x00000000, 0x00000003); //update write delay tap
+ScalerTimer_DelayXms(80);
+//zq cal. for SET0
+rtd_maskl(0x180ca230, 0x8fffffff, 0x00000000); //Enable auto update OCD/ODT set0
+rtd_maskl(0x180ca5c8, 0xf8c0f8c0, 0x00240024); //OCD=40, ODT=40
+rtd_maskl(0x180ca5e8, 0xfffff8c0, 0x00000000); //nocd2_zprog=0
+rtd_maskl(0x180ca230, 0xfeffffff, 0x01000000); //Calibration Start
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180ca230, 0xfeffffff, 0x00000000); //Disable Calibration
+//zq cal. for SET1
+rtd_maskl(0x180ca230, 0x8fffffff, 0x10000000); //Enable auto update OCD/ODT set1
+rtd_maskl(0x180ca5cc, 0xf8c0f8c0, 0x001d001d); //OCD=50, ODT=50
+rtd_maskl(0x180ca5e8, 0xf8c0ffff, 0x00000000); //nocd2_zprog=0
+rtd_maskl(0x180ca230, 0xfeffffff, 0x01000000); //Calibration Start
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180ca230, 0xfeffffff, 0x00000000); //Disable Calibration
+//zq cal. for SET2
+rtd_maskl(0x180ca230, 0x8fffffff, 0x20000000); //Enable auto update OCD/ODT set2
+rtd_maskl(0x180ca5d0, 0xf8c0f8c0, 0x00180018); //OCD=60, ODT=60
+rtd_maskl(0x180ca5ec, 0xfffff8c0, 0x00000000); //nocd2_zprog=0
+rtd_maskl(0x180ca230, 0xfeffffff, 0x01000000); //Calibration Start
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180ca230, 0xfeffffff, 0x00000000); //Disable Calibration
+//zq cal. for SET3
+rtd_maskl(0x180ca230, 0x8fffffff, 0x30000000); //Enable auto update OCD/ODT set3
+rtd_maskl(0x180ca5d4, 0xf8c0f8c0, 0x000e0012); //OCD=80, ODT=100
+rtd_maskl(0x180ca5ec, 0xf8c0ffff, 0x00000000); //nocd2_zprog=0
+rtd_maskl(0x180ca230, 0xfeffffff, 0x01000000); //Calibration Start
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180ca230, 0xfeffffff, 0x00000000); //Disable Calibration
+//zq cal. for SET4
+rtd_maskl(0x180ca230, 0x8fffffff, 0x40000000); //Enable auto update OCD/ODT set4
+rtd_maskl(0x180ca5d8, 0xf8c0f8c0, 0x000c0030); //OCD=30, ODT=120
+rtd_maskl(0x180ca5f0, 0xfffff8c0, 0x00000000); //nocd2_zprog=0
+rtd_maskl(0x180ca230, 0xfeffffff, 0x01000000); //Calibration Start
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180ca230, 0xfeffffff, 0x00000000); //Disable Calibration
+//zq cal. for SET5
+rtd_maskl(0x180ca230, 0x8fffffff, 0x50000000); //Enable auto update OCD/ODT set5
+rtd_maskl(0x180ca5dc, 0xf8c0f8c0, 0x000a002a); //OCD=34, ODT=150
+rtd_maskl(0x180ca5f0, 0xf8c0ffff, 0x00000000); //nocd2_zprog=0
+rtd_maskl(0x180ca230, 0xfeffffff, 0x01000000); //Calibration Start
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180ca230, 0xfeffffff, 0x00000000); //Disable Calibration
+//zq cal. for SET6
+rtd_maskl(0x180ca230, 0x8fffffff, 0x60000000); //Enable auto update OCD/ODT set6
+rtd_maskl(0x180ca5e0, 0xf8c0f8c0, 0x00100010); //OCD=90, ODT=90
+rtd_maskl(0x180ca5f4, 0xfffff8c0, 0x00000000); //nocd2_zprog=0
+rtd_maskl(0x180ca230, 0xfeffffff, 0x01000000); //Calibration Start
+ScalerTimer_DelayXms(80);
+rtd_maskl(0x180ca230, 0xfeffffff, 0x00000000); //Disable Calibration
+//set7 ocd =0
+rtd_maskl(0x180ca294, 0xc0ffffff, 0x00000000); //odt_ttcp_set_7_pre
+rtd_maskl(0x180ca29c, 0xc0ffffff, 0x00000000); //odt_ttcn_set_7_pre
+rtd_maskl(0x180ca2a4, 0xc0ffffff, 0x00000000); //ocdp_set_7_pre
+rtd_maskl(0x180ca2ac, 0xc0ffffff, 0x00000000); //ocdn_set_7_pre
+
+
+////for bring-up (P=965.4, N=891.4)
+//rtd_outl(0x180ca290,0x0d101318);	//P-ODT set_3~0 [75,60,50,40]
+//rtd_outl(0x180ca294,0x000b0308);	//P-ODT set_7~4 [open,90,300,120]
+//rtd_outl(0x180ca298,0x0c0f1216);	//N-ODT set_3~0 [75,60,50,40]
+//rtd_outl(0x180ca29c,0x000a0307);	//N-ODT set_7~4 [open,90,300,120]
+//rtd_outl(0x180ca2a0,0x0c101318);	//P-OCD set_3~0 [80,60,50,40]
+//rtd_outl(0x180ca2a4,0x000b1c20);	//P-OCD set_7~4 [open,90,34,30]
+//rtd_outl(0x180ca2a8,0x0b0f1216);	//N-OCD set_3~0 [80,60,50,40]
+//rtd_outl(0x180ca2ac,0x000a1a1e);	//N-OCD set_7~4 [open,90,34,30]
+//
+//rtd_outl(0x180ca2a0,0x0e13171d);	//P-OCD set_3~0 [80,60,50,40]
+//rtd_outl(0x180ca2a4,0x000d2226);	//P-OCD set_7~4 [open,90,34,30]
+//rtd_outl(0x180ca2a8,0x0d12161a);	//N-OCD set_3~0 [80,60,50,40]
+//rtd_outl(0x180ca2ac,0x000c1f24);	//N-OCD set_7~4 [open,90,34,30]
+
+rtd_maskl(0x180ca230, 0xfffbffff, 0x00040000); //bit[18],auto update during refresh
+rtd_maskl(0x180ca230, 0xf7ffffff, 0x08000000); //bit[27],auto update calibration done
+rtd_maskl(0x180ca234, 0xffffdffe, 0x00002001); //zq_pd_ini=1, zq_vef_pd=1, set zq pad power down
+//=====[PAD_OCD_ODT_SEL]=====//
+//DQ ODT (p/n=open/120)
+rtd_maskl(0x180ca2d4, 0x00000000, 0x44447777); //dq1n/0n/1p/0p/dq3n/2n/3p/2p odt set sel
+
+//DQ OCD (34)
+rtd_maskl(0x180ca2d8, 0x00000000, 0x55555555); //dq3n/2n/3p/2p ocd set sel
+
+//DQS ODT PUPD3 = -250mV
+rtd_maskl(0x180ca2dc, 0x00000000, 0x22227777); //dqs3n/2n/1n/0n/3p/2p/1p/0p odt set sel
+//rtd_maskl(0x180ca2e0, 0x00000000, 0x33335555); //dqs#3n/#2n/#1n/#0n/#3p/#2p/#1p/#0p odt set sel
+rtd_maskl(0x180ca2e0, 0x00000000, 0x55555555); //dqs#3n/#2n/#1n/#0n/#3p/#2p/#1p/#0p odt set sel
+
+//DQS OCD (40)
+rtd_maskl(0x180ca2e4, 0x00000000, 0x00000000); //dqs1#n/0#n/1#p/0#p/dqs1n/0n/1p/0p ocd set sel
+rtd_maskl(0x180ca2e8, 0x00000000, 0x00000000); //dqs3#n/2#n/3#p/2#p/dqs3n/2n/3p/2p ocd set sel
+
+//CK&CA&CS OCD
+rtd_maskl(0x180ca2c0, 0x00000000, 0x00000000); //cke_b0_n/cke_b0_p/cke_a0_n/cke_a0_p ocd set sel
+rtd_maskl(0x180ca2ec, 0x00000000, 0x00000000); //cs_b0_n/cs_b0_p/cs_a0_n/cs_a0_p ocd set sel
+rtd_maskl(0x180ca2f0, 0x00000000, 0x00000000); //ck1#n/ck#n/ck1#p/ck#p/ck1n/ckn/ck1p/ckp ocd set sel
+rtd_maskl(0x180ca4c4, 0x00000000, 0x00000000); //addr0n/0p/1n/1p/2n/2p/3n/3p ocd set sel
+rtd_maskl(0x180ca4c8, 0x00000000, 0x00000000); //addr4n/4p/5n/5p/6n/6p/7n/7p ocd set sel
+rtd_maskl(0x180ca4cc, 0x00000000, 0x00000000); //addr8n/8p/9n/9p/10n/10p/11n/11p ocd set sel
+rtd_maskl(0x180ca4d0, 0x00000000, 0x00000000); //addr12n/12p/13n/13p/14n/14p/15n/15p ocd set sel
+rtd_maskl(0x180ca4d4, 0x00ffff00, 0x00000000); //addr16n/16p/4exn/4exp/5exn/5exp/ba0n/ba0p ocd set sel
+rtd_maskl(0x180ca4d8, 0x00000000, 0x00000000); //ba1n/1p/2n/2p/rasn/rasp/casn/casp ocd set sel
+rtd_maskl(0x180ca4dc, 0x00000000, 0x00000000); //wen/wep/odtn/odtp/rstn/rstp/parn/parp ocd set sel
+rtd_maskl(0x180ca4e0, 0x00000000, 0x00000000); //par1n/par1p/actn/actp/bg0n/bg0p/tenn/tenp ocd set sel
+rtd_maskl(0x180ca4e4, 0x000000ff, 0x00000000); //alertn/alertp/alert1n/alert1p/odt_1n/odt_1p ocd set sel
+
+//=====[COMMAND_ADDRESS_DELAY_TAP]=====//
+rtd_maskl(0x180ca200, 0x80808080, 0x08080808); //a3/a2/a1/a0 dly
+rtd_maskl(0x180ca204, 0x80808080, 0x08080808); //a7/a6/a5/a4 dly
+rtd_maskl(0x180ca278, 0x80808080, 0x08080808); //a11/a10/a9/a8 dly
+rtd_maskl(0x180ca3ec, 0x80808080, 0x08080808); //a15/a14/a13/a12 dly
+rtd_maskl(0x180ca20c, 0x80ffff80, 0x08080808); //cke_a0/odt dly
+rtd_maskl(0x180ca668, 0x80808080, 0x08080808); //cke_a1/odt_1/cs_n_a1/cs_n_a0 dly
+rtd_maskl(0x180ca4e8, 0x80808080, 0x08080808); //cke_b1/cke_b0/cs_n_b1/cs_n_b0_dly
+
+//=====[TX_WRITE_DELAY_TAP]=====//
+rtd_maskl(0x180ca750, 0x80808080, 0x04010402);
+rtd_maskl(0x180ca928, 0x80808080, 0x05060404); //byte0:dq(7~0) dly
+rtd_maskl(0x180ca754, 0x80808080, 0x03030404);
+rtd_maskl(0x180ca92c, 0x80808080, 0x04040508); //byte1:dq(15~8) dly
+rtd_maskl(0x180caa50, 0x80808080, 0x03030007);
+rtd_maskl(0x180cac28, 0x80808080, 0x01010503); //byte2:dq(23~16) dly
+rtd_maskl(0x180caa54, 0x80808080, 0x03060203);
+rtd_maskl(0x180cac2c, 0x80808080, 0x08060707); //byte3:dq(31~24) dly
+rtd_maskl(0x180ca758, 0x80808080, 0x00040804); //byte0:wck0/dqs0oe/dm0/dqs0 dly
+rtd_maskl(0x180ca968, 0xffffff80, 0x00000000); //byte0:wck0_oe dly
+rtd_maskl(0x180ca75c, 0x80808080, 0x00040304); //byte1:wck1/dqs1oe/dm1/dqs1 dly
+rtd_maskl(0x180ca96c, 0xffffff80, 0x00000000); //byte1:wck1_oe dly
+rtd_maskl(0x180caa58, 0x80808080, 0x00040204); //byte2:wck2/dqs2oe/dm2/dqs2 dly
+rtd_maskl(0x180cac68, 0xffffff80, 0x00000000); //byte2:wck2_oe dly
+rtd_maskl(0x180caa5c, 0x80808080, 0x00040204); //byte3:wck3/dqs3oe/dm3/dqs3 dly
+rtd_maskl(0x180cac6c, 0xffffff80, 0x00000000); //byte3:wck3_oe dly
+
+
+//=====[DELAY_TAP_CONTROL]=====//
+rtd_maskl(0x180ca66c, 0xff00ffff, 0x00200000);  //cmd:reg_acc_init_delay[24:16]
+rtd_maskl(0x180ca980, 0xff00ffff, 0x00200000);  //byte0:reg_acc_init_delay[24:16]
+rtd_maskl(0x180ca984, 0xff00ffff, 0x00200000);  //byte1:reg_acc_init_delay[24:16]
+rtd_maskl(0x180cac80, 0xff00ffff, 0x00200000);  //byte2:reg_acc_init_delay[24:16]
+rtd_maskl(0x180cac84, 0xff00ffff, 0x00200000);  //byte3:reg_acc_init_delay[24:16]
+rtd_maskl(0x180ca66c, 0xffffde00, 0x000001ff);  //cmd:ddc_en[13],reg_acc_manual_delay[8:0]
+rtd_maskl(0x180ca980, 0xffffde00, 0x000001ff);  //byte0:ddc_en[13],reg_acc_manual_delay[8:0]
+rtd_maskl(0x180ca984, 0xffffde00, 0x000001ff);  //byte1:ddc_en[13],reg_acc_manual_delay[8:0]
+rtd_maskl(0x180cac80, 0xffffde00, 0x000001ff);  //byte2:ddc_en[13],reg_acc_manual_delay[8:0]
+rtd_maskl(0x180cac84, 0xffffde00, 0x000001ff);  //byte3:ddc_en[13],reg_acc_manual_delay[8:0]
+
+//=====[RX_READ_DQS_EN]=====//
+//dqsen autok on
+//rtd_maskl(0x180ca308, 0xfff9ffff, 0x00060000); //[18:17]=2b11:disable auto calibration
+rtd_maskl(0x180ca308, 0xfff9ffff, 0x00000000); //[18:17]=2b00:auto calibration during no read
+rtd_maskl(0x180ca308, 0xfff7ffff, 0x00080000); //cal_dqsen_update_ena[19]=1
+//rtd_maskl(0x180ca308, 0xfff7ffff, 0x00000000); //cal_dqsen_update_ena[19]=0
+
+//dqs_en_dly_sel=4T
+rtd_maskl(0x180ca9f8, 0x83000004, 0x0000003a); //byte0:byte0:dqs_rc1in_dly_sel[30:26],no dqs_en_dly[13:8],tm_dqs_en[7:3],tm_dqs_en_ftun[2:0]
+rtd_maskl(0x180ca9fc, 0x83000004, 0x0000003b); //byte1:byte1:dqs_rc1in_dly_sel[30:26],no dqs_en_dly[13:8],tm_dqs_en[7:3],tm_dqs_en_ftun[2:0]
+rtd_maskl(0x180cacf8, 0x83000004, 0x0000003a); //byte2:byte2:dqs_rc1in_dly_sel[30:26],no dqs_en_dly[13:8],tm_dqs_en[7:3],tm_dqs_en_ftun[2:0]
+rtd_maskl(0x180cacfc, 0x83000004, 0x0000003b); //byte3:byte3:dqs_rc1in_dly_sel[30:26],no dqs_en_dly[13:8],tm_dqs_en[7:3],tm_dqs_en_ftun[2:0]
+rtd_maskl(0x180ca274, 0x43fff8c0, 0x1400000e); //rddata_en_dly_sel[29:28]=1:dly 4T,tm_rd_fifo[5:0]=4
+//tm_dqsen_cal_pre[20:16]=tm_dqs_en-1
+rtd_maskl(0x180ca710, 0xffe0ffff, 0x00060000);
+rtd_maskl(0x180ca714, 0xffe0ffff, 0x00060000);
+rtd_maskl(0x180caa10, 0xffe0ffff, 0x00060000);
+rtd_maskl(0x180caa14, 0xffe0ffff, 0x00060000);
+//tm_dqsen_early_ph[13:8]=2T, tm_dqsen_late_ph[5:0]=1T
+rtd_maskl(0x180ca710, 0xffff8080, 0x00000001); //// LPDDR4 slice0 : L1= 1T, L2=1T
+rtd_maskl(0x180ca714, 0xffff8080, 0x00000001); //// LPDDR4 slice1 : L1= 1T, L2=1T
+rtd_maskl(0x180caa10, 0xffff8080, 0x00000001); //// LPDDR4 slice2 : L1= 1T, L2=1T
+rtd_maskl(0x180caa14, 0xffff8080, 0x00000001); //// LPDDR4 slice3 : L1= 1T, L2=1T
+
+//=====[RX_READ_ODT_CTRL]=====//
+rtd_maskl(0x180ca708, 0xf83ffff0, 0x03000004); //byte0:force_odt(dqs[25:24],dq[23:22]),tm_odt_pre[3:2],tm_odt_pos[1:0]
+rtd_maskl(0x180ca70c, 0xf83ffff0, 0x03000004); //byte1:force_odt(dqs[25:24],dq[23:22]),tm_odt_pre[3:2],tm_odt_pos[1:0]
+rtd_maskl(0x180caa08, 0xf83ffff0, 0x03000004); //byte2:force_odt(dqs[25:24],dq[23:22]),tm_odt_pre[3:2],tm_odt_pos[1:0]
+rtd_maskl(0x180caa0c, 0xf83ffff0, 0x03000004); //byte3:force_odt(dqs[25:24],dq[23:22]),tm_odt_pre[3:2],tm_odt_pos[1:0]
+rtd_maskl(0x180ca718, 0x00000000, 0x0000fffe); //byte0:odt_en
+rtd_maskl(0x180ca71c, 0x00000000, 0x0000fffe); //byte1:odt_en
+rtd_maskl(0x180caa18, 0x00000000, 0x0000fffe); //byte2:odt_en
+rtd_maskl(0x180caa1c, 0x00000000, 0x0000fffe); //byte3:odt_en
+
+//=====[RX_READ_INPUT_ENABLE]=====//
+rtd_maskl(0x180ca7d8, 0x003fff30, 0x00000000); //byte0:ie_sig[1],ie_frc_en[0](dbi enable)
+rtd_maskl(0x180ca7dc, 0x003fff30, 0x00000000); //byte1:ie_sig[1],ie_frc_en[0](dbi enable)
+rtd_maskl(0x180caad8, 0x003fff30, 0x00000000); //byte2:ie_sig[1],ie_frc_en[0](dbi enable)
+rtd_maskl(0x180caadc, 0x003fff30, 0x00000000); //byte3:ie_sig[1],ie_frc_en[0](dbi enable)
+rtd_maskl(0x180ca8c0, 0xfdff0c00, 0x00001000); //byte0: dq/dm:pre 0.5T enable
+rtd_maskl(0x180ca8c4, 0xfdff0c00, 0x00001000); //byte1: dq/dm:pre 0.5T enable
+rtd_maskl(0x180cabc0, 0xfdff0c00, 0x00001000); //byte2: dq/dm:pre 0.5T enable
+rtd_maskl(0x180cabc4, 0xfdff0c00, 0x00001000); //byte3: dq/dm:pre 0.5T enable
+
+//=====[RX_3_POINT_CALIBRATION_DELTA]=====//
+//left delta
+rtd_maskl(0x180ca820, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180ca800, 0xe0e0e0e0, 0x02020202); //byte0:dqs0(7:0) rd_cal_range of pos edge
+rtd_maskl(0x180ca824, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180ca804, 0xe0e0e0e0, 0x02020202); //byte1:dqs1(7:0) rd_cal_range of pos edge
+rtd_maskl(0x180cab20, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180cab00, 0xe0e0e0e0, 0x02020202); //byte2:dqs2(7:0) rd_cal_range of pos edge
+rtd_maskl(0x180cab24, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180cab04, 0xe0e0e0e0, 0x02020202); //byte3:dqs3(7:0) rd_cal_range of pos edge
+rtd_maskl(0x180ca828, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180ca940, 0xe0e0e0e0, 0x02020202); //byte0:dqs0(7:0) rd_cal_range of neg edge
+rtd_maskl(0x180ca82c, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180ca944, 0xe0e0e0e0, 0x02020202); //byte1:dqs1(7:0) rd_cal_range of neg edge
+rtd_maskl(0x180cab28, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180cac40, 0xe0e0e0e0, 0x02020202); //byte2:dqs2(7:0) rd_cal_range of neg edge
+rtd_maskl(0x180cab2c, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180cac44, 0xe0e0e0e0, 0x02020202); //byte3:dqs3(7:0) rd_cal_range of neg edge
+rtd_maskl(0x180ca840, 0xffffe0e0, 0x00000202); //byte0:dm0(3:0) dm rd_cal_range of neg edge and pos edge
+rtd_maskl(0x180ca844, 0xffffe0e0, 0x00000202); //byte1:dm1(3:0) dm rd_cal_range of neg edge and pos edge
+rtd_maskl(0x180cab40, 0xffffe0e0, 0x00000202); //byte2:dm2(3:0) dm rd_cal_range of neg edge and pos edge
+rtd_maskl(0x180cab44, 0xffffe0e0, 0x00000202); //byte3:dm3(3:0) dm rd_cal_range of neg edge and pos edge
+//right delta
+rtd_maskl(0x180ca830, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180ca808, 0xe0e0e0e0, 0x02020202); //byte0:dqs0(7:0) rd_cal_range of pos edge
+rtd_maskl(0x180ca834, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180ca80c, 0xe0e0e0e0, 0x02020202); //byte1:dqs1(7:0) rd_cal_range of pos edge
+rtd_maskl(0x180cab30, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180cab08, 0xe0e0e0e0, 0x02020202); //byte2:dqs2(7:0) rd_cal_range of pos edge
+rtd_maskl(0x180cab34, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180cab0c, 0xe0e0e0e0, 0x02020202); //byte3:dqs3(7:0) rd_cal_range of pos edge
+rtd_maskl(0x180ca838, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180ca948, 0xe0e0e0e0, 0x02020202); //byte0:dqs0(7:0) rd_cal_range of neg edge
+rtd_maskl(0x180ca83c, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180ca94c, 0xe0e0e0e0, 0x02020202); //byte1:dqs1(7:0) rd_cal_range of neg edge
+rtd_maskl(0x180cab38, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180cac48, 0xe0e0e0e0, 0x02020202); //byte2:dqs2(7:0) rd_cal_range of neg edge
+rtd_maskl(0x180cab3c, 0xe0e0e0e0, 0x02020202);
+rtd_maskl(0x180cac4c, 0xe0e0e0e0, 0x02020202); //byte3:dqs3(7:0) rd_cal_range of neg edge
+rtd_maskl(0x180ca840, 0xe0e0ffff, 0x02020000); //byte0:dm0(3:0) dm rd_cal_range of neg edge and pos edge
+rtd_maskl(0x180ca844, 0xe0e0ffff, 0x02020000); //byte1:dm1(3:0) dm rd_cal_range of neg edge and pos edge
+rtd_maskl(0x180cab40, 0xe0e0ffff, 0x02020000); //byte2:dm2(3:0) dm rd_cal_range of neg edge and pos edge
+rtd_maskl(0x180cab44, 0xe0e0ffff, 0x02020000); //byte3:dm3(3:0) dm rd_cal_range of neg edge and pos edge
+
+//=====[RX_TE]=====//
+rtd_maskl(0x180ca730, 0xffffffc0, 0x0000000C); //byte0:dqs0 dbi(p) dly
+rtd_maskl(0x180ca734, 0xffffffc0, 0x0000000D); //byte1:dqs1 dbi(p) dly
+rtd_maskl(0x180caa30, 0xffffffc0, 0x0000000F); //byte2:dqs2 dbi(p) dly
+rtd_maskl(0x180caa34, 0xffffffc0, 0x0000000E); //byte3:dqs3 dbi(p) dly
+rtd_maskl(0x180ca720, 0xc0c0c0c0, 0x0F0F0C0F); //byte0:dqs0p(3:0) dly
+rtd_maskl(0x180ca728, 0xc0c0c0c0, 0x0E0D0D0D); //byte0:dqs0p(7:4) dly
+rtd_maskl(0x180ca724, 0xc0c0c0c0, 0x0F0F0E0D); //byte1:dqs1p(3:0) dly
+rtd_maskl(0x180ca72c, 0xc0c0c0c0, 0x0C0D0D0E); //byte1:dqs1p(7:4) dly
+rtd_maskl(0x180caa20, 0xc0c0c0c0, 0x0E0D100D); //byte2:dqs2p(3:0) dly
+rtd_maskl(0x180caa28, 0xc0c0c0c0, 0x0F0E0E0D); //byte2:dqs2p(7:4) dly
+rtd_maskl(0x180caa24, 0xc0c0c0c0, 0x0D0D0D0D); //byte3:dqs3p(3:0) dly
+rtd_maskl(0x180caa2c, 0xc0c0c0c0, 0x0B0C0C0C); //byte3:dqs3p(7:4) dly
+rtd_maskl(0x180ca748, 0xffffffc0, 0x0000000C); //byte0:dqs0 dbi(n) dly
+rtd_maskl(0x180ca74c, 0xffffffc0, 0x0000000E); //byte1:dqs1 dbi(n) dly
+rtd_maskl(0x180caa48, 0xffffffc0, 0x0000000D); //byte2:dqs2 dbi(n) dly
+rtd_maskl(0x180caa4c, 0xffffffc0, 0x0000000F); //byte3:dqs3 dbi(n) dly
+rtd_maskl(0x180ca738, 0xc0c0c0c0, 0x0E100C0D); //byte0:dqs0n(3:0) dly
+rtd_maskl(0x180ca740, 0xc0c0c0c0, 0x0D0D0D0E); //byte0:dqs0n(7:4) dly
+rtd_maskl(0x180ca73c, 0xc0c0c0c0, 0x100F0F0E); //byte1:dqs1n(3:0) dly
+rtd_maskl(0x180ca744, 0xc0c0c0c0, 0x0D0E0D0F); //byte1:dqs1n(7:4) dly
+rtd_maskl(0x180caa38, 0xc0c0c0c0, 0x0E0C100D); //byte2:dqs2n(3:0) dly
+rtd_maskl(0x180caa40, 0xc0c0c0c0, 0x0E0F0E0D); //byte2:dqs2n(7:4) dly
+rtd_maskl(0x180caa3c, 0xc0c0c0c0, 0x0E0E0E0E); //byte3:dqs3n(3:0) dly
+rtd_maskl(0x180caa44, 0xc0c0c0c0, 0x0C0D0D0D); //byte3:dqs3n(7:4) dly
+
+//=====[RX_VREF]=====//
+rtd_outl(0x180ca2fc,0x1d1d1d1d);  //s1_vref[22:16],s0_vref[6:0],0x1c=10+25%
+rtd_outl(0x180ca470,0x1d1d1d1d);  //s3_vref[22:16],s2_vref[6:0]
+
+// //SCT
+// rtd_maskl(0x180ca308, 0xfeffffff, 0x01000000); //alpha_en[24]
+// rtd_maskl(0x180ca910, 0x97ffffff, 0x28000000); //rx_dfe_en[27]=1,dfe_mode[30:29]=1
+// rtd_maskl(0x180ca914, 0x97ffffff, 0x28000000); //rx_dfe_en[27]=1,dfe_mode[30:29]=1
+// rtd_maskl(0x180cac10, 0x97ffffff, 0x28000000); //rx_dfe_en[27]=1,dfe_mode[30:29]=1
+// rtd_maskl(0x180cac14, 0x97ffffff, 0x28000000); //rx_dfe_en[27]=1,dfe_mode[30:29]=1
+// rtd_maskl(0x180ca910, 0xf8888888, 0x00000000); //dfe_dly_sel_=0
+// rtd_maskl(0x180ca914, 0xf8888888, 0x00000000); //dfe_dly_sel_=0
+// rtd_maskl(0x180cac10, 0xf8888888, 0x00000000); //dfe_dly_sel_=0
+// rtd_maskl(0x180cac14, 0xf8888888, 0x00000000); //dfe_dly_sel_=0
+
+//DFE
+rtd_maskl(0x180ca308, 0xfeffffff, 0x01000000); //alpha_en[24]
+rtd_maskl(0x180ca910, 0x97ffffff, 0x08000000); //rx_dfe_en[27]=1,dfe_mode[30:29]=0
+rtd_maskl(0x180ca914, 0x97ffffff, 0x08000000); //rx_dfe_en[27]=1,dfe_mode[30:29]=0
+rtd_maskl(0x180cac10, 0x97ffffff, 0x08000000); //rx_dfe_en[27]=1,dfe_mode[30:29]=0
+rtd_maskl(0x180cac14, 0x97ffffff, 0x08000000); //rx_dfe_en[27]=1,dfe_mode[30:29]=0
+
+//=====[RX_DELTA_K]=====//
+rtd_maskl(0x180ca46c, 0xf0f8fcdf, 0x0f010020); //[27:24]=0xf,[18:16]=1,[9:8]=2b00:disable rx off-line k,[5]=1
+
+rtd_maskl(0x180ca4f8, 0xf0f0f0f0, 0x05050505); //vref_garget
+//online k          
+rtd_maskl(0x180ca46c, 0xfffffcdf, 0x00000020); //[9:8]=2b00:disable rx off-line k,[5]fw_delta_force=1
+rtd_maskl(0x180ca46c, 0xfffffcdf, 0x00000000); //[9:8]=2b00:disable rx off-line k,[5]fw_delta_force=0
+rtd_maskl(0x180ca468, 0xffffc0ff, 0x00000000); //[13:8]=0,RX_vref autoK off
+rtd_maskl(0x180ca8c8, 0xff00f80f, 0x007700d0); //fw_delta_lmt_neg[23:20]fw_delta_lmt_pos[23:20]delta_cal_mode[4] = 1 & burst_obvs_num[10:5] = 6
+rtd_maskl(0x180ca8cc, 0xff00f80f, 0x007700d0); //fw_delta_lmt_neg[23:20]fw_delta_lmt_pos[23:20]delta_cal_mode[4] = 1 & burst_obvs_num[10:5] = 6
+rtd_maskl(0x180cabc8, 0xff00f80f, 0x007700d0); //fw_delta_lmt_neg[23:20]fw_delta_lmt_pos[23:20]delta_cal_mode[4] = 1 & burst_obvs_num[10:5] = 6
+rtd_maskl(0x180cabcc, 0xff00f80f, 0x007700d0); //fw_delta_lmt_neg[23:20]fw_delta_lmt_pos[23:20]delta_cal_mode[4] = 1 & burst_obvs_num[10:5] = 6
+
+
+//id_map_sel LPD4
+rtd_maskl(0x180ca0e8, 0xff00ff00, 0x00270027); //LDP4:0x27, LPD5:0x36
+
+//pok update step4: dc2
+rtd_maskl(0x1805b0e0, 0xffff0000, 0xd0e4);
+
+//===== [DEALY_UPDATE_MODE] =====//
+rtd_maskl(0x180ca30c, 0x00000000, 0x00000003); //update write delay tap
+rtd_maskl(0x180ca30c, 0x00000000, 0x0000000c); //update read delay tap
+rtd_maskl(0x180ca308, 0xfffffffc, 0x00000000); //fw_set[1:0]=0, read:update at no read read / write: during refresh
+
+//==== [Memory Controller MC] =====//
+rtd_outl(0x180c2020, 0x00000020);  //mc1, lpddr4_en[5]=1:LPDDR4 mode
+rtd_outl(0x180c3020, 0x00000020);  //mc2, lpddr4_en[5]=1:LPDDR4 mode
+rtd_outl(0x180c4020, 0x00000020);  //mc3, lpddr4_en[5]=1:LPDDR4 mode
+rtd_outl(0x180c5020, 0x00000020);  //mc4, lpddr4_en[5]=1:LPDDR4 mode
+
+//mc1 timing init
+rtd_outl(0x180c2044, 0x00033210);  //odt_post_num[26:24]=0t,mc1 pinmux[15:0]=0x3210,odt_en[16]=1,[17]=1:ODT drive high
+//rtd_outl(0x180c2300, 0x02020c14);  //t_odt_dfi=2,t_ca_dfi=2,t_write_dfi_en=0xc,t_read_dfi_en=0x14
+rtd_outl(0x180c2300, 0x02020c19);  //t_odt_dfi=2,t_ca_dfi=2,t_write_dfi_en=0xc,t_read_dfi_en=0x19
+rtd_outl(0x180c2200, 0x005c2412);  //tmras=0x5c,tmrcl=0x24,tmcl=0x12
+rtd_outl(0x180c2208, 0x10272780);  //tmrrd=0x10,tmrp=0x27,tmrcdrd=0x27,tmrc=0x80
+rtd_outl(0x180c2210, 0x06121729);  //tmccd=6,tmrtp=0x12,tmwtr=0x17,tmwr=0x29
+rtd_outl(0x180c2218, 0x40006c3a);  //tmfaw=0x40,tmrp_a_sel=0,tmrc_sel=0,tmwrp_a=0x6c,tmrrp_a=0x3a
+rtd_outl(0x180c2220, 0x82d17106);  //tmdqsck=8,tmrp_ab=0x2d,tmwtr_l=0x17,tmrrd_l=0x10,tmccd_l=6
+//rtd_outl(0x180c22a0, 0x20880256);  //t_refi=0x2088,t_refc=0x032b,8Gb:tREFI=3.904us,tRFCab=280ns
+rtd_outl(0x180c22a0, 0x2088032b);  //t_refi=0x2088,t_refc=0x032b,8Gb:tREFI=3.904us,tRFCab=280ns
+rtd_outl(0x180c2090, 0x00002727);  //bank_free_tmrp_rd=0x27,bank_free_tmrp_wr=0x27
+rtd_outl(0x180c2098, 0x00004e4e);  //bank_free_tmrprcd_rd=0x4e,bank_free_tmrprcd_wr=0x4e
+//rtd_outl(0x180c22a8, 0x1841112b);  //tmpbr2act=0x18,tmrefi_pb=0x411,tmrfc_pb=0x12b,8Gb:tREFIpb=488ns,tRFCpb=140ns
+rtd_outl(0x180c22a8, 0x18411195);  //tmpbr2act=0x18,tmrefi_pb=0x411,tmrfc_pb=0x12b,8Gb:tREFIpb=488ns,tRFCpb=140ns
+rtd_outl(0x180c22ac, 0x001ce0c0);  //tmrefi_pb_timeout=0x1ce,tmpbr2pbr=0x0c0
+rtd_outl(0x180c22a4, 0x20882088);  //t_refi_max=0x2088,t_no_ref_max=2088
+rtd_outl(0x180c2080, 0xf1000030);  //parser_algo=0xf,bank full condition=1:8cmd,[5]dis_ap=1,dis_preacc=1:disable
+rtd_outl(0x180c2a28, 0x00000001);  //ch_ahead_en=1
+rtd_outl(0x180c2228, 0x0808021e);  //tmccdmw=0x1e
+rtd_outl(0x180c2230, 0x000e1206);   //for DDP
+rtd_outl(0x180c2238, 0x000e1206);
+rtd_outl(0x180c2240, 0x003020d6);
+rtd_outl(0x180c2244, 0x00000001);
+rtd_outl(0x180c2234, 0x080304d6);
+rtd_outl(0x180c2a8c, 0x01010031);
+rtd_outl(0x180c2064, 0x0a000000);
+rtd_outl(0x180c20f0, 0x00000101);
+
+//mc1 ddr device init
+ScalerTimer_DelayXms(0x100); //delay > 200us
+rtd_outl(0x180c2034, 0x0002003f);  //mc1/mc2 ddrx_rst[17]=1:rstn go high
+ScalerTimer_DelayXms(0x820); //delay > 2ms
+rtd_outl(0x180c2034, 0x00030000);  //mc1 ddrx_rst[17]=1:rstn go high,ddrx_cke[16]=1:cke go high
+
+rtd_outl(0x180c2110, 0x64000174);  //MR1 RD_post_amble_length[7]=0x0 0.5tCK,RD_PRE[3]=0x0 stastic,WR_PRE[2],BL[1:0]=0x0 =16sequential
+rtd_outl(0x180c2114, 0x6400023f);  //MR2 [7]=0:Wlvl dis,[6]=0,WL SetA,[5:3]=111,WL=18,[2:0]=111:RL=16
+rtd_outl(0x180c2118, 0x64000333);  //MR3 [7]=0:DBI-WR, [6]=0:DBI-RD,[5:3]=110 PDDS=RZQ/6,[2]=0 PPR disable,[1]=1 WR PST=1.5t,[0]=1 PU-CAL VDDQ/3
+rtd_outl(0x180c211c, 0x64000b22);  //MR11[6:4]=100 CA ODT:RZQ/2, [2:0]=011 DQ ODT:RZQ/2
+
+//rtd_outl(0x180c2120, 0x00000000);  
+rtd_outl(0x180c2130, 0x001e0800);  //t1=0x1e,t0=0x800	
+rtd_outl(0x180c2138, 0x001e001e);  //t3=0x1e,t2=0x1e
+rtd_outl(0x180c2140, 0x0000001e);  //t5=0x0,t4=0x1e 
+rtd_outl(0x180c2100, 0x80000003);  //cmd_start=1,cmd_num=0x3
+ScalerTimer_DelayXms(0x10); //delay
+
+rtd_outl(0x180c2110, 0x68000174);  //MR1 RD_post_amble_length[7]=0x0 0.5tCK,RD_PRE[3]=0x0 stastic,WR_PRE[2],BL[1:0]=0x0 =16sequential
+rtd_outl(0x180c2114, 0x6800023f);  //MR2 [7]=0:Wlvl dis,[6]=0,WL SetA,[5:3]=111,WL=18,[2:0]=111:RL=16
+rtd_outl(0x180c2118, 0x68000333);  //MR3 [7]=0:DBI-WR, [6]=0:DBI-RD,[5:3]=110 PDDS=RZQ/6,[2]=0 PPR disable,[1]=1 WR PST=1.5t,[0]=1 PU-CAL VDDQ/3
+rtd_outl(0x180c211c, 0x68000b22);  //MR11[6:4]=100 CA ODT:RZQ/2, [2:0]=011 DQ ODT:RZQ/2
+
+//rtd_outl(0x180c2120, 0x00000000);  
+rtd_outl(0x180c2130, 0x001e0800);  //t1=0x1e,t0=0x800	
+rtd_outl(0x180c2138, 0x001e001e);  //t3=0x1e,t2=0x1e
+rtd_outl(0x180c2140, 0x0000001e);  //t5=0x0,t4=0x1e 
+rtd_outl(0x180c2100, 0x80000003);  //cmd_start=1,cmd_num=0x3
+ScalerTimer_DelayXms(0x10); //delay
+
+//mc2 timing setting
+rtd_outl(0x180c3044, 0x00033210);  //odt_post_num[26:24]=0t,mc1 pinmux[15:0]=0x3210,odt_en[16]=1,[17]=1:ODT drive high 
+//rtd_outl(0x180c3300, 0x02020c14);  //t_odt_dfi=2,t_ca_dfi=2,t_write_dfi_en=0xc,t_read_dfi_en=0x14
+rtd_outl(0x180c3300, 0x02020c19);  //t_odt_dfi=2,t_ca_dfi=2,t_write_dfi_en=0xc,t_read_dfi_en=0x19
+rtd_outl(0x180c3200, 0x005c2412);  //tmras=0x5c,tmrcl=0x24,tmcl=0x12
+rtd_outl(0x180c3208, 0x10272780);  //tmrrd=0x10,tmrp=0x27,tmrcdrd=0x27,tmrc=0x80
+rtd_outl(0x180c3210, 0x06121729);  //tmccd=6,tmrtp=0x12,tmwtr=0x17,tmwr=0x29
+rtd_outl(0x180c3218, 0x40006c3a);  //tmfaw=0x40,tmrp_a_sel=0,tmrc_sel=0,tmwrp_a=0x6c,tmrrp_a=0x3a
+rtd_outl(0x180c3220, 0x82d17106);  //tmdqsck=8,tmrp_ab=0x2d,tmwtr_l=0x17,tmrrd_l=0x10,tmccd_l=6
+//rtd_outl(0x180c32a0, 0x20880256);  //t_refi=0x2088,t_refc=0x032b,8Gb:tREFI=3.904us,tRFCab=280ns
+rtd_outl(0x180c32a0, 0x2088032b);  //t_refi=0x2088,t_refc=0x032b,8Gb:tREFI=3.904us,tRFCab=280ns
+rtd_outl(0x180c3090, 0x00002727);  //bank_free_tmrp_rd=0x27,bank_free_tmrp_wr=0x27
+rtd_outl(0x180c3098, 0x00004e4e);  //bank_free_tmrprcd_rd=0x4e,bank_free_tmrprcd_wr=0x4e
+//rtd_outl(0x180c32a8, 0x1841112b);  //tmpbr2act=0x18,tmrefi_pb=0x411,tmrfc_pb=0x12b,8Gb:tREFIpb=488ns,tRFCpb=140ns
+rtd_outl(0x180c32a8, 0x18411195);  //tmpbr2act=0x18,tmrefi_pb=0x411,tmrfc_pb=0x12b,8Gb:tREFIpb=488ns,tRFCpb=140ns
+rtd_outl(0x180c32ac, 0x001ce0c0);  //tmrefi_pb_timeout=0x1ce,tmpbr2pbr=0x0c0
+rtd_outl(0x180c32a4, 0x20882088);  //t_refi_max=0x2088,t_no_ref_max=2088
+rtd_outl(0x180c3080, 0xf1000030);  //parser_algo=0xf,bank full condition=1:8cmd,[5]dis_ap=1,dis_preacc=1:disable
+rtd_outl(0x180c3a28, 0x00000001);  //ch_ahead_en=1
+rtd_outl(0x180c3228, 0x0808021e);  //tmccdmw=0x1e
+rtd_outl(0x180c3230, 0x000e1206);   //for DDP
+rtd_outl(0x180c3238, 0x000e1206);
+rtd_outl(0x180c3240, 0x003020d6);
+rtd_outl(0x180c3244, 0x00000001);
+rtd_outl(0x180c3234, 0x080304d6);
+rtd_outl(0x180c3a8c, 0x01010031);
+rtd_outl(0x180c3064, 0x0a000000);
+rtd_outl(0x180c30f0, 0x00000101);
+
+//mc2 ddr device init
+// rtd_outl(0x180c3034, 0x0002003f);
+rtd_outl(0x180c3034, 0x00030000);  //mc2 ddrx_rst[17]=1:rstn go high,ddrx_cke[16]=1:cke go high
+
+rtd_outl(0x180c3110, 0x64000174);  //MR1 RD_post_amble_length[7]=0x0 0.5tCK,RD_PRE[3]=0x0 stastic,WR_PRE[2],BL[1:0]=0x0 =16sequential
+rtd_outl(0x180c3114, 0x6400023f);  //MR2 [7]=0:Wlvl dis,[6]=0,WL SetA,[5:3]=111,WL=18,[2:0]=111:RL=16
+rtd_outl(0x180c3118, 0x64000333);  //MR3 [7]=0:DBI-WR, [6]=0:DBI-RD,[5:3]=110 PDDS=RZQ/6,[2]=0 PPR disable,[1]=1 WR PST=1.5t,[0]=1 PU-CAL VDDQ/3
+rtd_outl(0x180c311c, 0x64000b22);  //MR11[6:4]=100 CA ODT:RZQ/2, [2:0]=011 DQ ODT:RZQ/2
+
+//rtd_outl(0x180c3120, 0x00000000);  
+rtd_outl(0x180c3130, 0x001e0800);  //t1=0x1e,t0=0x800	
+rtd_outl(0x180c3138, 0x001e001e);  //t3=0x1e,t2=0x1e
+rtd_outl(0x180c3140, 0x0000001e);  //t5=0x0,t4=0x1e 
+rtd_outl(0x180c3100, 0x80000003);  //cmd_start=1,cmd_num=0x3
+ScalerTimer_DelayXms(0x10); //delay
+
+rtd_outl(0x180c3110, 0x68000174);  //MR1 RD_post_amble_length[7]=0x0 0.5tCK,RD_PRE[3]=0x0 stastic,WR_PRE[2],BL[1:0]=0x0 =16sequential
+rtd_outl(0x180c3114, 0x6800023f);  //MR2 [7]=0:Wlvl dis,[6]=0,WL SetA,[5:3]=111,WL=18,[2:0]=111:RL=16
+rtd_outl(0x180c3118, 0x68000333);  //MR3 [7]=0:DBI-WR, [6]=0:DBI-RD,[5:3]=110 PDDS=RZQ/6,[2]=0 PPR disable,[1]=1 WR PST=1.5t,[0]=1 PU-CAL VDDQ/3
+rtd_outl(0x180c311c, 0x68000b22);  //MR11[6:4]=100 CA ODT:RZQ/2, [2:0]=011 DQ ODT:RZQ/2
+
+//rtd_outl(0x180c3120, 0x00000000);  
+rtd_outl(0x180c3130, 0x001e0800);  //t1=0x1e,t0=0x800	
+rtd_outl(0x180c3138, 0x001e001e);  //t3=0x1e,t2=0x1e
+rtd_outl(0x180c3140, 0x0000001e);  //t5=0x0,t4=0x1e 
+rtd_outl(0x180c3100, 0x80000003);  //cmd_start=1,cmd_num=0x3
+ScalerTimer_DelayXms(0x10); //delay
+
+
+//mc3 timing setting
+rtd_outl(0x180c4044, 0x00033210);  //odt_post_num[26:24]=0t,mc1 pinmux[15:0]=0x3210,odt_en[16]=1,[17]=1:ODT drive high
+//rtd_outl(0x180c4300, 0x02020c14);  //t_odt_dfi=2,t_ca_dfi=2,t_write_dfi_en=0xc,t_read_dfi_en=0x14
+rtd_outl(0x180c4300, 0x02020c19);  //t_odt_dfi=2,t_ca_dfi=2,t_write_dfi_en=0xc,t_read_dfi_en=0x19
+rtd_outl(0x180c4200, 0x005c2412);  //tmras=0x5c,tmrcl=0x24,tmcl=0x12
+rtd_outl(0x180c4208, 0x10272780);  //tmrrd=0x10,tmrp=0x27,tmrcdrd=0x27,tmrc=0x80
+rtd_outl(0x180c4210, 0x06121729);  //tmccd=6,tmrtp=0x12,tmwtr=0x17,tmwr=0x29
+rtd_outl(0x180c4218, 0x40006c3a);  //tmfaw=0x40,tmrp_a_sel=0,tmrc_sel=0,tmwrp_a=0x6c,tmrrp_a=0x3a
+rtd_outl(0x180c4220, 0x82d17106);  //tmdqsck=8,tmrp_ab=0x2d,tmwtr_l=0x17,tmrrd_l=0x10,tmccd_l=6
+//rtd_outl(0x180c42a0, 0x20880256);  //t_refi=0x2088,t_refc=0x032b,8Gb:tREFI=3.904us,tRFCab=280ns
+rtd_outl(0x180c42a0, 0x2088032b);  //t_refi=0x2088,t_refc=0x032b,8Gb:tREFI=3.904us,tRFCab=280ns
+rtd_outl(0x180c4090, 0x00002727);  //bank_free_tmrp_rd=0x27,bank_free_tmrp_wr=0x27
+rtd_outl(0x180c4098, 0x00004e4e);  //bank_free_tmrprcd_rd=0x4e,bank_free_tmrprcd_wr=0x4e
+//rtd_outl(0x180c42a8, 0x1841112b);  //tmpbr2act=0x18,tmrefi_pb=0x411,tmrfc_pb=0x12b,8Gb:tREFIpb=488ns,tRFCpb=140ns
+rtd_outl(0x180c42a8, 0x18411195);  //tmpbr2act=0x18,tmrefi_pb=0x411,tmrfc_pb=0x12b,8Gb:tREFIpb=488ns,tRFCpb=140ns
+rtd_outl(0x180c42ac, 0x001ce0c0);  //tmrefi_pb_timeout=0x1ce,tmpbr2pbr=0x0c0
+rtd_outl(0x180c42a4, 0x20882088);  //t_refi_max=0x2088,t_no_ref_max=2088
+rtd_outl(0x180c4080, 0xf1000030);  //parser_algo=0xf,bank full condition=1:8cmd,[5]dis_ap=1,dis_preacc=1:disable
+rtd_outl(0x180c4a28, 0x00000001);  //ch_ahead_en=1
+rtd_outl(0x180c4228, 0x0808021e);  //tmccdmw=0x1e
+rtd_outl(0x180c4230, 0x000e1206);   //for DDP
+rtd_outl(0x180c4238, 0x000e1206);
+rtd_outl(0x180c4240, 0x003020d6);
+rtd_outl(0x180c4244, 0x00000001);
+rtd_outl(0x180c4234, 0x080304d6);
+rtd_outl(0x180c4a8c, 0x01010031);
+rtd_outl(0x180c4064, 0x0a000000);
+rtd_outl(0x180c40f0, 0x00000101);
+
+//mc3 ddr device init
+ScalerTimer_DelayXms(0x100); //delay > 200us
+rtd_outl(0x180c4034, 0x0002003f);  //mc3/mc4 ddrx_rst[17]=1:rstn go high
+ScalerTimer_DelayXms(0x820); //delay > 2ms
+rtd_outl(0x180c4034, 0x00030000);  //mc3 ddrx_rst[17]=1:rstn go high,ddrx_cke[16]=1:cke go high
+
+rtd_outl(0x180c4110, 0x64000174);  //MR1 RD_post_amble_length[7]=0x0 0.5tCK,RD_PRE[3]=0x0 stastic,WR_PRE[2],BL[1:0]=0x0 =16sequential
+rtd_outl(0x180c4114, 0x6400023f);  //MR2 [7]=0:Wlvl dis,[6]=0,WL SetA,[5:3]=111,WL=18,[2:0]=111:RL=16
+rtd_outl(0x180c4118, 0x64000333);  //MR3 [7]=0:DBI-WR, [6]=0:DBI-RD,[5:3]=110 PDDS=RZQ/6,[2]=0 PPR disable,[1]=1 WR PST=1.5t,[0]=1 PU-CAL VDDQ/3
+rtd_outl(0x180c411c, 0x64000b22);  //MR11[6:4]=100 CA ODT:RZQ/2, [2:0]=011 DQ ODT:RZQ/2
+
+//rtd_outl(0x180c4120, 0x00000000);
+rtd_outl(0x180c4130, 0x001e0800);  //t1=0x1e,t0=0x800
+rtd_outl(0x180c4138, 0x001e001e);  //t3=0x1e,t2=0x1e
+rtd_outl(0x180c4140, 0x0000001e);  //t5=0x0,t4=0x1e 
+rtd_outl(0x180c4100, 0x80000003);  //cmd_start=1,cmd_num=0x3
+ScalerTimer_DelayXms(0x10); //delay
+
+rtd_outl(0x180c4110, 0x68000174);  //MR1 RD_post_amble_length[7]=0x0 0.5tCK,RD_PRE[3]=0x0 stastic,WR_PRE[2],BL[1:0]=0x0 =16sequential
+rtd_outl(0x180c4114, 0x6800023f);  //MR2 [7]=0:Wlvl dis,[6]=0,WL SetA,[5:3]=111,WL=18,[2:0]=111:RL=16
+rtd_outl(0x180c4118, 0x68000333);  //MR3 [7]=0:DBI-WR, [6]=0:DBI-RD,[5:3]=110 PDDS=RZQ/6,[2]=0 PPR disable,[1]=1 WR PST=1.5t,[0]=1 PU-CAL VDDQ/3
+rtd_outl(0x180c411c, 0x68000b22);  //MR11[6:4]=100 CA ODT:RZQ/2, [2:0]=011 DQ ODT:RZQ/2
+
+//rtd_outl(0x180c4120, 0x00000000);
+rtd_outl(0x180c4130, 0x001e0800);  //t1=0x1e,t0=0x800
+rtd_outl(0x180c4138, 0x001e001e);  //t3=0x1e,t2=0x1e
+rtd_outl(0x180c4140, 0x0000001e);  //t5=0x0,t4=0x1e 
+rtd_outl(0x180c4100, 0x80000003);  //cmd_start=1,cmd_num=0x3
+ScalerTimer_DelayXms(0x10); //delay
+
+//mc4 timing
+rtd_outl(0x180c5044, 0x00033210);  //odt_post_num[26:24]=0t,mc1 pinmux[15:0]=0x3210,odt_en[16]=1,[17]=1:ODT drive high
+//rtd_outl(0x180c5300, 0x02020c14);  //t_odt_dfi=2,t_ca_dfi=2,t_write_dfi_en=0xc,t_read_dfi_en=0x14
+rtd_outl(0x180c5300, 0x02020c19);  //t_odt_dfi=2,t_ca_dfi=2,t_write_dfi_en=0xc,t_read_dfi_en=0x19
+rtd_outl(0x180c5200, 0x005c2412);  //tmras=0x5c,tmrcl=0x24,tmcl=0x12
+rtd_outl(0x180c5208, 0x10272780);  //tmrrd=0x10,tmrp=0x27,tmrcdrd=0x27,tmrc=0x80
+rtd_outl(0x180c5210, 0x06121729);  //tmccd=6,tmrtp=0x12,tmwtr=0x17,tmwr=0x29
+rtd_outl(0x180c5218, 0x40006c3a);  //tmfaw=0x40,tmrp_a_sel=0,tmrc_sel=0,tmwrp_a=0x6c,tmrrp_a=0x3a
+rtd_outl(0x180c5220, 0x82d17106);  //tmdqsck=8,tmrp_ab=0x2d,tmwtr_l=0x17,tmrrd_l=0x10,tmccd_l=6
+//rtd_outl(0x180c52a0, 0x20880256);  //t_refi=0x2088,t_refc=0x032b,8Gb:tREFI=3.904us,tRFCab=280ns
+rtd_outl(0x180c52a0, 0x2088032b);  //t_refi=0x2088,t_refc=0x032b,8Gb:tREFI=3.904us,tRFCab=280ns
+rtd_outl(0x180c5090, 0x00002727);  //bank_free_tmrp_rd=0x27,bank_free_tmrp_wr=0x27
+rtd_outl(0x180c5098, 0x00004e4e);  //bank_free_tmrprcd_rd=0x4e,bank_free_tmrprcd_wr=0x4e
+//rtd_outl(0x180c52a8, 0x1841112b);  //tmpbr2act=0x18,tmrefi_pb=0x411,tmrfc_pb=0x12b,8Gb:tREFIpb=488ns,tRFCpb=140ns
+rtd_outl(0x180c52a8, 0x18411195);  //tmpbr2act=0x18,tmrefi_pb=0x411,tmrfc_pb=0x12b,8Gb:tREFIpb=488ns,tRFCpb=140ns
+rtd_outl(0x180c52ac, 0x001ce0c0);  //tmrefi_pb_timeout=0x1ce,tmpbr2pbr=0x0c0
+rtd_outl(0x180c52a4, 0x20882088);  //t_refi_max=0x2088,t_no_ref_max=2088
+rtd_outl(0x180c5080, 0xf1000030);  //parser_algo=0xf,bank full condition=1:8cmd,[5]dis_ap=1,dis_preacc=1:disable
+rtd_outl(0x180c5a28, 0x00000001);  //ch_ahead_en=1
+rtd_outl(0x180c5228, 0x0808021e);  //tmccdmw=0x1e
+rtd_outl(0x180c5230, 0x000e1206);   //for DDP
+rtd_outl(0x180c5238, 0x000e1206);
+rtd_outl(0x180c5240, 0x003020d6);
+rtd_outl(0x180c5244, 0x00000001);
+rtd_outl(0x180c5234, 0x080304d6);
+rtd_outl(0x180c5a8c, 0x01010031);
+rtd_outl(0x180c5064, 0x0a000000);
+rtd_outl(0x180c50f0, 0x00000101);
+
+//mc4 ddr device init
+// rtd_outl(0x180c5034, 0x0002003f);
+rtd_outl(0x180c5034, 0x00030000);  //mc4 ddrx_rst[17]=1:rstn go high,ddrx_cke[16]=1:cke go high
+
+rtd_outl(0x180c5110, 0x64000174);  //MR1 RD_post_amble_length[7]=0x0 0.5tCK,RD_PRE[3]=0x0 stastic,WR_PRE[2],BL[1:0]=0x0 =16sequential
+rtd_outl(0x180c5114, 0x6400023f);  //MR2 [7]=0:Wlvl dis,[6]=0,WL SetA,[5:3]=111,WL=18,[2:0]=111:RL=16
+rtd_outl(0x180c5118, 0x64000333);  //MR3 [7]=0:DBI-WR, [6]=0:DBI-RD,[5:3]=110 PDDS=RZQ/6,[2]=0 PPR disable,[1]=1 WR PST=1.5t,[0]=1 PU-CAL VDDQ/3
+rtd_outl(0x180c511c, 0x64000b22);  //MR11[6:4]=100 CA ODT:RZQ/2, [2:0]=011 DQ ODT:RZQ/2
+
+//rtd_outl(0x180c5120, 0x00000000);  
+rtd_outl(0x180c5130, 0x001e0800);  //t1=0x1e,t0=0x800	
+rtd_outl(0x180c5138, 0x001e001e);  //t3=0x1e,t2=0x1e
+rtd_outl(0x180c5140, 0x0000001e);  //t5=0x0,t4=0x1e 
+rtd_outl(0x180c5100, 0x80000003);  //cmd_start=1,cmd_num=0x3
+ScalerTimer_DelayXms(0x10); //delay
+
+rtd_outl(0x180c5110, 0x68000174);  //MR1 RD_post_amble_length[7]=0x0 0.5tCK,RD_PRE[3]=0x0 stastic,WR_PRE[2],BL[1:0]=0x0 =16sequential
+rtd_outl(0x180c5114, 0x6800023f);  //MR2 [7]=0:Wlvl dis,[6]=0,WL SetA,[5:3]=111,WL=18,[2:0]=111:RL=16
+rtd_outl(0x180c5118, 0x68000333);  //MR3 [7]=0:DBI-WR, [6]=0:DBI-RD,[5:3]=110 PDDS=RZQ/6,[2]=0 PPR disable,[1]=1 WR PST=1.5t,[0]=1 PU-CAL VDDQ/3
+rtd_outl(0x180c511c, 0x68000b22);  //MR11[6:4]=100 CA ODT:RZQ/2, [2:0]=011 DQ ODT:RZQ/2
+
+//rtd_outl(0x180c5120, 0x00000000);  
+rtd_outl(0x180c5130, 0x001e0800);  //t1=0x1e,t0=0x800	
+rtd_outl(0x180c5138, 0x001e001e);  //t3=0x1e,t2=0x1e
+rtd_outl(0x180c5140, 0x0000001e);  //t5=0x0,t4=0x1e 
+rtd_outl(0x180c5100, 0x80000003);  //cmd_start=1,cmd_num=0x3
+ScalerTimer_DelayXms(0x10); //delay
+
+//rtd_outl(0x180c2060, 0x70020000);  //max_conti_ref_num=7,per_bank_ref_en[17]=1,all_bank_ref_en[16]=0
+//rtd_outl(0x180c3060, 0x70020000);  //max_conti_ref_num=7,per_bank_ref_en[17]=1,all_bank_ref_en[16]=0
+//rtd_outl(0x180c4060, 0x70020000);  //max_conti_ref_num=7,per_bank_ref_en[17]=1,all_bank_ref_en[16]=0
+//rtd_outl(0x180c5060, 0x70020000);  //max_conti_ref_num=7,per_bank_ref_en[17]=1,all_bank_ref_en[16]=0
+
+//DBI enable
+rtd_outl(0x180c2110, 0x640003f3);  //MR3,[7]=1:DBI-WR enable,[6]=1:DBI-RD enable,[5:3]=110:RZQ/6,[2]=0:PPR disable,[1]=1:WR post-amble=1.5t,[0]=1:VDDQ/3
+rtd_outl(0x180c3110, 0x640003f3);  //MR3,[7]=1:DBI-WR enable,[6]=1:DBI-RD enable,[5:3]=110:RZQ/6,[2]=0:PPR disable,[1]=1:WR post-amble=1.5t,[0]=1:VDDQ/3
+rtd_outl(0x180c4110, 0x640003f3);  //MR3,[7]=1:DBI-WR enable,[6]=1:DBI-RD enable,[5:3]=110:RZQ/6,[2]=0:PPR disable,[1]=1:WR post-amble=1.5t,[0]=1:VDDQ/3
+rtd_outl(0x180c5110, 0x640003f3);  //MR3,[7]=1:DBI-WR enable,[6]=1:DBI-RD enable,[5:3]=110:RZQ/6,[2]=0:PPR disable,[1]=1:WR post-amble=1.5t,[0]=1:VDDQ/3
+
+rtd_outl(0x180c2130, 0x001e0003);  //t1=0x1e,t0=0x3
+rtd_outl(0x180c3130, 0x001e0003);  //t1=0x1e,t0=0x3
+rtd_outl(0x180c4130, 0x001e0003);  //t1=0x1e,t0=0x3
+rtd_outl(0x180c5130, 0x001e0003);  //t1=0x1e,t0=0x3
+
+rtd_outl(0x180c2100, 0x80000000);  //cmd_start  
+rtd_outl(0x180c3100, 0x80000000);  //cmd_start
+rtd_outl(0x180c4100, 0x80000000);  //cmd_start
+rtd_outl(0x180c5100, 0x80000000);  //cmd_start
+ScalerTimer_DelayXms(0x10); //delay
+
+//DBI enable
+rtd_outl(0x180c2110, 0x680003f3);  //MR3,[7]=1:DBI-WR enable,[6]=1:DBI-RD enable,[5:3]=110:RZQ/6,[2]=0:PPR disable,[1]=1:WR post-amble=1.5t,[0]=1:VDDQ/3
+rtd_outl(0x180c3110, 0x680003f3);  //MR3,[7]=1:DBI-WR enable,[6]=1:DBI-RD enable,[5:3]=110:RZQ/6,[2]=0:PPR disable,[1]=1:WR post-amble=1.5t,[0]=1:VDDQ/3
+rtd_outl(0x180c4110, 0x680003f3);  //MR3,[7]=1:DBI-WR enable,[6]=1:DBI-RD enable,[5:3]=110:RZQ/6,[2]=0:PPR disable,[1]=1:WR post-amble=1.5t,[0]=1:VDDQ/3
+rtd_outl(0x180c5110, 0x680003f3);  //MR3,[7]=1:DBI-WR enable,[6]=1:DBI-RD enable,[5:3]=110:RZQ/6,[2]=0:PPR disable,[1]=1:WR post-amble=1.5t,[0]=1:VDDQ/3
+
+rtd_outl(0x180c2130, 0x001e0003);  //t1=0x1e,t0=0x3
+rtd_outl(0x180c3130, 0x001e0003);  //t1=0x1e,t0=0x3
+rtd_outl(0x180c4130, 0x001e0003);  //t1=0x1e,t0=0x3
+rtd_outl(0x180c5130, 0x001e0003);  //t1=0x1e,t0=0x3
+
+rtd_outl(0x180c2100, 0x80000000);  //cmd_start  
+rtd_outl(0x180c3100, 0x80000000);  //cmd_start
+rtd_outl(0x180c4100, 0x80000000);  //cmd_start
+rtd_outl(0x180c5100, 0x80000000);  //cmd_start
+ScalerTimer_DelayXms(0x10); //delay
+
+rtd_outl(0x180c2040, 0x0003fcff);  //[17]=1:Read DBI enable,[16]=1:Write DBI enable,[15:8]DBI DQ byte1 output,[7:0]DBI DQ byte0 output
+rtd_outl(0x180c3040, 0x0003fcff);  //[17]=1:Read DBI enable,[16]=1:Write DBI enable,[15:8]DBI DQ byte1 output,[7:0]DBI DQ byte0 output
+rtd_outl(0x180c4040, 0x0003fcff);  //[17]=1:Read DBI enable,[16]=1:Write DBI enable,[15:8]DBI DQ byte1 output,[7:0]DBI DQ byte0 output
+rtd_outl(0x180c5040, 0x0003fcff);  //[17]=1:Read DBI enable,[16]=1:Write DBI enable,[15:8]DBI DQ byte1 output,[7:0]DBI DQ byte0 output
+
+rtd_outl(0x180c2300, 0x02020c1d);  //t_odt_dfi=2,t_ca_dfi=2,t_write_dfi_en=0xc,t_read_dfi_en=0x1d
+rtd_outl(0x180c3300, 0x02020c1d);  //t_odt_dfi=2,t_ca_dfi=2,t_write_dfi_en=0xc,t_read_dfi_en=0x1d
+rtd_outl(0x180c4300, 0x02020c1d);  //t_odt_dfi=2,t_ca_dfi=2,t_write_dfi_en=0xc,t_read_dfi_en=0x1d
+rtd_outl(0x180c5300, 0x02020c1d);  //t_odt_dfi=2,t_ca_dfi=2,t_write_dfi_en=0xc,t_read_dfi_en=0x1d
+
+rtd_outl(0x180c2200, 0x005c2812);  //tmras=0x5c,tmrcl=0x28,tmcl=0x12
+rtd_outl(0x180c3200, 0x005c2812);  //tmras=0x5c,tmrcl=0x28,tmcl=0x12
+rtd_outl(0x180c4200, 0x005c2812);  //tmras=0x5c,tmrcl=0x28,tmcl=0x12
+rtd_outl(0x180c5200, 0x005c2812);  //tmras=0x5c,tmrcl=0x28,tmcl=0x12
+
+rtd_outl(0x180c2110, 0x64000d08);	//MR13,VRCG[3]=1(VREF Fast Response (high current) mode),CBT[0]=0
+rtd_outl(0x180c3110, 0x64000d08);
+rtd_outl(0x180c4110, 0x64000d08);
+rtd_outl(0x180c5110, 0x64000d08);
+rtd_outl(0x180c2130, 0x03000100);	//cmd_ctl_t1[31:16],cmd_ctl_t0[15:0]
+rtd_outl(0x180c3130, 0x03000100);
+rtd_outl(0x180c4130, 0x03000100);
+rtd_outl(0x180c5130, 0x03000100);
+rtd_outl(0x180c2100, 0x80000000);	//cmd_start[31]=1,cmd_num[2:0]=0x0
+rtd_outl(0x180c3100, 0x80000000);
+rtd_outl(0x180c4100, 0x80000000);
+rtd_outl(0x180c5100, 0x80000000);
+ScalerTimer_DelayXms(0x10); //delay
+
+rtd_outl(0x180c2110, 0x68000d08);	//MR13,VRCG[3]=1(VREF Fast Response (high current) mode),CBT[0]=0
+rtd_outl(0x180c3110, 0x68000d08);
+rtd_outl(0x180c4110, 0x68000d08);
+rtd_outl(0x180c5110, 0x68000d08);
+rtd_outl(0x180c2130, 0x03000100);	//cmd_ctl_t1[31:16],cmd_ctl_t0[15:0]
+rtd_outl(0x180c3130, 0x03000100);
+rtd_outl(0x180c4130, 0x03000100);
+rtd_outl(0x180c5130, 0x03000100);
+rtd_outl(0x180c2100, 0x80000000);	//cmd_start[31]=1,cmd_num[2:0]=0x0
+rtd_outl(0x180c3100, 0x80000000);
+rtd_outl(0x180c4100, 0x80000000);
+rtd_outl(0x180c5100, 0x80000000);
+ScalerTimer_DelayXms(0x10); //delay
+
+rtd_outl(0x180c2110, 0x64000c4c);	//MR12,VR_CA[6]=1(Range1),VREF_CA[5:0]=6'b001100(40%)
+rtd_outl(0x180c3110, 0x64000c4c);
+rtd_outl(0x180c4110, 0x64000c4c);
+rtd_outl(0x180c5110, 0x64000c4c);
+rtd_outl(0x180c2130, 0x03000100);	//cmd_ctl_t1[31:16],cmd_ctl_t0[15:0]
+rtd_outl(0x180c3130, 0x03000100);
+rtd_outl(0x180c4130, 0x03000100);
+rtd_outl(0x180c5130, 0x03000100);
+rtd_outl(0x180c2100, 0x80000000);	//cmd_start[31]=1,cmd_num[2:0]=0x0
+rtd_outl(0x180c3100, 0x80000000);
+rtd_outl(0x180c4100, 0x80000000);
+rtd_outl(0x180c5100, 0x80000000);
+ScalerTimer_DelayXms(0x10); //delay
+
+rtd_outl(0x180c2110, 0x68000c4c);	//MR12,VR_CA[6]=1(Range1),VREF_CA[5:0]=6'b001100(40%)
+rtd_outl(0x180c3110, 0x68000c4c);
+rtd_outl(0x180c4110, 0x68000c4c);
+rtd_outl(0x180c5110, 0x68000c4c);
+rtd_outl(0x180c2130, 0x03000100);	//cmd_ctl_t1[31:16],cmd_ctl_t0[15:0]
+rtd_outl(0x180c3130, 0x03000100);
+rtd_outl(0x180c4130, 0x03000100);
+rtd_outl(0x180c5130, 0x03000100);
+rtd_outl(0x180c2100, 0x80000000);	//cmd_start[31]=1,cmd_num[2:0]=0x0
+rtd_outl(0x180c3100, 0x80000000);
+rtd_outl(0x180c4100, 0x80000000);
+rtd_outl(0x180c5100, 0x80000000);
+ScalerTimer_DelayXms(0x10); //delay
+
+rtd_outl(0x180c2110, 0x64000e44);	//MR14,VR_DQ[6]=1(Range1),VREF_DQ[5:0]=6'b000100(35%)
+rtd_outl(0x180c3110, 0x64000e44);
+rtd_outl(0x180c4110, 0x64000e44);
+rtd_outl(0x180c5110, 0x64000e44);
+rtd_outl(0x180c2130, 0x03000100);	//cmd_ctl_t1[31:16],cmd_ctl_t0[15:0]
+rtd_outl(0x180c3130, 0x03000100);
+rtd_outl(0x180c4130, 0x03000100);
+rtd_outl(0x180c5130, 0x03000100);
+rtd_outl(0x180c2100, 0x80000000);	//cmd_start[31]=1,cmd_num[2:0]=0x0
+rtd_outl(0x180c3100, 0x80000000);
+rtd_outl(0x180c4100, 0x80000000);
+rtd_outl(0x180c5100, 0x80000000);
+ScalerTimer_DelayXms(0x10); //delay
+
+rtd_outl(0x180c2110, 0x68000e44);	//MR14,VR_DQ[6]=1(Range1),VREF_DQ[5:0]=6'b000100(35%)
+rtd_outl(0x180c3110, 0x68000e44);
+rtd_outl(0x180c4110, 0x68000e44);
+rtd_outl(0x180c5110, 0x68000e44);
+rtd_outl(0x180c2130, 0x03000100);	//cmd_ctl_t1[31:16],cmd_ctl_t0[15:0]
+rtd_outl(0x180c3130, 0x03000100);
+rtd_outl(0x180c4130, 0x03000100);
+rtd_outl(0x180c5130, 0x03000100);
+rtd_outl(0x180c2100, 0x80000000);	//cmd_start[31]=1,cmd_num[2:0]=0x0
+rtd_outl(0x180c3100, 0x80000000);
+rtd_outl(0x180c4100, 0x80000000);
+rtd_outl(0x180c5100, 0x80000000);
+ScalerTimer_DelayXms(0x10); //delay
+
+rtd_outl(0x180c2110, 0x64000d00);	//MR13,VRCG[3]=0(Normal Operation),CBT[0]=0
+rtd_outl(0x180c3110, 0x64000d00);
+rtd_outl(0x180c4110, 0x64000d00);
+rtd_outl(0x180c5110, 0x64000d00);
+rtd_outl(0x180c2130, 0x03000100);	//cmd_ctl_t1[31:16],cmd_ctl_t0[15:0]
+rtd_outl(0x180c3130, 0x03000100);
+rtd_outl(0x180c4130, 0x03000100);
+rtd_outl(0x180c5130, 0x03000100);
+rtd_outl(0x180c2100, 0x80000000);	//cmd_start[31]=1,cmd_num[2:0]=0x0
+rtd_outl(0x180c3100, 0x80000000);
+rtd_outl(0x180c4100, 0x80000000);
+rtd_outl(0x180c5100, 0x80000000);
+ScalerTimer_DelayXms(0x10); //delay
+
+rtd_outl(0x180c2110, 0x68000d00);	//MR13,VRCG[3]=0(Normal Operation),CBT[0]=0
+rtd_outl(0x180c3110, 0x68000d00);
+rtd_outl(0x180c4110, 0x68000d00);
+rtd_outl(0x180c5110, 0x68000d00);
+rtd_outl(0x180c2130, 0x03000100);	//cmd_ctl_t1[31:16],cmd_ctl_t0[15:0]
+rtd_outl(0x180c3130, 0x03000100);
+rtd_outl(0x180c4130, 0x03000100);
+rtd_outl(0x180c5130, 0x03000100);
+rtd_outl(0x180c2100, 0x80000000);	//cmd_start[31]=1,cmd_num[2:0]=0x0
+rtd_outl(0x180c3100, 0x80000000);
+rtd_outl(0x180c4100, 0x80000000);
+rtd_outl(0x180c5100, 0x80000000);
+ScalerTimer_DelayXms(0x10); //delay
+
+
+rtd_outl(0x180c2110, 0x6400160e);	//MR22,SOC_ODT(OCDP)[2:0]=3'b110(RZQ/6=40ohm)
+rtd_outl(0x180c3110, 0x6400160e);
+rtd_outl(0x180c4110, 0x6400160e);
+rtd_outl(0x180c5110, 0x6400160e);
+rtd_outl(0x180c2130, 0x03000100);	//cmd_ctl_t1[31:16],cmd_ctl_t0[15:0]
+rtd_outl(0x180c3130, 0x03000100);
+rtd_outl(0x180c4130, 0x03000100);
+rtd_outl(0x180c5130, 0x03000100);
+rtd_outl(0x180c2100, 0x80000000);	//cmd_start[31]=1,cmd_num[2:0]=0x0
+rtd_outl(0x180c3100, 0x80000000);
+rtd_outl(0x180c4100, 0x80000000);
+rtd_outl(0x180c5100, 0x80000000);
+ScalerTimer_DelayXms(0x10); //delay
+
+rtd_outl(0x180c2110, 0x6800160e);	//MR22,SOC_ODT(OCDP)[2:0]=3'b110(RZQ/6=40ohm)
+rtd_outl(0x180c3110, 0x6800160e);
+rtd_outl(0x180c4110, 0x6800160e);
+rtd_outl(0x180c5110, 0x6800160e);
+rtd_outl(0x180c2130, 0x03000100);	//cmd_ctl_t1[31:16],cmd_ctl_t0[15:0]
+rtd_outl(0x180c3130, 0x03000100);
+rtd_outl(0x180c4130, 0x03000100);
+rtd_outl(0x180c5130, 0x03000100);
+rtd_outl(0x180c2100, 0x80000000);	//cmd_start[31]=1,cmd_num[2:0]=0x0
+rtd_outl(0x180c3100, 0x80000000);
+rtd_outl(0x180c4100, 0x80000000);
+rtd_outl(0x180c5100, 0x80000000);
+ScalerTimer_DelayXms(0x10); //delay
+
+rtd_outl(0x180c2060, 0x70020000);  //max_conti_ref_num=7,per_bank_ref_en[17]=1,all_bank_ref_en[16]=0
+rtd_outl(0x180c3060, 0x70020000);  //max_conti_ref_num=7,per_bank_ref_en[17]=1,all_bank_ref_en[16]=0
+rtd_outl(0x180c4060, 0x70020000);  //max_conti_ref_num=7,per_bank_ref_en[17]=1,all_bank_ref_en[16]=0
+rtd_outl(0x180c5060, 0x70020000);  //max_conti_ref_num=7,per_bank_ref_en[17]=1,all_bank_ref_en[16]=0
+
+rtd_outl(0x180c0004, 0x00000000); //[0]=0 ptg_lpb disable
+rtd_outl(0x180c0204, 0x00000000); //[0]=0 ptg_lpb disable
+
+//pok update step5
+rtd_maskl(0x1805b0e0, 0xffff0000, 0xd0e5);                  
+//===== emi scramble mc1 =====//
+//rtd_outl(0x180cd000,0x00000002);	//emi scramble en[1]=1:on
+rtd_outl(0x180cd000,0x00000000);	//emi scramble en[1]=0:off
+rtd_outl(0x180cd010,0x1d98c3f1);
+rtd_outl(0x180cd014,0x25d85cae);
+rtd_outl(0x180cd018,0x41db1a91);
+rtd_outl(0x180cd01c,0x3fa56b54);
+rtd_outl(0x180cd020,0x4087753d);
+rtd_outl(0x180cd024,0x14fdd815);
+rtd_outl(0x180cd028,0x462e56d5);
+
+//===== emi scramble mc2 =====//
+//rtd_outl(0x180cd800,0x00000002);	//emi scramble en[1]=1:on
+rtd_outl(0x180cd800,0x00000000);	//emi scramble en[1]=0:off
+rtd_outl(0x180cd810,0x1d98c3f1);
+rtd_outl(0x180cd814,0x25d85cae);
+rtd_outl(0x180cd818,0x41db1a91);
+rtd_outl(0x180cd81c,0x3fa56b54);
+rtd_outl(0x180cd820,0x4087753d);
+rtd_outl(0x180cd824,0x14fdd815);
+rtd_outl(0x180cd828,0x462e56d5);
+
+//===== emi scramble mc3 =====//
+//rtd_outl(0x180ce000,0x00000002);	//emi scramble en[1]=1:on
+rtd_outl(0x180ce000,0x00000000);	//emi scramble en[1]=0:off
+rtd_outl(0x180ce010,0x1d98c3f1);
+rtd_outl(0x180ce014,0x25d85cae);
+rtd_outl(0x180ce018,0x41db1a91);
+rtd_outl(0x180ce01c,0x3fa56b54);
+rtd_outl(0x180ce020,0x4087753d);
+rtd_outl(0x180ce024,0x14fdd815);
+rtd_outl(0x180ce028,0x462e56d5);
+
+//===== emi scramble mc4=====//
+//rtd_outl(0x180ce800,0x00000002);	//emi scramble en[1]=1:on
+rtd_outl(0x180ce800,0x00000000);	//emi scramble en[1]=0:off
+rtd_outl(0x180ce810,0x1d98c3f1);
+rtd_outl(0x180ce814,0x25d85cae);
+rtd_outl(0x180ce818,0x41db1a91);
+rtd_outl(0x180ce81c,0x3fa56b54);
+rtd_outl(0x180ce820,0x4087753d);
+rtd_outl(0x180ce824,0x14fdd815);
+rtd_outl(0x180ce828,0x462e56d5);
+
+//===== scramble on/off =====//
+rtd_outl(0x180C2788,0x00FB0000);	//[0]=0:off,[0]=1:on
+
+//===== zq fw =====//
+// rtd_outl(0x180c2750,0x00000000);	//disable zqfw k
+// rtd_outl(0x180c2754,0x00000000);
+
+//===== dynamic ref =====//
+//rtd_outl(0x180C278C,0x00000000);	//[1:0]=0 disable, [1:0]=3 enable
+
+//===== pok =====//
+//rtd_outl(0x180c2764,0xca1ac000);  //POK enable
+
+//===== ext ddr_info =====//
+//rtd_outl(0x180c2768,0x00000000);  //ext ddr info
+
+//===== version =====
+rtd_outl(0x180c2758,0x0125b260);  //ver
+
+rtd_maskl(0x180c9308,0xfffffff3,0x0000000c);  //rst_fifo[1:0]=0x3 force reset
+rtd_maskl(0x180c9308,0xfffffff3,0x00000000);  //rst_fifo[1:0]=0x0 reset at no read
+rtd_maskl(0x180ca308,0xfffffff3,0x0000000c);  //rst_fifo[1:0]=0x3 force reset
+rtd_maskl(0x180ca308,0xfffffff3,0x00000000);  //rst_fifo[1:0]=0x0 reset at no read
+rtd_maskl(0x180c9308,0xfffffff3,0x00000008);  //rst_fifo[1:0]=0x2 disable fifo reset
+rtd_maskl(0x180ca308,0xfffffff3,0x00000008);  //rst_fifo[1:0]=0x2 disable fifo reset
+
+rtd_maskl(0x180c905c, 0xfffcff00, 0x00030000); //[17:16]forcing PAD_DDR_RSTN
+rtd_maskl(0x180ca05c, 0xfffcff00, 0x00030000); //[17:16]forcing PAD_DDR_RSTN
+
+rtd_outl(0x180c2110, 0xf400004f); //dcmc1 //ZQCL start
+rtd_outl(0x180c2130, 0x08550003); //dcmc1
+rtd_outl(0x180c2100, 0x80000000); //dcmc1
+ScalerTimer_DelayXms(0x10); //delay
+rtd_outl(0x180c2110, 0xf8000051); //dcmc1 //ZQCL latch
+rtd_outl(0x180c2130, 0x00400003); //dcmc1
+rtd_outl(0x180c2100, 0x80000000); //dcmc1
+ScalerTimer_DelayXms(0x10); //delay
+ 
+rtd_outl(0x180c3110, 0xf400004f); //dcmc2 //ZQCL start
+rtd_outl(0x180c3130, 0x08550003); //dcmc2
+rtd_outl(0x180c3100, 0x80000000); //dcmc2
+ScalerTimer_DelayXms(0x10); //delay
+rtd_outl(0x180c3110, 0xf8000051); //dcmc2 //ZQCL latch
+rtd_outl(0x180c3130, 0x00400003); //dcmc2
+rtd_outl(0x180c3100, 0x80000000); //dcmc2
+ScalerTimer_DelayXms(0x10); //delay
+ 
+rtd_outl(0x180c4110, 0xf400004f); //dcmc3 //ZQCL start
+rtd_outl(0x180c4130, 0x08550003); //dcmc3
+rtd_outl(0x180c4100, 0x80000000); //dcmc3
+ScalerTimer_DelayXms(0x10); //delay
+rtd_outl(0x180c4110, 0xf8000051); //dcmc3 //ZQCL latch
+rtd_outl(0x180c4130, 0x00400003); //dcmc3
+rtd_outl(0x180c4100, 0x80000000); //dcmc3
+ScalerTimer_DelayXms(0x10); //delay
+
+rtd_outl(0x180c5110, 0xf400004f); //dcmc4 //ZQCL start
+rtd_outl(0x180c5130, 0x08550003); //dcmc4
+rtd_outl(0x180c5100, 0x80000000); //dcmc4
+ScalerTimer_DelayXms(0x10); //delay
+rtd_outl(0x180c5110, 0xf8000051); //dcmc4 //ZQCL latch
+rtd_outl(0x180c5130, 0x00400003); //dcmc4
+rtd_outl(0x180c5100, 0x80000000); //dcmc4
+ScalerTimer_DelayXms(0x10); //delay
+
+rtd_outl(0x180c2060, 0x70020000);  //max_conti_ref_num=7,per_bank_ref_en[17]=1,all_bank_ref_en[16]=0
+rtd_outl(0x180c3060, 0x70020000);  //max_conti_ref_num=7,per_bank_ref_en[17]=1,all_bank_ref_en[16]=0
+rtd_outl(0x180c4060, 0x70020000);  //max_conti_ref_num=7,per_bank_ref_en[17]=1,all_bank_ref_en[16]=0
+rtd_outl(0x180c5060, 0x70020000);  //max_conti_ref_num=7,per_bank_ref_en[17]=1,all_bank_ref_en[16]=0
+
+rtd_outl(0x180c2770,0x00dd2e0d); //ddr end
+
+

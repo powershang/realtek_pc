@@ -1,0 +1,14 @@
+# Enhanced Register Signal Analyzer GUI Tool
+# Dependencies for building executable
+
+# Main dependencies (all built-in Python modules)
+# tkinter - GUI framework (built-in)
+# re - Regular expressions (built-in)
+# typing - Type hints (built-in)
+# collections - Container datatypes (built-in)
+# os - Operating system interface (built-in)
+# copy - Shallow and deep copy operations (built-in)
+# fnmatch - Unix filename pattern matching (built-in)
+
+# For building executable
+pyinstaller>=5.0 

@@ -1,0 +1,4 @@
+[3001]  W164a  N.A  error  test_input_param.v  27  10  LHS: 'sig_out_reg' width 8 is less than RHS: 'data_in' width 9
+[3002]  W164a  N.A  error  test_input_param.v  36  10  LHS: 'sig_out_sep' width 8 is less than RHS: 'data_in' width 9
+[3003]  W164a  N.A  error  test_input_param.v  45  10  LHS: 'sig_internal' width 8 is less than RHS: 'data_in' width 9
+[3004]  W164a  N.A  error  test_input_param.v  50  10  LHS: 'sig_wire' width 8 is less than RHS: 'data_in' width 9

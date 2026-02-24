@@ -1,0 +1,146 @@
+========================================
+Register Signal Analyzer - CLI Version
+Quick Start Guide
+========================================
+
+SUCCESS! CLI version is ready to use!
+
+Test Results:
+- Parsed 811 signal mappings from RegIF
+- Parsed 203 addresses from RTD file
+- Calculated 891 signal values
+- Filter functionality works correctly
+
+========================================
+BASIC USAGE
+========================================
+
+1. SIMPLE ANALYSIS (Display to screen)
+   
+   python register_analyzer_cli.py dc_mc1_regfile.v QoS_384_4K120_v1.tbl
+
+
+2. SAVE RESULTS TO FILE
+
+   python register_analyzer_cli.py dc_mc1_regfile.v QoS_384_4K120_v1.tbl -o results.txt
+
+
+3. FILTER SIGNALS
+
+   python register_analyzer_cli.py dc_mc1_regfile.v QoS_384_4K120_v1.tbl -f "limit" -o filtered.txt
+
+
+4. VERBOSE MODE
+
+   python register_analyzer_cli.py dc_mc1_regfile.v QoS_384_4K120_v1.tbl -v
+
+
+5. EXPORT RTD OUTPUT
+
+   python register_analyzer_cli.py dc_mc1_regfile.v QoS_384_4K120_v1.tbl --export-rtd output.tbl
+
+
+========================================
+RUNNING ON LINUX WORKSTATION
+========================================
+
+1. Activate virtual environment:
+   
+   source myvenv/bin/activate.csh
+
+
+2. Run analyzer:
+
+   python register_analyzer_cli.py dc_mc1_regfile.v QoS_384_4K120_v1.tbl -o results.txt
+
+
+3. View results:
+
+   cat results.txt
+   # or
+   less results.txt
+
+
+========================================
+ADVANCED OPTIONS
+========================================
+
+# Custom address mapping
+python register_analyzer_cli.py dc_mc1_regfile.v QoS_384_4K120_v1.tbl \
+  --base-prefix 180c6 \
+  --prefixes "180c2,180c3,180c4,180c5,180c6"
+
+# Disable multi-channel mapping
+python register_analyzer_cli.py dc_mc1_regfile.v QoS_384_4K120_v1.tbl \
+  --disable-multi-channel
+
+# Combine multiple options
+python register_analyzer_cli.py dc_mc1_regfile.v QoS_384_4K120_v1.tbl \
+  -o results.txt \
+  -f "limit" \
+  --export-rtd output.tbl \
+  -v
+
+
+========================================
+HELP
+========================================
+
+For full help and all options:
+
+python register_analyzer_cli.py --help
+
+
+========================================
+FILES CREATED
+========================================
+
+register_analyzer_cli.py    - Main CLI tool
+CLI_USAGE.md                - Detailed documentation
+QUICK_START_CLI.txt         - This quick start guide
+run_analyzer_cli.sh         - Example shell script
+
+Test output files:
+cli_test_results.txt        - Full analysis results
+cli_filter_limit.txt        - Filtered results (limit signals)
+
+
+========================================
+COMPARISON: GUI vs CLI
+========================================
+
+GUI Version (register_gui_enhanced_nx.py):
+  Pros: Visual interface, interactive editing
+  Cons: Requires tkinter, cannot run in SSH
+
+CLI Version (register_analyzer_cli.py):
+  Pros: No GUI dependencies, runs anywhere, batch processing
+  Cons: No interactive editing (yet)
+
+
+========================================
+NO DEPENDENCIES NEEDED!
+========================================
+
+The CLI version uses ONLY Python standard library:
+- re (regular expressions)
+- argparse (command-line parsing)
+- collections (data structures)
+- os, sys (system operations)
+
+No pip install required!
+Works on any Python 3.6+ installation!
+
+
+========================================
+NEXT STEPS
+========================================
+
+1. Try the basic commands above
+2. Read CLI_USAGE.md for detailed documentation
+3. Customize address prefixes for your use case
+4. Use in shell scripts for automation
+
+For questions or issues, refer to CLI_USAGE.md
+
+

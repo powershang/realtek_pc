@@ -1,0 +1,21 @@
+services:
+  # 主要 Web 服務
+  - type: web
+    name: line-taxi-bot
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    healthCheckPath: "/health"
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: PORT
+        value: 5000
+    autoDeploy: false
+
+databases:
+  # PostgreSQL 資料庫
+  - name: line-taxi-db
+    plan: free
+    postgresMajorVersion: 15 

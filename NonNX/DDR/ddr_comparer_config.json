@@ -1,0 +1,7 @@
+{
+  "file1": "D:/python_work/side_project/NonNX/DDR/bak/DV_2rank.txt",
+  "file2": "D:/python_work/side_project/NonNX/DDR/LPD4X_d2_2GB_2GB_v1_DDP 4.tbl",
+  "regfile": "D:/python_work/side_project/NonNX/DDR/dc_mc1_regfile.v",
+  "use_regfile": true,
+  "ddr_type": "LPDDR4"
+}

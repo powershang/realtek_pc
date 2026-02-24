@@ -1,0 +1,32 @@
+module(
+output xxx;
+);
+reg xxx
+
+end module
+
+
+module(
+output reg xxx;
+);
+
+end module
+
+
+module(
+ xxx;
+);
+reg xxx;
+output xxx;
+
+end module
+
+
+module(
+
+);
+reg AAA; (非port list)
+
+
+end module
+

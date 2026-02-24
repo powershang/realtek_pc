@@ -1,0 +1,5 @@
+[2001]  W164a  N.A  error  test_input_nonansi.v  31  10  LHS: 'sig_out_a' width 8 is less than RHS: 'data_in' width 9
+[2002]  W164a  N.A  error  test_input_nonansi.v  40  10  LHS: 'sig_out_b' width 8 is less than RHS: 'data_in' width 9
+[2003]  W164a  N.A  error  test_input_nonansi.v  49  10  LHS: 'sig_internal' width 8 is less than RHS: 'data_in' width 9
+[2004]  W164a  N.A  error  test_input_nonansi.v  53  10  LHS: 'sig_out_w' width 8 is less than RHS: 'data_in' width 9
+[2005]  W164a  N.A  error  test_input_nonansi.v  56  10  LHS: 'sig_wire_int' width 8 is less than RHS: 'data_in' width 9

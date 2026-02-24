@@ -1,0 +1,1304 @@
+====================================================================================================
+Register Signal Analysis Results
+====================================================================================================
+
+=== Address 0x180C2800 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_0                 = reg180c2800[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_0               = reg180c2800[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_0                     = reg180c2800[23:20]      = 0      (0x0)
+limit_cmd_extend_num_0                   = reg180c2800[19:16]      = 0      (0x0)
+limit_ref_list_0                         = reg180c2800[15:2]       = 0      (0x0)
+limit_en_0                               = reg180c2800[1:0]        = 0      (0x0)
+
+=== Address 0x180C2804 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_1                 = reg180c2804[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_1               = reg180c2804[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_1                     = reg180c2804[23:20]      = 0      (0x0)
+limit_cmd_extend_num_1                   = reg180c2804[19:16]      = 0      (0x0)
+limit_ref_list_1                         = reg180c2804[15:2]       = 0      (0x0)
+limit_en_1                               = reg180c2804[1:0]        = 0      (0x0)
+
+=== Address 0x180C2808 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_2                 = reg180c2808[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_2               = reg180c2808[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_2                     = reg180c2808[23:20]      = 0      (0x0)
+limit_cmd_extend_num_2                   = reg180c2808[19:16]      = 0      (0x0)
+limit_ref_list_2                         = reg180c2808[15:2]       = 0      (0x0)
+limit_en_2                               = reg180c2808[1:0]        = 0      (0x0)
+
+=== Address 0x180C280C (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_3                 = reg180c280c[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_3               = reg180c280c[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_3                     = reg180c280c[23:20]      = 0      (0x0)
+limit_cmd_extend_num_3                   = reg180c280c[19:16]      = 0      (0x0)
+limit_ref_list_3                         = reg180c280c[15:2]       = 0      (0x0)
+limit_en_3                               = reg180c280c[1:0]        = 0      (0x0)
+
+=== Address 0x180C2810 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_4                 = reg180c2810[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_4               = reg180c2810[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_4                     = reg180c2810[23:20]      = 0      (0x0)
+limit_cmd_extend_num_4                   = reg180c2810[19:16]      = 0      (0x0)
+limit_ref_list_4                         = reg180c2810[15:2]       = 0      (0x0)
+limit_en_4                               = reg180c2810[1:0]        = 0      (0x0)
+
+=== Address 0x180C2814 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_5                 = reg180c2814[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_5               = reg180c2814[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_5                     = reg180c2814[23:20]      = 0      (0x0)
+limit_cmd_extend_num_5                   = reg180c2814[19:16]      = 0      (0x0)
+limit_ref_list_5                         = reg180c2814[15:2]       = 0      (0x0)
+limit_en_5                               = reg180c2814[1:0]        = 0      (0x0)
+
+=== Address 0x180C2818 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_6                 = reg180c2818[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_6               = reg180c2818[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_6                     = reg180c2818[23:20]      = 0      (0x0)
+limit_cmd_extend_num_6                   = reg180c2818[19:16]      = 0      (0x0)
+limit_ref_list_6                         = reg180c2818[15:2]       = 0      (0x0)
+limit_en_6                               = reg180c2818[1:0]        = 0      (0x0)
+
+=== Address 0x180C281C (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_7                 = reg180c281c[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_7               = reg180c281c[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_7                     = reg180c281c[23:20]      = 0      (0x0)
+limit_cmd_extend_num_7                   = reg180c281c[19:16]      = 0      (0x0)
+limit_ref_list_7                         = reg180c281c[15:2]       = 0      (0x0)
+limit_en_7                               = reg180c281c[1:0]        = 0      (0x0)
+
+=== Address 0x180C2820 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_8                 = reg180c2820[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_8               = reg180c2820[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_8                     = reg180c2820[23:20]      = 0      (0x0)
+limit_cmd_extend_num_8                   = reg180c2820[19:16]      = 0      (0x0)
+limit_ref_list_8                         = reg180c2820[15:2]       = 0      (0x0)
+limit_en_8                               = reg180c2820[1:0]        = 0      (0x0)
+
+=== Address 0x180C2824 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_9                 = reg180c2824[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_9               = reg180c2824[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_9                     = reg180c2824[23:20]      = 0      (0x0)
+limit_cmd_extend_num_9                   = reg180c2824[19:16]      = 0      (0x0)
+limit_ref_list_9                         = reg180c2824[15:2]       = 0      (0x0)
+limit_en_9                               = reg180c2824[1:0]        = 0      (0x0)
+
+=== Address 0x180C2840 (Value: 0x0) ===
+limit_data_num_lv2_0                     = reg180c2840[31:16]      = 0      (0x0)
+limit_data_num_0                         = reg180c2840[15:0]       = 0      (0x0)
+
+=== Address 0x180C2844 (Value: 0x0) ===
+limit_data_num_lv2_1                     = reg180c2844[31:16]      = 0      (0x0)
+limit_data_num_1                         = reg180c2844[15:0]       = 0      (0x0)
+
+=== Address 0x180C2848 (Value: 0x0) ===
+limit_data_num_lv2_2                     = reg180c2848[31:16]      = 0      (0x0)
+limit_data_num_2                         = reg180c2848[15:0]       = 0      (0x0)
+
+=== Address 0x180C284C (Value: 0x0) ===
+limit_data_num_lv2_3                     = reg180c284c[31:16]      = 0      (0x0)
+limit_data_num_3                         = reg180c284c[15:0]       = 0      (0x0)
+
+=== Address 0x180C2850 (Value: 0x0) ===
+limit_data_num_lv2_4                     = reg180c2850[31:16]      = 0      (0x0)
+limit_data_num_4                         = reg180c2850[15:0]       = 0      (0x0)
+
+=== Address 0x180C2854 (Value: 0x0) ===
+limit_data_num_lv2_5                     = reg180c2854[31:16]      = 0      (0x0)
+limit_data_num_5                         = reg180c2854[15:0]       = 0      (0x0)
+
+=== Address 0x180C2858 (Value: 0x0) ===
+limit_data_num_lv2_6                     = reg180c2858[31:16]      = 0      (0x0)
+limit_data_num_6                         = reg180c2858[15:0]       = 0      (0x0)
+
+=== Address 0x180C285C (Value: 0x0) ===
+limit_data_num_lv2_7                     = reg180c285c[31:16]      = 0      (0x0)
+limit_data_num_7                         = reg180c285c[15:0]       = 0      (0x0)
+
+=== Address 0x180C2860 (Value: 0x0) ===
+limit_data_num_lv2_8                     = reg180c2860[31:16]      = 0      (0x0)
+limit_data_num_8                         = reg180c2860[15:0]       = 0      (0x0)
+
+=== Address 0x180C2864 (Value: 0x0) ===
+limit_data_num_lv2_9                     = reg180c2864[31:16]      = 0      (0x0)
+limit_data_num_9                         = reg180c2864[15:0]       = 0      (0x0)
+
+=== Address 0x180C2880 (Value: 0x0) ===
+limit_timer_cycle_0                      = reg180c2880[15:0]       = 0      (0x0)
+
+=== Address 0x180C2884 (Value: 0x0) ===
+limit_timer_cycle_1                      = reg180c2884[15:0]       = 0      (0x0)
+
+=== Address 0x180C2888 (Value: 0x0) ===
+limit_timer_cycle_2                      = reg180c2888[15:0]       = 0      (0x0)
+
+=== Address 0x180C288C (Value: 0x0) ===
+limit_timer_cycle_3                      = reg180c288c[15:0]       = 0      (0x0)
+
+=== Address 0x180C2890 (Value: 0x0) ===
+limit_timer_cycle_4                      = reg180c2890[15:0]       = 0      (0x0)
+
+=== Address 0x180C2894 (Value: 0x0) ===
+limit_timer_cycle_5                      = reg180c2894[15:0]       = 0      (0x0)
+
+=== Address 0x180C2898 (Value: 0x0) ===
+limit_timer_cycle_6                      = reg180c2898[15:0]       = 0      (0x0)
+
+=== Address 0x180C289C (Value: 0x0) ===
+limit_timer_cycle_7                      = reg180c289c[15:0]       = 0      (0x0)
+
+=== Address 0x180C28A0 (Value: 0x0) ===
+limit_timer_cycle_8                      = reg180c28a0[15:0]       = 0      (0x0)
+
+=== Address 0x180C28A4 (Value: 0x0) ===
+limit_timer_cycle_9                      = reg180c28a4[15:0]       = 0      (0x0)
+
+=== Address 0x180C2A00 (Value: 0x643) ===
+hi_priority_id6_en                       = reg180c2a00[22]         = 0      (0x0)
+hi_priority_id3_en                       = reg180c2a00[19]         = 0      (0x0)
+hi_priority_id2_en                       = reg180c2a00[18]         = 0      (0x0)
+hi_priority_id1_en                       = reg180c2a00[17]         = 0      (0x0)
+hi_priority_id0_en                       = reg180c2a00[16]         = 0      (0x0)
+dis_tracking_gp1_id_en                   = reg180c2a00[15]         = 0      (0x0)
+dis_tracking_gp0_id_en                   = reg180c2a00[14]         = 0      (0x0)
+dis_tracking_id0_en                      = reg180c2a00[13]         = 0      (0x0)
+dis_tracking_id1_en                      = reg180c2a00[12]         = 0      (0x0)
+ch_ref_bl_gt_sel                         = reg180c2a00[11]         = 0      (0x0)
+ch_un_match_id_pg_wt                     = reg180c2a00[10]         = 1      (0x1)
+ch_tag_tracking                          = reg180c2a00[9]          = 1      (0x1)
+ch_dir_cont_chg_sel                      = reg180c2a00[8]          = 0      (0x0)
+ch_parser_cmd_limt_sel                   = reg180c2a00[7]          = 0      (0x0)
+ch_dir_short_dly_en                      = reg180c2a00[6]          = 1      (0x1)
+ch_dir_cont_bl_mode                      = reg180c2a00[5:4]        = 0      (0x0)
+tracking_sel                             = reg180c2a00[3]          = 0      (0x0)
+bank_wr_sel                              = reg180c2a00[2]          = 0      (0x0)
+channel_id_weight_en                     = reg180c2a00[1]          = 1      (0x1)
+channel_rw_weight_en                     = reg180c2a00[0]          = 1      (0x1)
+
+=== Address 0x180C2A10 (Value: 0x0) ===
+hi_priority_id3                          = reg180c2a10[31:24]      = 0      (0x0)
+hi_priority_id2                          = reg180c2a10[23:16]      = 0      (0x0)
+hi_priority_id1                          = reg180c2a10[15:8]       = 0      (0x0)
+hi_priority_id0                          = reg180c2a10[7:0]        = 0      (0x0)
+
+=== Address 0x180C2A14 (Value: 0x0) ===
+hi_priority_mask_id6                     = reg180c2a14[31:24]      = 0      (0x0)
+hi_priority_id6                          = reg180c2a14[23:16]      = 0      (0x0)
+
+=== Address 0x180C2A18 (Value: 0x40000000) ===
+ch_dir_max_bl                            = reg180c2a18[31:20]      = 1024   (0x400)
+reg_ch_rw_match_mask_cycel_sel           = reg180c2a18[18:16]      = 0      (0x0)
+reg_ch_wr_chg_wait_time                  = reg180c2a18[12:8]       = 0      (0x0)
+reg_wr_chg_revert_en                     = reg180c2a18[4]          = 0      (0x0)
+
+=== Address 0x180C2A1C (Value: 0x12c0000) ===
+total_rw_bl_low_bound_2                  = reg180c2a1c[28:16]      = 300    (0x12c)
+
+=== Address 0x180C2A20 (Value: 0xfa00fa) ===
+total_rw_bl_low_bound_w                  = reg180c2a20[28:16]      = 250    (0xfa)
+total_rw_bl_low_bound_r                  = reg180c2a20[12:0]       = 250    (0xfa)
+
+=== Address 0x180C2A24 (Value: 0x180630) ===
+long_bl_thr                              = reg180c2a24[21:16]      = 24     (0x18)
+short_rw_ps_bl_thr                       = reg180c2a24[12:8]       = 6      (0x6)
+short_rw_bl_thr                          = reg180c2a24[7:0]        = 48     (0x30)
+
+=== Address 0x180C2A28 (Value: 0x7f01) ===
+ref_mask_dir                             = reg180c2a28[31:30]      = 0      (0x0)
+ddr4_cmd_inorder_en                      = reg180c2a28[24]         = 0      (0x0)
+ref_mask_ch                              = reg180c2a28[23:20]      = 0      (0x0)
+ref_mask_urg2_ch                         = reg180c2a28[16:8]       = 127    (0x7f)
+ref_mask_id3_en                          = reg180c2a28[7]          = 0      (0x0)
+ref_mask_id2_en                          = reg180c2a28[6]          = 0      (0x0)
+ref_mask_id1_en                          = reg180c2a28[5]          = 0      (0x0)
+ref_mask_id0_en                          = reg180c2a28[4]          = 0      (0x0)
+ch_ahead_en                              = reg180c2a28[0]          = 1      (0x1)
+
+=== Address 0x180C2A2C (Value: 0x3af00a7) ===
+ch_parser_total_bl_max                   = reg180c2a2c[25:16]      = 943    (0x3af)
+ch_ddr4_balance_cmd_max                  = reg180c2a2c[7:4]        = 10     (0xa)
+ch_parser_cmd_max                        = reg180c2a2c[3:0]        = 7      (0x7)
+
+=== Address 0x180C2A30 (Value: 0x80005) ===
+ddr4_balance_bl_thr                      = reg180c2a30[21:16]      = 8      (0x8)
+ddr4_db_tracking                         = reg180c2a30[2]          = 1      (0x1)
+ddr4_fast_con                            = reg180c2a30[1]          = 0      (0x0)
+ddr4_balance_con                         = reg180c2a30[0]          = 1      (0x1)
+
+=== Address 0x180C2A34 (Value: 0x3ff0000) ===
+ch_max_id_bl_thr                         = reg180c2a34[25:16]      = 1023   (0x3ff)
+ch_max_id_bl_en                          = reg180c2a34[0]          = 0      (0x0)
+
+=== Address 0x180C2A3C (Value: 0xffffff) ===
+dis_tracking_gp0_id                      = reg180c2a3c[23:20]      = 15     (0xf)
+dis_tracking_gp1_id                      = reg180c2a3c[19:16]      = 15     (0xf)
+dis_tracking_id1                         = reg180c2a3c[15:8]       = 255    (0xff)
+dis_tracking_id0                         = reg180c2a3c[7:0]        = 255    (0xff)
+
+=== Address 0x180C2A60 (Value: 0x9840802) ===
+ch0_bg_insert_mapping                    = reg180c2a60[31:28]      = 0      (0x0)
+ch0_page_insert_mapping                  = reg180c2a60[27:24]      = 9      (0x9)
+ch0_bank_free_mapping                    = reg180c2a60[23:20]      = 8      (0x8)
+ch0_dir_insert_mapping                   = reg180c2a60[19:16]      = 4      (0x4)
+ch0_r2w_dir_insert_mapping               = reg180c2a60[15:12]      = 0      (0x0)
+ch0_acc_trigger_sel                      = reg180c2a60[11]         = 1      (0x1)
+ch0_acc_mode                             = reg180c2a60[10]         = 0      (0x0)
+ch0_acc_clr_mode                         = reg180c2a60[9:8]        = 0      (0x0)
+ch0_urg2_wr_brk_en                       = reg180c2a60[7]          = 0      (0x0)
+ch0_urg2_strong_en                       = reg180c2a60[4]          = 0      (0x0)
+ch0_oldest_timer_2_en                    = reg180c2a60[3]          = 0      (0x0)
+ch0_oldest_timer_en                      = reg180c2a60[2]          = 0      (0x0)
+ch0_oldest_cmd_select_en                 = reg180c2a60[1]          = 1      (0x1)
+
+=== Address 0x180C2A64 (Value: 0x6f006f00) ===
+ch0_quota_bw_ini                         = reg180c2a64[31:24]      = 111    (0x6f)
+ch0_bw_quota_max                         = reg180c2a64[15:8]       = 111    (0x6f)
+
+=== Address 0x180C2A68 (Value: 0x80020008) ===
+ch0_oldest_time_2                        = reg180c2a68[31:20]      = 2048   (0x800)
+ch0_oldest_time                          = reg180c2a68[19:8]       = 512    (0x200)
+ch0_bw_acc_unit                          = reg180c2a68[3:0]        = 8      (0x8)
+
+=== Address 0x180C2A6C (Value: 0x42002041) ===
+ch0_cmd_extend_num                       = reg180c2a6c[31:28]      = 4      (0x4)
+ch0_extend_bl_max                        = reg180c2a6c[25:20]      = 32     (0x20)
+ch0_ostd_bl_max                          = reg180c2a6c[19:8]       = 32     (0x20)
+ch0_ostd_cmd_max                         = reg180c2a6c[7:4]        = 4      (0x4)
+ch0_outstand_en                          = reg180c2a6c[0]          = 1      (0x1)
+
+=== Address 0x180C2A70 (Value: 0x0) ===
+ch0_wr_brk_time                          = reg180c2a70[9:0]        = 0      (0x0)
+
+=== Address 0x180C2A74 (Value: 0x4c40000) ===
+ch0_wms_bg_insert_mapping                = reg180c2a74[31:28]      = 0      (0x0)
+ch0_wms_page_insert_mapping              = reg180c2a74[27:24]      = 4      (0x4)
+ch0_wms_bank_free_mapping                = reg180c2a74[23:20]      = 12     (0xc)
+ch0_wms_dir_insert_mapping               = reg180c2a74[19:16]      = 4      (0x4)
+ch0_wms_r2w_dir_insert_mapping           = reg180c2a74[15:12]      = 0      (0x0)
+ch0_wmask_insert_mapping                 = reg180c2a74[11:8]       = 0      (0x0)
+
+=== Address 0x180C2A80 (Value: 0x9840802) ===
+ch1_bg_insert_mapping                    = reg180c2a80[31:28]      = 0      (0x0)
+ch1_page_insert_mapping                  = reg180c2a80[27:24]      = 9      (0x9)
+ch1_bank_free_mapping                    = reg180c2a80[23:20]      = 8      (0x8)
+ch1_dir_insert_mapping                   = reg180c2a80[19:16]      = 4      (0x4)
+ch1_r2w_dir_insert_mapping               = reg180c2a80[15:12]      = 0      (0x0)
+ch1_acc_trigger_sel                      = reg180c2a80[11]         = 1      (0x1)
+ch1_acc_mode                             = reg180c2a80[10]         = 0      (0x0)
+ch1_acc_clr_mode                         = reg180c2a80[9:8]        = 0      (0x0)
+ch1_urg2_wr_brk_en                       = reg180c2a80[7]          = 0      (0x0)
+ch1_urg2_strong_en                       = reg180c2a80[4]          = 0      (0x0)
+ch1_oldest_timer_2_en                    = reg180c2a80[3]          = 0      (0x0)
+ch1_oldest_timer_en                      = reg180c2a80[2]          = 0      (0x0)
+ch1_oldest_cmd_select_en                 = reg180c2a80[1]          = 1      (0x1)
+
+=== Address 0x180C2A84 (Value: 0x7f007f00) ===
+ch1_quota_bw_ini                         = reg180c2a84[31:24]      = 127    (0x7f)
+ch1_bw_quota_max                         = reg180c2a84[15:8]       = 127    (0x7f)
+
+=== Address 0x180C2A88 (Value: 0x80010008) ===
+ch1_oldest_time_2                        = reg180c2a88[31:20]      = 2048   (0x800)
+ch1_oldest_time                          = reg180c2a88[19:8]       = 256    (0x100)
+ch1_bw_acc_unit                          = reg180c2a88[3:0]        = 8      (0x8)
+
+=== Address 0x180C2A8C (Value: 0x21001021) ===
+ch1_cmd_extend_num                       = reg180c2a8c[31:28]      = 2      (0x2)
+ch1_extend_bl_max                        = reg180c2a8c[25:20]      = 16     (0x10)
+ch1_ostd_bl_max                          = reg180c2a8c[19:8]       = 16     (0x10)
+ch1_ostd_cmd_max                         = reg180c2a8c[7:4]        = 2      (0x2)
+ch1_outstand_en                          = reg180c2a8c[0]          = 1      (0x1)
+
+=== Address 0x180C2A90 (Value: 0x0) ===
+ch1_wr_brk_time                          = reg180c2a90[9:0]        = 0      (0x0)
+
+=== Address 0x180C2A94 (Value: 0x4c40000) ===
+ch1_wms_bg_insert_mapping                = reg180c2a94[31:28]      = 0      (0x0)
+ch1_wms_page_insert_mapping              = reg180c2a94[27:24]      = 4      (0x4)
+ch1_wms_bank_free_mapping                = reg180c2a94[23:20]      = 12     (0xc)
+ch1_wms_dir_insert_mapping               = reg180c2a94[19:16]      = 4      (0x4)
+ch1_wms_r2w_dir_insert_mapping           = reg180c2a94[15:12]      = 0      (0x0)
+ch1_wmask_insert_mapping                 = reg180c2a94[11:8]       = 0      (0x0)
+
+=== Address 0x180C2AA0 (Value: 0x9840802) ===
+ch2_bg_insert_mapping                    = reg180c2aa0[31:28]      = 0      (0x0)
+ch2_page_insert_mapping                  = reg180c2aa0[27:24]      = 9      (0x9)
+ch2_bank_free_mapping                    = reg180c2aa0[23:20]      = 8      (0x8)
+ch2_dir_insert_mapping                   = reg180c2aa0[19:16]      = 4      (0x4)
+ch2_r2w_dir_insert_mapping               = reg180c2aa0[15:12]      = 0      (0x0)
+ch2_acc_trigger_sel                      = reg180c2aa0[11]         = 1      (0x1)
+ch2_acc_mode                             = reg180c2aa0[10]         = 0      (0x0)
+ch2_acc_clr_mode                         = reg180c2aa0[9:8]        = 0      (0x0)
+ch2_urg2_wr_brk_en                       = reg180c2aa0[7]          = 0      (0x0)
+ch2_urg2_strong_en                       = reg180c2aa0[4]          = 0      (0x0)
+ch2_oldest_timer_2_en                    = reg180c2aa0[3]          = 0      (0x0)
+ch2_oldest_timer_en                      = reg180c2aa0[2]          = 0      (0x0)
+ch2_oldest_cmd_select_en                 = reg180c2aa0[1]          = 1      (0x1)
+
+=== Address 0x180C2AA4 (Value: 0x6f006f00) ===
+ch2_quota_bw_ini                         = reg180c2aa4[31:24]      = 111    (0x6f)
+ch2_bw_quota_max                         = reg180c2aa4[15:8]       = 111    (0x6f)
+
+=== Address 0x180C2AA8 (Value: 0x7ff04008) ===
+ch2_oldest_time_2                        = reg180c2aa8[31:20]      = 2047   (0x7ff)
+ch2_oldest_time                          = reg180c2aa8[19:8]       = 64     (0x40)
+ch2_bw_acc_unit                          = reg180c2aa8[3:0]        = 8      (0x8)
+
+=== Address 0x180C2AAC (Value: 0x40008081) ===
+ch2_cmd_extend_num                       = reg180c2aac[31:28]      = 4      (0x4)
+ch2_extend_bl_max                        = reg180c2aac[25:20]      = 0      (0x0)
+ch2_ostd_bl_max                          = reg180c2aac[19:8]       = 128    (0x80)
+ch2_ostd_cmd_max                         = reg180c2aac[7:4]        = 8      (0x8)
+ch2_outstand_en                          = reg180c2aac[0]          = 1      (0x1)
+
+=== Address 0x180C2AB0 (Value: 0x0) ===
+ch2_wr_brk_time                          = reg180c2ab0[9:0]        = 0      (0x0)
+
+=== Address 0x180C2AB4 (Value: 0x4c40000) ===
+ch2_wms_bg_insert_mapping                = reg180c2ab4[31:28]      = 0      (0x0)
+ch2_wms_page_insert_mapping              = reg180c2ab4[27:24]      = 4      (0x4)
+ch2_wms_bank_free_mapping                = reg180c2ab4[23:20]      = 12     (0xc)
+ch2_wms_dir_insert_mapping               = reg180c2ab4[19:16]      = 4      (0x4)
+ch2_wms_r2w_dir_insert_mapping           = reg180c2ab4[15:12]      = 0      (0x0)
+ch2_wmask_insert_mapping                 = reg180c2ab4[11:8]       = 0      (0x0)
+
+=== Address 0x180C2AC0 (Value: 0x9840802) ===
+ch3_bg_insert_mapping                    = reg180c2ac0[31:28]      = 0      (0x0)
+ch3_page_insert_mapping                  = reg180c2ac0[27:24]      = 9      (0x9)
+ch3_bank_free_mapping                    = reg180c2ac0[23:20]      = 8      (0x8)
+ch3_dir_insert_mapping                   = reg180c2ac0[19:16]      = 4      (0x4)
+ch3_r2w_dir_insert_mapping               = reg180c2ac0[15:12]      = 0      (0x0)
+ch3_acc_trigger_sel                      = reg180c2ac0[11]         = 1      (0x1)
+ch3_acc_mode                             = reg180c2ac0[10]         = 0      (0x0)
+ch3_acc_clr_mode                         = reg180c2ac0[9:8]        = 0      (0x0)
+ch3_urg2_wr_brk_en                       = reg180c2ac0[7]          = 0      (0x0)
+ch3_urg2_strong_en                       = reg180c2ac0[4]          = 0      (0x0)
+ch3_oldest_timer_2_en                    = reg180c2ac0[3]          = 0      (0x0)
+ch3_oldest_timer_en                      = reg180c2ac0[2]          = 0      (0x0)
+ch3_oldest_cmd_select_en                 = reg180c2ac0[1]          = 1      (0x1)
+
+=== Address 0x180C2AC4 (Value: 0x5f005f00) ===
+ch3_quota_bw_ini                         = reg180c2ac4[31:24]      = 95     (0x5f)
+ch3_bw_quota_max                         = reg180c2ac4[15:8]       = 95     (0x5f)
+
+=== Address 0x180C2AC8 (Value: 0x7ff08008) ===
+ch3_oldest_time_2                        = reg180c2ac8[31:20]      = 2047   (0x7ff)
+ch3_oldest_time                          = reg180c2ac8[19:8]       = 128    (0x80)
+ch3_bw_acc_unit                          = reg180c2ac8[3:0]        = 8      (0x8)
+
+=== Address 0x180C2ACC (Value: 0x40008081) ===
+ch3_cmd_extend_num                       = reg180c2acc[31:28]      = 4      (0x4)
+ch3_extend_bl_max                        = reg180c2acc[25:20]      = 0      (0x0)
+ch3_ostd_bl_max                          = reg180c2acc[19:8]       = 128    (0x80)
+ch3_ostd_cmd_max                         = reg180c2acc[7:4]        = 8      (0x8)
+ch3_outstand_en                          = reg180c2acc[0]          = 1      (0x1)
+
+=== Address 0x180C2AD0 (Value: 0x0) ===
+ch3_wr_brk_time                          = reg180c2ad0[9:0]        = 0      (0x0)
+
+=== Address 0x180C2AD4 (Value: 0x4c40000) ===
+ch3_wms_bg_insert_mapping                = reg180c2ad4[31:28]      = 0      (0x0)
+ch3_wms_page_insert_mapping              = reg180c2ad4[27:24]      = 4      (0x4)
+ch3_wms_bank_free_mapping                = reg180c2ad4[23:20]      = 12     (0xc)
+ch3_wms_dir_insert_mapping               = reg180c2ad4[19:16]      = 4      (0x4)
+ch3_wms_r2w_dir_insert_mapping           = reg180c2ad4[15:12]      = 0      (0x0)
+ch3_wmask_insert_mapping                 = reg180c2ad4[11:8]       = 0      (0x0)
+
+=== Address 0x180C2AE0 (Value: 0x9840802) ===
+ch4_bg_insert_mapping                    = reg180c2ae0[31:28]      = 0      (0x0)
+ch4_page_insert_mapping                  = reg180c2ae0[27:24]      = 9      (0x9)
+ch4_bank_free_mapping                    = reg180c2ae0[23:20]      = 8      (0x8)
+ch4_dir_insert_mapping                   = reg180c2ae0[19:16]      = 4      (0x4)
+ch4_r2w_dir_insert_mapping               = reg180c2ae0[15:12]      = 0      (0x0)
+ch4_acc_trigger_sel                      = reg180c2ae0[11]         = 1      (0x1)
+ch4_acc_mode                             = reg180c2ae0[10]         = 0      (0x0)
+ch4_acc_clr_mode                         = reg180c2ae0[9:8]        = 0      (0x0)
+ch4_urg2_wr_brk_en                       = reg180c2ae0[7]          = 0      (0x0)
+ch4_urg2_strong_en                       = reg180c2ae0[4]          = 0      (0x0)
+ch4_oldest_timer_2_en                    = reg180c2ae0[3]          = 0      (0x0)
+ch4_oldest_timer_en                      = reg180c2ae0[2]          = 0      (0x0)
+ch4_oldest_cmd_select_en                 = reg180c2ae0[1]          = 1      (0x1)
+
+=== Address 0x180C2AE4 (Value: 0x4f004f00) ===
+ch4_quota_bw_ini                         = reg180c2ae4[31:24]      = 79     (0x4f)
+ch4_bw_quota_max                         = reg180c2ae4[15:8]       = 79     (0x4f)
+
+=== Address 0x180C2AE8 (Value: 0x80010008) ===
+ch4_oldest_time_2                        = reg180c2ae8[31:20]      = 2048   (0x800)
+ch4_oldest_time                          = reg180c2ae8[19:8]       = 256    (0x100)
+ch4_bw_acc_unit                          = reg180c2ae8[3:0]        = 8      (0x8)
+
+=== Address 0x180C2AEC (Value: 0x22002021) ===
+ch4_cmd_extend_num                       = reg180c2aec[31:28]      = 2      (0x2)
+ch4_extend_bl_max                        = reg180c2aec[25:20]      = 32     (0x20)
+ch4_ostd_bl_max                          = reg180c2aec[19:8]       = 32     (0x20)
+ch4_ostd_cmd_max                         = reg180c2aec[7:4]        = 2      (0x2)
+ch4_outstand_en                          = reg180c2aec[0]          = 1      (0x1)
+
+=== Address 0x180C2AF0 (Value: 0x0) ===
+ch4_wr_brk_time                          = reg180c2af0[9:0]        = 0      (0x0)
+
+=== Address 0x180C2AF4 (Value: 0x4c40000) ===
+ch4_wms_bg_insert_mapping                = reg180c2af4[31:28]      = 0      (0x0)
+ch4_wms_page_insert_mapping              = reg180c2af4[27:24]      = 4      (0x4)
+ch4_wms_bank_free_mapping                = reg180c2af4[23:20]      = 12     (0xc)
+ch4_wms_dir_insert_mapping               = reg180c2af4[19:16]      = 4      (0x4)
+ch4_wms_r2w_dir_insert_mapping           = reg180c2af4[15:12]      = 0      (0x0)
+ch4_wmask_insert_mapping                 = reg180c2af4[11:8]       = 0      (0x0)
+
+=== Address 0x180C2B00 (Value: 0x984080e) ===
+ch5_bg_insert_mapping                    = reg180c2b00[31:28]      = 0      (0x0)
+ch5_page_insert_mapping                  = reg180c2b00[27:24]      = 9      (0x9)
+ch5_bank_free_mapping                    = reg180c2b00[23:20]      = 8      (0x8)
+ch5_dir_insert_mapping                   = reg180c2b00[19:16]      = 4      (0x4)
+ch5_r2w_dir_insert_mapping               = reg180c2b00[15:12]      = 0      (0x0)
+ch5_acc_trigger_sel                      = reg180c2b00[11]         = 1      (0x1)
+ch5_acc_mode                             = reg180c2b00[10]         = 0      (0x0)
+ch5_acc_clr_mode                         = reg180c2b00[9:8]        = 0      (0x0)
+ch5_urg2_wr_brk_en                       = reg180c2b00[7]          = 0      (0x0)
+ch5_urg2_strong_en                       = reg180c2b00[4]          = 0      (0x0)
+ch5_oldest_timer_2_en                    = reg180c2b00[3]          = 1      (0x1)
+ch5_oldest_timer_en                      = reg180c2b00[2]          = 1      (0x1)
+ch5_oldest_cmd_select_en                 = reg180c2b00[1]          = 1      (0x1)
+
+=== Address 0x180C2B04 (Value: 0x7f007f00) ===
+ch5_quota_bw_ini                         = reg180c2b04[31:24]      = 127    (0x7f)
+ch5_bw_quota_max                         = reg180c2b04[15:8]       = 127    (0x7f)
+
+=== Address 0x180C2B08 (Value: 0x20010008) ===
+ch5_oldest_time_2                        = reg180c2b08[31:20]      = 512    (0x200)
+ch5_oldest_time                          = reg180c2b08[19:8]       = 256    (0x100)
+ch5_bw_acc_unit                          = reg180c2b08[3:0]        = 8      (0x8)
+
+=== Address 0x180C2B0C (Value: 0x22003031) ===
+ch5_cmd_extend_num                       = reg180c2b0c[31:28]      = 2      (0x2)
+ch5_extend_bl_max                        = reg180c2b0c[25:20]      = 32     (0x20)
+ch5_ostd_bl_max                          = reg180c2b0c[19:8]       = 48     (0x30)
+ch5_ostd_cmd_max                         = reg180c2b0c[7:4]        = 3      (0x3)
+ch5_outstand_en                          = reg180c2b0c[0]          = 1      (0x1)
+
+=== Address 0x180C2B10 (Value: 0x0) ===
+ch5_wr_brk_time                          = reg180c2b10[9:0]        = 0      (0x0)
+
+=== Address 0x180C2B14 (Value: 0x4c40000) ===
+ch5_wms_bg_insert_mapping                = reg180c2b14[31:28]      = 0      (0x0)
+ch5_wms_page_insert_mapping              = reg180c2b14[27:24]      = 4      (0x4)
+ch5_wms_bank_free_mapping                = reg180c2b14[23:20]      = 12     (0xc)
+ch5_wms_dir_insert_mapping               = reg180c2b14[19:16]      = 4      (0x4)
+ch5_wms_r2w_dir_insert_mapping           = reg180c2b14[15:12]      = 0      (0x0)
+ch5_wmask_insert_mapping                 = reg180c2b14[11:8]       = 0      (0x0)
+
+=== Address 0x180C2B20 (Value: 0x9840802) ===
+ch6_bg_insert_mapping                    = reg180c2b20[31:28]      = 0      (0x0)
+ch6_page_insert_mapping                  = reg180c2b20[27:24]      = 9      (0x9)
+ch6_bank_free_mapping                    = reg180c2b20[23:20]      = 8      (0x8)
+ch6_dir_insert_mapping                   = reg180c2b20[19:16]      = 4      (0x4)
+ch6_r2w_dir_insert_mapping               = reg180c2b20[15:12]      = 0      (0x0)
+ch6_acc_trigger_sel                      = reg180c2b20[11]         = 1      (0x1)
+ch6_acc_mode                             = reg180c2b20[10]         = 0      (0x0)
+ch6_acc_clr_mode                         = reg180c2b20[9:8]        = 0      (0x0)
+ch6_urg2_wr_brk_en                       = reg180c2b20[7]          = 0      (0x0)
+ch6_urg2_strong_en                       = reg180c2b20[4]          = 0      (0x0)
+ch6_oldest_timer_2_en                    = reg180c2b20[3]          = 0      (0x0)
+ch6_oldest_timer_en                      = reg180c2b20[2]          = 0      (0x0)
+ch6_oldest_cmd_select_en                 = reg180c2b20[1]          = 1      (0x1)
+
+=== Address 0x180C2B24 (Value: 0x1f001f00) ===
+ch6_quota_bw_ini                         = reg180c2b24[31:24]      = 31     (0x1f)
+ch6_bw_quota_max                         = reg180c2b24[15:8]       = 31     (0x1f)
+
+=== Address 0x180C2B28 (Value: 0x80040008) ===
+ch6_oldest_time_2                        = reg180c2b28[31:20]      = 2048   (0x800)
+ch6_oldest_time                          = reg180c2b28[19:8]       = 1024   (0x400)
+ch6_bw_acc_unit                          = reg180c2b28[3:0]        = 8      (0x8)
+
+=== Address 0x180C2B2C (Value: 0x42002041) ===
+ch6_cmd_extend_num                       = reg180c2b2c[31:28]      = 4      (0x4)
+ch6_extend_bl_max                        = reg180c2b2c[25:20]      = 32     (0x20)
+ch6_ostd_bl_max                          = reg180c2b2c[19:8]       = 32     (0x20)
+ch6_ostd_cmd_max                         = reg180c2b2c[7:4]        = 4      (0x4)
+ch6_outstand_en                          = reg180c2b2c[0]          = 1      (0x1)
+
+=== Address 0x180C2B30 (Value: 0x0) ===
+ch6_wr_brk_time                          = reg180c2b30[9:0]        = 0      (0x0)
+
+=== Address 0x180C2B34 (Value: 0x4c40000) ===
+ch6_wms_bg_insert_mapping                = reg180c2b34[31:28]      = 0      (0x0)
+ch6_wms_page_insert_mapping              = reg180c2b34[27:24]      = 4      (0x4)
+ch6_wms_bank_free_mapping                = reg180c2b34[23:20]      = 12     (0xc)
+ch6_wms_dir_insert_mapping               = reg180c2b34[19:16]      = 4      (0x4)
+ch6_wms_r2w_dir_insert_mapping           = reg180c2b34[15:12]      = 0      (0x0)
+ch6_wmask_insert_mapping                 = reg180c2b34[11:8]       = 0      (0x0)
+
+=== Address 0x180C2B40 (Value: 0x9840802) ===
+ch7_bg_insert_mapping                    = reg180c2b40[31:28]      = 0      (0x0)
+ch7_page_insert_mapping                  = reg180c2b40[27:24]      = 9      (0x9)
+ch7_bank_free_mapping                    = reg180c2b40[23:20]      = 8      (0x8)
+ch7_dir_insert_mapping                   = reg180c2b40[19:16]      = 4      (0x4)
+ch7_r2w_dir_insert_mapping               = reg180c2b40[15:12]      = 0      (0x0)
+ch7_acc_trigger_sel                      = reg180c2b40[11]         = 1      (0x1)
+ch7_acc_mode                             = reg180c2b40[10]         = 0      (0x0)
+ch7_acc_clr_mode                         = reg180c2b40[9:8]        = 0      (0x0)
+ch7_urg2_wr_brk_en                       = reg180c2b40[7]          = 0      (0x0)
+ch7_urg2_strong_en                       = reg180c2b40[4]          = 0      (0x0)
+ch7_oldest_timer_2_en                    = reg180c2b40[3]          = 0      (0x0)
+ch7_oldest_timer_en                      = reg180c2b40[2]          = 0      (0x0)
+ch7_oldest_cmd_select_en                 = reg180c2b40[1]          = 1      (0x1)
+
+=== Address 0x180C2B44 (Value: 0x6f006f00) ===
+ch7_quota_bw_ini                         = reg180c2b44[31:24]      = 111    (0x6f)
+ch7_bw_quota_max                         = reg180c2b44[15:8]       = 111    (0x6f)
+
+=== Address 0x180C2B48 (Value: 0x10004008) ===
+ch7_oldest_time_2                        = reg180c2b48[31:20]      = 256    (0x100)
+ch7_oldest_time                          = reg180c2b48[19:8]       = 64     (0x40)
+ch7_bw_acc_unit                          = reg180c2b48[3:0]        = 8      (0x8)
+
+=== Address 0x180C2B4C (Value: 0x40002021) ===
+ch7_cmd_extend_num                       = reg180c2b4c[31:28]      = 4      (0x4)
+ch7_extend_bl_max                        = reg180c2b4c[25:20]      = 0      (0x0)
+ch7_ostd_bl_max                          = reg180c2b4c[19:8]       = 32     (0x20)
+ch7_ostd_cmd_max                         = reg180c2b4c[7:4]        = 2      (0x2)
+ch7_outstand_en                          = reg180c2b4c[0]          = 1      (0x1)
+
+=== Address 0x180C2B50 (Value: 0x0) ===
+ch7_wr_brk_time                          = reg180c2b50[9:0]        = 0      (0x0)
+
+=== Address 0x180C2B54 (Value: 0x4c40000) ===
+ch7_wms_bg_insert_mapping                = reg180c2b54[31:28]      = 0      (0x0)
+ch7_wms_page_insert_mapping              = reg180c2b54[27:24]      = 4      (0x4)
+ch7_wms_bank_free_mapping                = reg180c2b54[23:20]      = 12     (0xc)
+ch7_wms_dir_insert_mapping               = reg180c2b54[19:16]      = 4      (0x4)
+ch7_wms_r2w_dir_insert_mapping           = reg180c2b54[15:12]      = 0      (0x0)
+ch7_wmask_insert_mapping                 = reg180c2b54[11:8]       = 0      (0x0)
+
+=== Address 0x180C2B60 (Value: 0x9840802) ===
+ch8_bg_insert_mapping                    = reg180c2b60[31:28]      = 0      (0x0)
+ch8_page_insert_mapping                  = reg180c2b60[27:24]      = 9      (0x9)
+ch8_bank_free_mapping                    = reg180c2b60[23:20]      = 8      (0x8)
+ch8_dir_insert_mapping                   = reg180c2b60[19:16]      = 4      (0x4)
+ch8_r2w_dir_insert_mapping               = reg180c2b60[15:12]      = 0      (0x0)
+ch8_acc_trigger_sel                      = reg180c2b60[11]         = 1      (0x1)
+ch8_acc_mode                             = reg180c2b60[10]         = 0      (0x0)
+ch8_acc_clr_mode                         = reg180c2b60[9:8]        = 0      (0x0)
+ch8_urg2_wr_brk_en                       = reg180c2b60[7]          = 0      (0x0)
+ch8_urg2_strong_en                       = reg180c2b60[4]          = 0      (0x0)
+ch8_oldest_timer_2_en                    = reg180c2b60[3]          = 0      (0x0)
+ch8_oldest_timer_en                      = reg180c2b60[2]          = 0      (0x0)
+ch8_oldest_cmd_select_en                 = reg180c2b60[1]          = 1      (0x1)
+
+=== Address 0x180C2B64 (Value: 0x5f005f00) ===
+ch8_quota_bw_ini                         = reg180c2b64[31:24]      = 95     (0x5f)
+ch8_bw_quota_max                         = reg180c2b64[15:8]       = 95     (0x5f)
+
+=== Address 0x180C2B68 (Value: 0x10004008) ===
+ch8_oldest_time_2                        = reg180c2b68[31:20]      = 256    (0x100)
+ch8_oldest_time                          = reg180c2b68[19:8]       = 64     (0x40)
+ch8_bw_acc_unit                          = reg180c2b68[3:0]        = 8      (0x8)
+
+=== Address 0x180C2B6C (Value: 0x40002021) ===
+ch8_cmd_extend_num                       = reg180c2b6c[31:28]      = 4      (0x4)
+ch8_extend_bl_max                        = reg180c2b6c[25:20]      = 0      (0x0)
+ch8_ostd_bl_max                          = reg180c2b6c[19:8]       = 32     (0x20)
+ch8_ostd_cmd_max                         = reg180c2b6c[7:4]        = 2      (0x2)
+ch8_outstand_en                          = reg180c2b6c[0]          = 1      (0x1)
+
+=== Address 0x180C2B70 (Value: 0x0) ===
+ch8_wr_brk_time                          = reg180c2b70[9:0]        = 0      (0x0)
+
+=== Address 0x180C2B74 (Value: 0x4c40000) ===
+ch8_wms_bg_insert_mapping                = reg180c2b74[31:28]      = 0      (0x0)
+ch8_wms_page_insert_mapping              = reg180c2b74[27:24]      = 4      (0x4)
+ch8_wms_bank_free_mapping                = reg180c2b74[23:20]      = 12     (0xc)
+ch8_wms_dir_insert_mapping               = reg180c2b74[19:16]      = 4      (0x4)
+ch8_wms_r2w_dir_insert_mapping           = reg180c2b74[15:12]      = 0      (0x0)
+ch8_wmask_insert_mapping                 = reg180c2b74[11:8]       = 0      (0x0)
+
+=== Address 0x180C2B80 (Value: 0x9840802) ===
+ch9_bg_insert_mapping                    = reg180c2b80[31:28]      = 0      (0x0)
+ch9_page_insert_mapping                  = reg180c2b80[27:24]      = 9      (0x9)
+ch9_bank_free_mapping                    = reg180c2b80[23:20]      = 8      (0x8)
+ch9_dir_insert_mapping                   = reg180c2b80[19:16]      = 4      (0x4)
+ch9_r2w_dir_insert_mapping               = reg180c2b80[15:12]      = 0      (0x0)
+ch9_acc_trigger_sel                      = reg180c2b80[11]         = 1      (0x1)
+ch9_acc_mode                             = reg180c2b80[10]         = 0      (0x0)
+ch9_acc_clr_mode                         = reg180c2b80[9:8]        = 0      (0x0)
+ch9_urg2_wr_brk_en                       = reg180c2b80[7]          = 0      (0x0)
+ch9_urg2_strong_en                       = reg180c2b80[4]          = 0      (0x0)
+ch9_oldest_timer_2_en                    = reg180c2b80[3]          = 0      (0x0)
+ch9_oldest_timer_en                      = reg180c2b80[2]          = 0      (0x0)
+ch9_oldest_cmd_select_en                 = reg180c2b80[1]          = 1      (0x1)
+
+=== Address 0x180C2B84 (Value: 0x5f005f00) ===
+ch9_quota_bw_ini                         = reg180c2b84[31:24]      = 95     (0x5f)
+ch9_bw_quota_max                         = reg180c2b84[15:8]       = 95     (0x5f)
+
+=== Address 0x180C2B88 (Value: 0x10004008) ===
+ch9_oldest_time_2                        = reg180c2b88[31:20]      = 256    (0x100)
+ch9_oldest_time                          = reg180c2b88[19:8]       = 64     (0x40)
+ch9_bw_acc_unit                          = reg180c2b88[3:0]        = 8      (0x8)
+
+=== Address 0x180C2B8C (Value: 0x40002021) ===
+ch9_cmd_extend_num                       = reg180c2b8c[31:28]      = 4      (0x4)
+ch9_extend_bl_max                        = reg180c2b8c[25:20]      = 0      (0x0)
+ch9_ostd_bl_max                          = reg180c2b8c[19:8]       = 32     (0x20)
+ch9_ostd_cmd_max                         = reg180c2b8c[7:4]        = 2      (0x2)
+ch9_outstand_en                          = reg180c2b8c[0]          = 1      (0x1)
+
+=== Address 0x180C2B90 (Value: 0x0) ===
+ch9_wr_brk_time                          = reg180c2b90[9:0]        = 0      (0x0)
+
+=== Address 0x180C2B94 (Value: 0x4c40000) ===
+ch9_wms_bg_insert_mapping                = reg180c2b94[31:28]      = 0      (0x0)
+ch9_wms_page_insert_mapping              = reg180c2b94[27:24]      = 4      (0x4)
+ch9_wms_bank_free_mapping                = reg180c2b94[23:20]      = 12     (0xc)
+ch9_wms_dir_insert_mapping               = reg180c2b94[19:16]      = 4      (0x4)
+ch9_wms_r2w_dir_insert_mapping           = reg180c2b94[15:12]      = 0      (0x0)
+ch9_wmask_insert_mapping                 = reg180c2b94[11:8]       = 0      (0x0)
+
+=== Address 0x180C4800 (Value: 0x4c40000) ===
+limit_ostd_cmd_max_lv2_0                 = reg180c4800[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_0               = reg180c4800[27:24]      = 4      (0x4)
+limit_ostd_cmd_max_0                     = reg180c4800[23:20]      = 12     (0xc)
+limit_cmd_extend_num_0                   = reg180c4800[19:16]      = 4      (0x4)
+limit_ref_list_0                         = reg180c4800[15:2]       = 0      (0x0)
+limit_en_0                               = reg180c4800[1:0]        = 0      (0x0)
+
+=== Address 0x180C4804 (Value: 0x4c40000) ===
+limit_ostd_cmd_max_lv2_1                 = reg180c4804[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_1               = reg180c4804[27:24]      = 4      (0x4)
+limit_ostd_cmd_max_1                     = reg180c4804[23:20]      = 12     (0xc)
+limit_cmd_extend_num_1                   = reg180c4804[19:16]      = 4      (0x4)
+limit_ref_list_1                         = reg180c4804[15:2]       = 0      (0x0)
+limit_en_1                               = reg180c4804[1:0]        = 0      (0x0)
+
+=== Address 0x180C4808 (Value: 0x4c40000) ===
+limit_ostd_cmd_max_lv2_2                 = reg180c4808[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_2               = reg180c4808[27:24]      = 4      (0x4)
+limit_ostd_cmd_max_2                     = reg180c4808[23:20]      = 12     (0xc)
+limit_cmd_extend_num_2                   = reg180c4808[19:16]      = 4      (0x4)
+limit_ref_list_2                         = reg180c4808[15:2]       = 0      (0x0)
+limit_en_2                               = reg180c4808[1:0]        = 0      (0x0)
+
+=== Address 0x180C480C (Value: 0x4c40000) ===
+limit_ostd_cmd_max_lv2_3                 = reg180c480c[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_3               = reg180c480c[27:24]      = 4      (0x4)
+limit_ostd_cmd_max_3                     = reg180c480c[23:20]      = 12     (0xc)
+limit_cmd_extend_num_3                   = reg180c480c[19:16]      = 4      (0x4)
+limit_ref_list_3                         = reg180c480c[15:2]       = 0      (0x0)
+limit_en_3                               = reg180c480c[1:0]        = 0      (0x0)
+
+=== Address 0x180C4810 (Value: 0x4c40000) ===
+limit_ostd_cmd_max_lv2_4                 = reg180c4810[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_4               = reg180c4810[27:24]      = 4      (0x4)
+limit_ostd_cmd_max_4                     = reg180c4810[23:20]      = 12     (0xc)
+limit_cmd_extend_num_4                   = reg180c4810[19:16]      = 4      (0x4)
+limit_ref_list_4                         = reg180c4810[15:2]       = 0      (0x0)
+limit_en_4                               = reg180c4810[1:0]        = 0      (0x0)
+
+=== Address 0x180C4814 (Value: 0x4c40000) ===
+limit_ostd_cmd_max_lv2_5                 = reg180c4814[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_5               = reg180c4814[27:24]      = 4      (0x4)
+limit_ostd_cmd_max_5                     = reg180c4814[23:20]      = 12     (0xc)
+limit_cmd_extend_num_5                   = reg180c4814[19:16]      = 4      (0x4)
+limit_ref_list_5                         = reg180c4814[15:2]       = 0      (0x0)
+limit_en_5                               = reg180c4814[1:0]        = 0      (0x0)
+
+=== Address 0x180C4818 (Value: 0x4c40000) ===
+limit_ostd_cmd_max_lv2_6                 = reg180c4818[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_6               = reg180c4818[27:24]      = 4      (0x4)
+limit_ostd_cmd_max_6                     = reg180c4818[23:20]      = 12     (0xc)
+limit_cmd_extend_num_6                   = reg180c4818[19:16]      = 4      (0x4)
+limit_ref_list_6                         = reg180c4818[15:2]       = 0      (0x0)
+limit_en_6                               = reg180c4818[1:0]        = 0      (0x0)
+
+=== Address 0x180C481C (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_7                 = reg180c481c[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_7               = reg180c481c[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_7                     = reg180c481c[23:20]      = 0      (0x0)
+limit_cmd_extend_num_7                   = reg180c481c[19:16]      = 0      (0x0)
+limit_ref_list_7                         = reg180c481c[15:2]       = 0      (0x0)
+limit_en_7                               = reg180c481c[1:0]        = 0      (0x0)
+
+=== Address 0x180C4820 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_8                 = reg180c4820[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_8               = reg180c4820[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_8                     = reg180c4820[23:20]      = 0      (0x0)
+limit_cmd_extend_num_8                   = reg180c4820[19:16]      = 0      (0x0)
+limit_ref_list_8                         = reg180c4820[15:2]       = 0      (0x0)
+limit_en_8                               = reg180c4820[1:0]        = 0      (0x0)
+
+=== Address 0x180C4824 (Value: 0x0) ===
+limit_ostd_cmd_max_lv2_9                 = reg180c4824[31:28]      = 0      (0x0)
+limit_cmd_extend_num_lv2_9               = reg180c4824[27:24]      = 0      (0x0)
+limit_ostd_cmd_max_9                     = reg180c4824[23:20]      = 0      (0x0)
+limit_cmd_extend_num_9                   = reg180c4824[19:16]      = 0      (0x0)
+limit_ref_list_9                         = reg180c4824[15:2]       = 0      (0x0)
+limit_en_9                               = reg180c4824[1:0]        = 0      (0x0)
+
+=== Address 0x180C4840 (Value: 0x0) ===
+limit_data_num_lv2_0                     = reg180c4840[31:16]      = 0      (0x0)
+limit_data_num_0                         = reg180c4840[15:0]       = 0      (0x0)
+
+=== Address 0x180C4844 (Value: 0x4c40000) ===
+limit_data_num_lv2_1                     = reg180c4844[31:16]      = 1220   (0x4c4)
+limit_data_num_1                         = reg180c4844[15:0]       = 0      (0x0)
+
+=== Address 0x180C4848 (Value: 0x0) ===
+limit_data_num_lv2_2                     = reg180c4848[31:16]      = 0      (0x0)
+limit_data_num_2                         = reg180c4848[15:0]       = 0      (0x0)
+
+=== Address 0x180C484C (Value: 0x0) ===
+limit_data_num_lv2_3                     = reg180c484c[31:16]      = 0      (0x0)
+limit_data_num_3                         = reg180c484c[15:0]       = 0      (0x0)
+
+=== Address 0x180C4850 (Value: 0x4c40000) ===
+limit_data_num_lv2_4                     = reg180c4850[31:16]      = 1220   (0x4c4)
+limit_data_num_4                         = reg180c4850[15:0]       = 0      (0x0)
+
+=== Address 0x180C4854 (Value: 0x0) ===
+limit_data_num_lv2_5                     = reg180c4854[31:16]      = 0      (0x0)
+limit_data_num_5                         = reg180c4854[15:0]       = 0      (0x0)
+
+=== Address 0x180C4858 (Value: 0x0) ===
+limit_data_num_lv2_6                     = reg180c4858[31:16]      = 0      (0x0)
+limit_data_num_6                         = reg180c4858[15:0]       = 0      (0x0)
+
+=== Address 0x180C485C (Value: 0x4c40000) ===
+limit_data_num_lv2_7                     = reg180c485c[31:16]      = 1220   (0x4c4)
+limit_data_num_7                         = reg180c485c[15:0]       = 0      (0x0)
+
+=== Address 0x180C4860 (Value: 0x0) ===
+limit_data_num_lv2_8                     = reg180c4860[31:16]      = 0      (0x0)
+limit_data_num_8                         = reg180c4860[15:0]       = 0      (0x0)
+
+=== Address 0x180C4864 (Value: 0x4c40000) ===
+limit_data_num_lv2_9                     = reg180c4864[31:16]      = 1220   (0x4c4)
+limit_data_num_9                         = reg180c4864[15:0]       = 0      (0x0)
+
+=== Address 0x180C4880 (Value: 0x0) ===
+limit_timer_cycle_0                      = reg180c4880[15:0]       = 0      (0x0)
+
+=== Address 0x180C4884 (Value: 0x0) ===
+limit_timer_cycle_1                      = reg180c4884[15:0]       = 0      (0x0)
+
+=== Address 0x180C4888 (Value: 0x0) ===
+limit_timer_cycle_2                      = reg180c4888[15:0]       = 0      (0x0)
+
+=== Address 0x180C488C (Value: 0x4c40000) ===
+limit_timer_cycle_3                      = reg180c488c[15:0]       = 0      (0x0)
+
+=== Address 0x180C4890 (Value: 0x0) ===
+limit_timer_cycle_4                      = reg180c4890[15:0]       = 0      (0x0)
+
+=== Address 0x180C4894 (Value: 0x0) ===
+limit_timer_cycle_5                      = reg180c4894[15:0]       = 0      (0x0)
+
+=== Address 0x180C4898 (Value: 0x0) ===
+limit_timer_cycle_6                      = reg180c4898[15:0]       = 0      (0x0)
+
+=== Address 0x180C489C (Value: 0x0) ===
+limit_timer_cycle_7                      = reg180c489c[15:0]       = 0      (0x0)
+
+=== Address 0x180C48A0 (Value: 0x0) ===
+limit_timer_cycle_8                      = reg180c48a0[15:0]       = 0      (0x0)
+
+=== Address 0x180C48A4 (Value: 0x0) ===
+limit_timer_cycle_9                      = reg180c48a4[15:0]       = 0      (0x0)
+
+=== Address 0x180C4A00 (Value: 0x643) ===
+hi_priority_id6_en                       = reg180c4a00[22]         = 0      (0x0)
+hi_priority_id3_en                       = reg180c4a00[19]         = 0      (0x0)
+hi_priority_id2_en                       = reg180c4a00[18]         = 0      (0x0)
+hi_priority_id1_en                       = reg180c4a00[17]         = 0      (0x0)
+hi_priority_id0_en                       = reg180c4a00[16]         = 0      (0x0)
+dis_tracking_gp1_id_en                   = reg180c4a00[15]         = 0      (0x0)
+dis_tracking_gp0_id_en                   = reg180c4a00[14]         = 0      (0x0)
+dis_tracking_id0_en                      = reg180c4a00[13]         = 0      (0x0)
+dis_tracking_id1_en                      = reg180c4a00[12]         = 0      (0x0)
+ch_ref_bl_gt_sel                         = reg180c4a00[11]         = 0      (0x0)
+ch_un_match_id_pg_wt                     = reg180c4a00[10]         = 1      (0x1)
+ch_tag_tracking                          = reg180c4a00[9]          = 1      (0x1)
+ch_dir_cont_chg_sel                      = reg180c4a00[8]          = 0      (0x0)
+ch_parser_cmd_limt_sel                   = reg180c4a00[7]          = 0      (0x0)
+ch_dir_short_dly_en                      = reg180c4a00[6]          = 1      (0x1)
+ch_dir_cont_bl_mode                      = reg180c4a00[5:4]        = 0      (0x0)
+tracking_sel                             = reg180c4a00[3]          = 0      (0x0)
+bank_wr_sel                              = reg180c4a00[2]          = 0      (0x0)
+channel_id_weight_en                     = reg180c4a00[1]          = 1      (0x1)
+channel_rw_weight_en                     = reg180c4a00[0]          = 1      (0x1)
+
+=== Address 0x180C4A10 (Value: 0x0) ===
+hi_priority_id3                          = reg180c4a10[31:24]      = 0      (0x0)
+hi_priority_id2                          = reg180c4a10[23:16]      = 0      (0x0)
+hi_priority_id1                          = reg180c4a10[15:8]       = 0      (0x0)
+hi_priority_id0                          = reg180c4a10[7:0]        = 0      (0x0)
+
+=== Address 0x180C4A14 (Value: 0x0) ===
+hi_priority_mask_id6                     = reg180c4a14[31:24]      = 0      (0x0)
+hi_priority_id6                          = reg180c4a14[23:16]      = 0      (0x0)
+
+=== Address 0x180C4A18 (Value: 0x40000000) ===
+ch_dir_max_bl                            = reg180c4a18[31:20]      = 1024   (0x400)
+reg_ch_rw_match_mask_cycel_sel           = reg180c4a18[18:16]      = 0      (0x0)
+reg_ch_wr_chg_wait_time                  = reg180c4a18[12:8]       = 0      (0x0)
+reg_wr_chg_revert_en                     = reg180c4a18[4]          = 0      (0x0)
+
+=== Address 0x180C4A1C (Value: 0x12c0000) ===
+total_rw_bl_low_bound_2                  = reg180c4a1c[28:16]      = 300    (0x12c)
+
+=== Address 0x180C4A20 (Value: 0xfa00fa) ===
+total_rw_bl_low_bound_w                  = reg180c4a20[28:16]      = 250    (0xfa)
+total_rw_bl_low_bound_r                  = reg180c4a20[12:0]       = 250    (0xfa)
+
+=== Address 0x180C4A24 (Value: 0x180630) ===
+long_bl_thr                              = reg180c4a24[21:16]      = 24     (0x18)
+short_rw_ps_bl_thr                       = reg180c4a24[12:8]       = 6      (0x6)
+short_rw_bl_thr                          = reg180c4a24[7:0]        = 48     (0x30)
+
+=== Address 0x180C4A28 (Value: 0x7f01) ===
+ref_mask_dir                             = reg180c4a28[31:30]      = 0      (0x0)
+ddr4_cmd_inorder_en                      = reg180c4a28[24]         = 0      (0x0)
+ref_mask_ch                              = reg180c4a28[23:20]      = 0      (0x0)
+ref_mask_urg2_ch                         = reg180c4a28[16:8]       = 127    (0x7f)
+ref_mask_id3_en                          = reg180c4a28[7]          = 0      (0x0)
+ref_mask_id2_en                          = reg180c4a28[6]          = 0      (0x0)
+ref_mask_id1_en                          = reg180c4a28[5]          = 0      (0x0)
+ref_mask_id0_en                          = reg180c4a28[4]          = 0      (0x0)
+ch_ahead_en                              = reg180c4a28[0]          = 1      (0x1)
+
+=== Address 0x180C4A2C (Value: 0x3af00a7) ===
+ch_parser_total_bl_max                   = reg180c4a2c[25:16]      = 943    (0x3af)
+ch_ddr4_balance_cmd_max                  = reg180c4a2c[7:4]        = 10     (0xa)
+ch_parser_cmd_max                        = reg180c4a2c[3:0]        = 7      (0x7)
+
+=== Address 0x180C4A30 (Value: 0x80005) ===
+ddr4_balance_bl_thr                      = reg180c4a30[21:16]      = 8      (0x8)
+ddr4_db_tracking                         = reg180c4a30[2]          = 1      (0x1)
+ddr4_fast_con                            = reg180c4a30[1]          = 0      (0x0)
+ddr4_balance_con                         = reg180c4a30[0]          = 1      (0x1)
+
+=== Address 0x180C4A34 (Value: 0x3ff0000) ===
+ch_max_id_bl_thr                         = reg180c4a34[25:16]      = 1023   (0x3ff)
+ch_max_id_bl_en                          = reg180c4a34[0]          = 0      (0x0)
+
+=== Address 0x180C4A3C (Value: 0xffffff) ===
+dis_tracking_gp0_id                      = reg180c4a3c[23:20]      = 15     (0xf)
+dis_tracking_gp1_id                      = reg180c4a3c[19:16]      = 15     (0xf)
+dis_tracking_id1                         = reg180c4a3c[15:8]       = 255    (0xff)
+dis_tracking_id0                         = reg180c4a3c[7:0]        = 255    (0xff)
+
+=== Address 0x180C4A60 (Value: 0x9840802) ===
+ch0_bg_insert_mapping                    = reg180c4a60[31:28]      = 0      (0x0)
+ch0_page_insert_mapping                  = reg180c4a60[27:24]      = 9      (0x9)
+ch0_bank_free_mapping                    = reg180c4a60[23:20]      = 8      (0x8)
+ch0_dir_insert_mapping                   = reg180c4a60[19:16]      = 4      (0x4)
+ch0_r2w_dir_insert_mapping               = reg180c4a60[15:12]      = 0      (0x0)
+ch0_acc_trigger_sel                      = reg180c4a60[11]         = 1      (0x1)
+ch0_acc_mode                             = reg180c4a60[10]         = 0      (0x0)
+ch0_acc_clr_mode                         = reg180c4a60[9:8]        = 0      (0x0)
+ch0_urg2_wr_brk_en                       = reg180c4a60[7]          = 0      (0x0)
+ch0_urg2_strong_en                       = reg180c4a60[4]          = 0      (0x0)
+ch0_oldest_timer_2_en                    = reg180c4a60[3]          = 0      (0x0)
+ch0_oldest_timer_en                      = reg180c4a60[2]          = 0      (0x0)
+ch0_oldest_cmd_select_en                 = reg180c4a60[1]          = 1      (0x1)
+
+=== Address 0x180C4A64 (Value: 0x6f006f00) ===
+ch0_quota_bw_ini                         = reg180c4a64[31:24]      = 111    (0x6f)
+ch0_bw_quota_max                         = reg180c4a64[15:8]       = 111    (0x6f)
+
+=== Address 0x180C4A68 (Value: 0x80020008) ===
+ch0_oldest_time_2                        = reg180c4a68[31:20]      = 2048   (0x800)
+ch0_oldest_time                          = reg180c4a68[19:8]       = 512    (0x200)
+ch0_bw_acc_unit                          = reg180c4a68[3:0]        = 8      (0x8)
+
+=== Address 0x180C4A6C (Value: 0x42002041) ===
+ch0_cmd_extend_num                       = reg180c4a6c[31:28]      = 4      (0x4)
+ch0_extend_bl_max                        = reg180c4a6c[25:20]      = 32     (0x20)
+ch0_ostd_bl_max                          = reg180c4a6c[19:8]       = 32     (0x20)
+ch0_ostd_cmd_max                         = reg180c4a6c[7:4]        = 4      (0x4)
+ch0_outstand_en                          = reg180c4a6c[0]          = 1      (0x1)
+
+=== Address 0x180C4A70 (Value: 0x0) ===
+ch0_wr_brk_time                          = reg180c4a70[9:0]        = 0      (0x0)
+
+=== Address 0x180C4A74 (Value: 0x4c40000) ===
+ch0_wms_bg_insert_mapping                = reg180c4a74[31:28]      = 0      (0x0)
+ch0_wms_page_insert_mapping              = reg180c4a74[27:24]      = 4      (0x4)
+ch0_wms_bank_free_mapping                = reg180c4a74[23:20]      = 12     (0xc)
+ch0_wms_dir_insert_mapping               = reg180c4a74[19:16]      = 4      (0x4)
+ch0_wms_r2w_dir_insert_mapping           = reg180c4a74[15:12]      = 0      (0x0)
+ch0_wmask_insert_mapping                 = reg180c4a74[11:8]       = 0      (0x0)
+
+=== Address 0x180C4A80 (Value: 0x9840802) ===
+ch1_bg_insert_mapping                    = reg180c4a80[31:28]      = 0      (0x0)
+ch1_page_insert_mapping                  = reg180c4a80[27:24]      = 9      (0x9)
+ch1_bank_free_mapping                    = reg180c4a80[23:20]      = 8      (0x8)
+ch1_dir_insert_mapping                   = reg180c4a80[19:16]      = 4      (0x4)
+ch1_r2w_dir_insert_mapping               = reg180c4a80[15:12]      = 0      (0x0)
+ch1_acc_trigger_sel                      = reg180c4a80[11]         = 1      (0x1)
+ch1_acc_mode                             = reg180c4a80[10]         = 0      (0x0)
+ch1_acc_clr_mode                         = reg180c4a80[9:8]        = 0      (0x0)
+ch1_urg2_wr_brk_en                       = reg180c4a80[7]          = 0      (0x0)
+ch1_urg2_strong_en                       = reg180c4a80[4]          = 0      (0x0)
+ch1_oldest_timer_2_en                    = reg180c4a80[3]          = 0      (0x0)
+ch1_oldest_timer_en                      = reg180c4a80[2]          = 0      (0x0)
+ch1_oldest_cmd_select_en                 = reg180c4a80[1]          = 1      (0x1)
+
+=== Address 0x180C4A84 (Value: 0x7f007f00) ===
+ch1_quota_bw_ini                         = reg180c4a84[31:24]      = 127    (0x7f)
+ch1_bw_quota_max                         = reg180c4a84[15:8]       = 127    (0x7f)
+
+=== Address 0x180C4A88 (Value: 0x80000208) ===
+ch1_oldest_time_2                        = reg180c4a88[31:20]      = 2048   (0x800)
+ch1_oldest_time                          = reg180c4a88[19:8]       = 2      (0x2)
+ch1_bw_acc_unit                          = reg180c4a88[3:0]        = 8      (0x8)
+
+=== Address 0x180C4A8C (Value: 0x21001021) ===
+ch1_cmd_extend_num                       = reg180c4a8c[31:28]      = 2      (0x2)
+ch1_extend_bl_max                        = reg180c4a8c[25:20]      = 16     (0x10)
+ch1_ostd_bl_max                          = reg180c4a8c[19:8]       = 16     (0x10)
+ch1_ostd_cmd_max                         = reg180c4a8c[7:4]        = 2      (0x2)
+ch1_outstand_en                          = reg180c4a8c[0]          = 1      (0x1)
+
+=== Address 0x180C4A90 (Value: 0x0) ===
+ch1_wr_brk_time                          = reg180c4a90[9:0]        = 0      (0x0)
+
+=== Address 0x180C4A94 (Value: 0x4c40000) ===
+ch1_wms_bg_insert_mapping                = reg180c4a94[31:28]      = 0      (0x0)
+ch1_wms_page_insert_mapping              = reg180c4a94[27:24]      = 4      (0x4)
+ch1_wms_bank_free_mapping                = reg180c4a94[23:20]      = 12     (0xc)
+ch1_wms_dir_insert_mapping               = reg180c4a94[19:16]      = 4      (0x4)
+ch1_wms_r2w_dir_insert_mapping           = reg180c4a94[15:12]      = 0      (0x0)
+ch1_wmask_insert_mapping                 = reg180c4a94[11:8]       = 0      (0x0)
+
+=== Address 0x180C4AA0 (Value: 0x9840802) ===
+ch2_bg_insert_mapping                    = reg180c4aa0[31:28]      = 0      (0x0)
+ch2_page_insert_mapping                  = reg180c4aa0[27:24]      = 9      (0x9)
+ch2_bank_free_mapping                    = reg180c4aa0[23:20]      = 8      (0x8)
+ch2_dir_insert_mapping                   = reg180c4aa0[19:16]      = 4      (0x4)
+ch2_r2w_dir_insert_mapping               = reg180c4aa0[15:12]      = 0      (0x0)
+ch2_acc_trigger_sel                      = reg180c4aa0[11]         = 1      (0x1)
+ch2_acc_mode                             = reg180c4aa0[10]         = 0      (0x0)
+ch2_acc_clr_mode                         = reg180c4aa0[9:8]        = 0      (0x0)
+ch2_urg2_wr_brk_en                       = reg180c4aa0[7]          = 0      (0x0)
+ch2_urg2_strong_en                       = reg180c4aa0[4]          = 0      (0x0)
+ch2_oldest_timer_2_en                    = reg180c4aa0[3]          = 0      (0x0)
+ch2_oldest_timer_en                      = reg180c4aa0[2]          = 0      (0x0)
+ch2_oldest_cmd_select_en                 = reg180c4aa0[1]          = 1      (0x1)
+
+=== Address 0x180C4AA4 (Value: 0x6f006f00) ===
+ch2_quota_bw_ini                         = reg180c4aa4[31:24]      = 111    (0x6f)
+ch2_bw_quota_max                         = reg180c4aa4[15:8]       = 111    (0x6f)
+
+=== Address 0x180C4AA8 (Value: 0x7ff04008) ===
+ch2_oldest_time_2                        = reg180c4aa8[31:20]      = 2047   (0x7ff)
+ch2_oldest_time                          = reg180c4aa8[19:8]       = 64     (0x40)
+ch2_bw_acc_unit                          = reg180c4aa8[3:0]        = 8      (0x8)
+
+=== Address 0x180C4AAC (Value: 0x40008081) ===
+ch2_cmd_extend_num                       = reg180c4aac[31:28]      = 4      (0x4)
+ch2_extend_bl_max                        = reg180c4aac[25:20]      = 0      (0x0)
+ch2_ostd_bl_max                          = reg180c4aac[19:8]       = 128    (0x80)
+ch2_ostd_cmd_max                         = reg180c4aac[7:4]        = 8      (0x8)
+ch2_outstand_en                          = reg180c4aac[0]          = 1      (0x1)
+
+=== Address 0x180C4AB0 (Value: 0x0) ===
+ch2_wr_brk_time                          = reg180c4ab0[9:0]        = 0      (0x0)
+
+=== Address 0x180C4AB4 (Value: 0x4c40000) ===
+ch2_wms_bg_insert_mapping                = reg180c4ab4[31:28]      = 0      (0x0)
+ch2_wms_page_insert_mapping              = reg180c4ab4[27:24]      = 4      (0x4)
+ch2_wms_bank_free_mapping                = reg180c4ab4[23:20]      = 12     (0xc)
+ch2_wms_dir_insert_mapping               = reg180c4ab4[19:16]      = 4      (0x4)
+ch2_wms_r2w_dir_insert_mapping           = reg180c4ab4[15:12]      = 0      (0x0)
+ch2_wmask_insert_mapping                 = reg180c4ab4[11:8]       = 0      (0x0)
+
+=== Address 0x180C4AC0 (Value: 0x9840802) ===
+ch3_bg_insert_mapping                    = reg180c4ac0[31:28]      = 0      (0x0)
+ch3_page_insert_mapping                  = reg180c4ac0[27:24]      = 9      (0x9)
+ch3_bank_free_mapping                    = reg180c4ac0[23:20]      = 8      (0x8)
+ch3_dir_insert_mapping                   = reg180c4ac0[19:16]      = 4      (0x4)
+ch3_r2w_dir_insert_mapping               = reg180c4ac0[15:12]      = 0      (0x0)
+ch3_acc_trigger_sel                      = reg180c4ac0[11]         = 1      (0x1)
+ch3_acc_mode                             = reg180c4ac0[10]         = 0      (0x0)
+ch3_acc_clr_mode                         = reg180c4ac0[9:8]        = 0      (0x0)
+ch3_urg2_wr_brk_en                       = reg180c4ac0[7]          = 0      (0x0)
+ch3_urg2_strong_en                       = reg180c4ac0[4]          = 0      (0x0)
+ch3_oldest_timer_2_en                    = reg180c4ac0[3]          = 0      (0x0)
+ch3_oldest_timer_en                      = reg180c4ac0[2]          = 0      (0x0)
+ch3_oldest_cmd_select_en                 = reg180c4ac0[1]          = 1      (0x1)
+
+=== Address 0x180C4AC4 (Value: 0x5f005f00) ===
+ch3_quota_bw_ini                         = reg180c4ac4[31:24]      = 95     (0x5f)
+ch3_bw_quota_max                         = reg180c4ac4[15:8]       = 95     (0x5f)
+
+=== Address 0x180C4AC8 (Value: 0x7ff08008) ===
+ch3_oldest_time_2                        = reg180c4ac8[31:20]      = 2047   (0x7ff)
+ch3_oldest_time                          = reg180c4ac8[19:8]       = 128    (0x80)
+ch3_bw_acc_unit                          = reg180c4ac8[3:0]        = 8      (0x8)
+
+=== Address 0x180C4ACC (Value: 0x40008081) ===
+ch3_cmd_extend_num                       = reg180c4acc[31:28]      = 4      (0x4)
+ch3_extend_bl_max                        = reg180c4acc[25:20]      = 0      (0x0)
+ch3_ostd_bl_max                          = reg180c4acc[19:8]       = 128    (0x80)
+ch3_ostd_cmd_max                         = reg180c4acc[7:4]        = 8      (0x8)
+ch3_outstand_en                          = reg180c4acc[0]          = 1      (0x1)
+
+=== Address 0x180C4AD0 (Value: 0x0) ===
+ch3_wr_brk_time                          = reg180c4ad0[9:0]        = 0      (0x0)
+
+=== Address 0x180C4AD4 (Value: 0x4c40000) ===
+ch3_wms_bg_insert_mapping                = reg180c4ad4[31:28]      = 0      (0x0)
+ch3_wms_page_insert_mapping              = reg180c4ad4[27:24]      = 4      (0x4)
+ch3_wms_bank_free_mapping                = reg180c4ad4[23:20]      = 12     (0xc)
+ch3_wms_dir_insert_mapping               = reg180c4ad4[19:16]      = 4      (0x4)
+ch3_wms_r2w_dir_insert_mapping           = reg180c4ad4[15:12]      = 0      (0x0)
+ch3_wmask_insert_mapping                 = reg180c4ad4[11:8]       = 0      (0x0)
+
+=== Address 0x180C4AE0 (Value: 0x9840802) ===
+ch4_bg_insert_mapping                    = reg180c4ae0[31:28]      = 0      (0x0)
+ch4_page_insert_mapping                  = reg180c4ae0[27:24]      = 9      (0x9)
+ch4_bank_free_mapping                    = reg180c4ae0[23:20]      = 8      (0x8)
+ch4_dir_insert_mapping                   = reg180c4ae0[19:16]      = 4      (0x4)
+ch4_r2w_dir_insert_mapping               = reg180c4ae0[15:12]      = 0      (0x0)
+ch4_acc_trigger_sel                      = reg180c4ae0[11]         = 1      (0x1)
+ch4_acc_mode                             = reg180c4ae0[10]         = 0      (0x0)
+ch4_acc_clr_mode                         = reg180c4ae0[9:8]        = 0      (0x0)
+ch4_urg2_wr_brk_en                       = reg180c4ae0[7]          = 0      (0x0)
+ch4_urg2_strong_en                       = reg180c4ae0[4]          = 0      (0x0)
+ch4_oldest_timer_2_en                    = reg180c4ae0[3]          = 0      (0x0)
+ch4_oldest_timer_en                      = reg180c4ae0[2]          = 0      (0x0)
+ch4_oldest_cmd_select_en                 = reg180c4ae0[1]          = 1      (0x1)
+
+=== Address 0x180C4AE4 (Value: 0x4f004f00) ===
+ch4_quota_bw_ini                         = reg180c4ae4[31:24]      = 79     (0x4f)
+ch4_bw_quota_max                         = reg180c4ae4[15:8]       = 79     (0x4f)
+
+=== Address 0x180C4AE8 (Value: 0x80010008) ===
+ch4_oldest_time_2                        = reg180c4ae8[31:20]      = 2048   (0x800)
+ch4_oldest_time                          = reg180c4ae8[19:8]       = 256    (0x100)
+ch4_bw_acc_unit                          = reg180c4ae8[3:0]        = 8      (0x8)
+
+=== Address 0x180C4AEC (Value: 0x22002021) ===
+ch4_cmd_extend_num                       = reg180c4aec[31:28]      = 2      (0x2)
+ch4_extend_bl_max                        = reg180c4aec[25:20]      = 32     (0x20)
+ch4_ostd_bl_max                          = reg180c4aec[19:8]       = 32     (0x20)
+ch4_ostd_cmd_max                         = reg180c4aec[7:4]        = 2      (0x2)
+ch4_outstand_en                          = reg180c4aec[0]          = 1      (0x1)
+
+=== Address 0x180C4AF0 (Value: 0x0) ===
+ch4_wr_brk_time                          = reg180c4af0[9:0]        = 0      (0x0)
+
+=== Address 0x180C4AF4 (Value: 0x4c40000) ===
+ch4_wms_bg_insert_mapping                = reg180c4af4[31:28]      = 0      (0x0)
+ch4_wms_page_insert_mapping              = reg180c4af4[27:24]      = 4      (0x4)
+ch4_wms_bank_free_mapping                = reg180c4af4[23:20]      = 12     (0xc)
+ch4_wms_dir_insert_mapping               = reg180c4af4[19:16]      = 4      (0x4)
+ch4_wms_r2w_dir_insert_mapping           = reg180c4af4[15:12]      = 0      (0x0)
+ch4_wmask_insert_mapping                 = reg180c4af4[11:8]       = 0      (0x0)
+
+=== Address 0x180C4B00 (Value: 0x984080e) ===
+ch5_bg_insert_mapping                    = reg180c4b00[31:28]      = 0      (0x0)
+ch5_page_insert_mapping                  = reg180c4b00[27:24]      = 9      (0x9)
+ch5_bank_free_mapping                    = reg180c4b00[23:20]      = 8      (0x8)
+ch5_dir_insert_mapping                   = reg180c4b00[19:16]      = 4      (0x4)
+ch5_r2w_dir_insert_mapping               = reg180c4b00[15:12]      = 0      (0x0)
+ch5_acc_trigger_sel                      = reg180c4b00[11]         = 1      (0x1)
+ch5_acc_mode                             = reg180c4b00[10]         = 0      (0x0)
+ch5_acc_clr_mode                         = reg180c4b00[9:8]        = 0      (0x0)
+ch5_urg2_wr_brk_en                       = reg180c4b00[7]          = 0      (0x0)
+ch5_urg2_strong_en                       = reg180c4b00[4]          = 0      (0x0)
+ch5_oldest_timer_2_en                    = reg180c4b00[3]          = 1      (0x1)
+ch5_oldest_timer_en                      = reg180c4b00[2]          = 1      (0x1)
+ch5_oldest_cmd_select_en                 = reg180c4b00[1]          = 1      (0x1)
+
+=== Address 0x180C4B04 (Value: 0x7f007f00) ===
+ch5_quota_bw_ini                         = reg180c4b04[31:24]      = 127    (0x7f)
+ch5_bw_quota_max                         = reg180c4b04[15:8]       = 127    (0x7f)
+
+=== Address 0x180C4B08 (Value: 0x20010008) ===
+ch5_oldest_time_2                        = reg180c4b08[31:20]      = 512    (0x200)
+ch5_oldest_time                          = reg180c4b08[19:8]       = 256    (0x100)
+ch5_bw_acc_unit                          = reg180c4b08[3:0]        = 8      (0x8)
+
+=== Address 0x180C4B0C (Value: 0x22003031) ===
+ch5_cmd_extend_num                       = reg180c4b0c[31:28]      = 2      (0x2)
+ch5_extend_bl_max                        = reg180c4b0c[25:20]      = 32     (0x20)
+ch5_ostd_bl_max                          = reg180c4b0c[19:8]       = 48     (0x30)
+ch5_ostd_cmd_max                         = reg180c4b0c[7:4]        = 3      (0x3)
+ch5_outstand_en                          = reg180c4b0c[0]          = 1      (0x1)
+
+=== Address 0x180C4B10 (Value: 0x0) ===
+ch5_wr_brk_time                          = reg180c4b10[9:0]        = 0      (0x0)
+
+=== Address 0x180C4B14 (Value: 0x4c40000) ===
+ch5_wms_bg_insert_mapping                = reg180c4b14[31:28]      = 0      (0x0)
+ch5_wms_page_insert_mapping              = reg180c4b14[27:24]      = 4      (0x4)
+ch5_wms_bank_free_mapping                = reg180c4b14[23:20]      = 12     (0xc)
+ch5_wms_dir_insert_mapping               = reg180c4b14[19:16]      = 4      (0x4)
+ch5_wms_r2w_dir_insert_mapping           = reg180c4b14[15:12]      = 0      (0x0)
+ch5_wmask_insert_mapping                 = reg180c4b14[11:8]       = 0      (0x0)
+
+=== Address 0x180C4B20 (Value: 0x9840802) ===
+ch6_bg_insert_mapping                    = reg180c4b20[31:28]      = 0      (0x0)
+ch6_page_insert_mapping                  = reg180c4b20[27:24]      = 9      (0x9)
+ch6_bank_free_mapping                    = reg180c4b20[23:20]      = 8      (0x8)
+ch6_dir_insert_mapping                   = reg180c4b20[19:16]      = 4      (0x4)
+ch6_r2w_dir_insert_mapping               = reg180c4b20[15:12]      = 0      (0x0)
+ch6_acc_trigger_sel                      = reg180c4b20[11]         = 1      (0x1)
+ch6_acc_mode                             = reg180c4b20[10]         = 0      (0x0)
+ch6_acc_clr_mode                         = reg180c4b20[9:8]        = 0      (0x0)
+ch6_urg2_wr_brk_en                       = reg180c4b20[7]          = 0      (0x0)
+ch6_urg2_strong_en                       = reg180c4b20[4]          = 0      (0x0)
+ch6_oldest_timer_2_en                    = reg180c4b20[3]          = 0      (0x0)
+ch6_oldest_timer_en                      = reg180c4b20[2]          = 0      (0x0)
+ch6_oldest_cmd_select_en                 = reg180c4b20[1]          = 1      (0x1)
+
+=== Address 0x180C4B24 (Value: 0x1f001f00) ===
+ch6_quota_bw_ini                         = reg180c4b24[31:24]      = 31     (0x1f)
+ch6_bw_quota_max                         = reg180c4b24[15:8]       = 31     (0x1f)
+
+=== Address 0x180C4B28 (Value: 0x80040008) ===
+ch6_oldest_time_2                        = reg180c4b28[31:20]      = 2048   (0x800)
+ch6_oldest_time                          = reg180c4b28[19:8]       = 1024   (0x400)
+ch6_bw_acc_unit                          = reg180c4b28[3:0]        = 8      (0x8)
+
+=== Address 0x180C4B2C (Value: 0x42002041) ===
+ch6_cmd_extend_num                       = reg180c4b2c[31:28]      = 4      (0x4)
+ch6_extend_bl_max                        = reg180c4b2c[25:20]      = 32     (0x20)
+ch6_ostd_bl_max                          = reg180c4b2c[19:8]       = 32     (0x20)
+ch6_ostd_cmd_max                         = reg180c4b2c[7:4]        = 4      (0x4)
+ch6_outstand_en                          = reg180c4b2c[0]          = 1      (0x1)
+
+=== Address 0x180C4B30 (Value: 0x0) ===
+ch6_wr_brk_time                          = reg180c4b30[9:0]        = 0      (0x0)
+
+=== Address 0x180C4B34 (Value: 0x4c40000) ===
+ch6_wms_bg_insert_mapping                = reg180c4b34[31:28]      = 0      (0x0)
+ch6_wms_page_insert_mapping              = reg180c4b34[27:24]      = 4      (0x4)
+ch6_wms_bank_free_mapping                = reg180c4b34[23:20]      = 12     (0xc)
+ch6_wms_dir_insert_mapping               = reg180c4b34[19:16]      = 4      (0x4)
+ch6_wms_r2w_dir_insert_mapping           = reg180c4b34[15:12]      = 0      (0x0)
+ch6_wmask_insert_mapping                 = reg180c4b34[11:8]       = 0      (0x0)
+
+=== Address 0x180C4B40 (Value: 0x9840802) ===
+ch7_bg_insert_mapping                    = reg180c4b40[31:28]      = 0      (0x0)
+ch7_page_insert_mapping                  = reg180c4b40[27:24]      = 9      (0x9)
+ch7_bank_free_mapping                    = reg180c4b40[23:20]      = 8      (0x8)
+ch7_dir_insert_mapping                   = reg180c4b40[19:16]      = 4      (0x4)
+ch7_r2w_dir_insert_mapping               = reg180c4b40[15:12]      = 0      (0x0)
+ch7_acc_trigger_sel                      = reg180c4b40[11]         = 1      (0x1)
+ch7_acc_mode                             = reg180c4b40[10]         = 0      (0x0)
+ch7_acc_clr_mode                         = reg180c4b40[9:8]        = 0      (0x0)
+ch7_urg2_wr_brk_en                       = reg180c4b40[7]          = 0      (0x0)
+ch7_urg2_strong_en                       = reg180c4b40[4]          = 0      (0x0)
+ch7_oldest_timer_2_en                    = reg180c4b40[3]          = 0      (0x0)
+ch7_oldest_timer_en                      = reg180c4b40[2]          = 0      (0x0)
+ch7_oldest_cmd_select_en                 = reg180c4b40[1]          = 1      (0x1)
+
+=== Address 0x180C4B44 (Value: 0x6f006f00) ===
+ch7_quota_bw_ini                         = reg180c4b44[31:24]      = 111    (0x6f)
+ch7_bw_quota_max                         = reg180c4b44[15:8]       = 111    (0x6f)
+
+=== Address 0x180C4B48 (Value: 0x10004008) ===
+ch7_oldest_time_2                        = reg180c4b48[31:20]      = 256    (0x100)
+ch7_oldest_time                          = reg180c4b48[19:8]       = 64     (0x40)
+ch7_bw_acc_unit                          = reg180c4b48[3:0]        = 8      (0x8)
+
+=== Address 0x180C4B4C (Value: 0x40002021) ===
+ch7_cmd_extend_num                       = reg180c4b4c[31:28]      = 4      (0x4)
+ch7_extend_bl_max                        = reg180c4b4c[25:20]      = 0      (0x0)
+ch7_ostd_bl_max                          = reg180c4b4c[19:8]       = 32     (0x20)
+ch7_ostd_cmd_max                         = reg180c4b4c[7:4]        = 2      (0x2)
+ch7_outstand_en                          = reg180c4b4c[0]          = 1      (0x1)
+
+=== Address 0x180C4B50 (Value: 0x0) ===
+ch7_wr_brk_time                          = reg180c4b50[9:0]        = 0      (0x0)
+
+=== Address 0x180C4B54 (Value: 0x4c40000) ===
+ch7_wms_bg_insert_mapping                = reg180c4b54[31:28]      = 0      (0x0)
+ch7_wms_page_insert_mapping              = reg180c4b54[27:24]      = 4      (0x4)
+ch7_wms_bank_free_mapping                = reg180c4b54[23:20]      = 12     (0xc)
+ch7_wms_dir_insert_mapping               = reg180c4b54[19:16]      = 4      (0x4)
+ch7_wms_r2w_dir_insert_mapping           = reg180c4b54[15:12]      = 0      (0x0)
+ch7_wmask_insert_mapping                 = reg180c4b54[11:8]       = 0      (0x0)
+
+=== Address 0x180C4B60 (Value: 0x9840802) ===
+ch8_bg_insert_mapping                    = reg180c4b60[31:28]      = 0      (0x0)
+ch8_page_insert_mapping                  = reg180c4b60[27:24]      = 9      (0x9)
+ch8_bank_free_mapping                    = reg180c4b60[23:20]      = 8      (0x8)
+ch8_dir_insert_mapping                   = reg180c4b60[19:16]      = 4      (0x4)
+ch8_r2w_dir_insert_mapping               = reg180c4b60[15:12]      = 0      (0x0)
+ch8_acc_trigger_sel                      = reg180c4b60[11]         = 1      (0x1)
+ch8_acc_mode                             = reg180c4b60[10]         = 0      (0x0)
+ch8_acc_clr_mode                         = reg180c4b60[9:8]        = 0      (0x0)
+ch8_urg2_wr_brk_en                       = reg180c4b60[7]          = 0      (0x0)
+ch8_urg2_strong_en                       = reg180c4b60[4]          = 0      (0x0)
+ch8_oldest_timer_2_en                    = reg180c4b60[3]          = 0      (0x0)
+ch8_oldest_timer_en                      = reg180c4b60[2]          = 0      (0x0)
+ch8_oldest_cmd_select_en                 = reg180c4b60[1]          = 1      (0x1)
+
+=== Address 0x180C4B64 (Value: 0x5f005f00) ===
+ch8_quota_bw_ini                         = reg180c4b64[31:24]      = 95     (0x5f)
+ch8_bw_quota_max                         = reg180c4b64[15:8]       = 95     (0x5f)
+
+=== Address 0x180C4B68 (Value: 0x10004008) ===
+ch8_oldest_time_2                        = reg180c4b68[31:20]      = 256    (0x100)
+ch8_oldest_time                          = reg180c4b68[19:8]       = 64     (0x40)
+ch8_bw_acc_unit                          = reg180c4b68[3:0]        = 8      (0x8)
+
+=== Address 0x180C4B6C (Value: 0x40002021) ===
+ch8_cmd_extend_num                       = reg180c4b6c[31:28]      = 4      (0x4)
+ch8_extend_bl_max                        = reg180c4b6c[25:20]      = 0      (0x0)
+ch8_ostd_bl_max                          = reg180c4b6c[19:8]       = 32     (0x20)
+ch8_ostd_cmd_max                         = reg180c4b6c[7:4]        = 2      (0x2)
+ch8_outstand_en                          = reg180c4b6c[0]          = 1      (0x1)
+
+=== Address 0x180C4B70 (Value: 0x0) ===
+ch8_wr_brk_time                          = reg180c4b70[9:0]        = 0      (0x0)
+
+=== Address 0x180C4B74 (Value: 0x4c40000) ===
+ch8_wms_bg_insert_mapping                = reg180c4b74[31:28]      = 0      (0x0)
+ch8_wms_page_insert_mapping              = reg180c4b74[27:24]      = 4      (0x4)
+ch8_wms_bank_free_mapping                = reg180c4b74[23:20]      = 12     (0xc)
+ch8_wms_dir_insert_mapping               = reg180c4b74[19:16]      = 4      (0x4)
+ch8_wms_r2w_dir_insert_mapping           = reg180c4b74[15:12]      = 0      (0x0)
+ch8_wmask_insert_mapping                 = reg180c4b74[11:8]       = 0      (0x0)
+
+=== Address 0x180C4B80 (Value: 0x9840802) ===
+ch9_bg_insert_mapping                    = reg180c4b80[31:28]      = 0      (0x0)
+ch9_page_insert_mapping                  = reg180c4b80[27:24]      = 9      (0x9)
+ch9_bank_free_mapping                    = reg180c4b80[23:20]      = 8      (0x8)
+ch9_dir_insert_mapping                   = reg180c4b80[19:16]      = 4      (0x4)
+ch9_r2w_dir_insert_mapping               = reg180c4b80[15:12]      = 0      (0x0)
+ch9_acc_trigger_sel                      = reg180c4b80[11]         = 1      (0x1)
+ch9_acc_mode                             = reg180c4b80[10]         = 0      (0x0)
+ch9_acc_clr_mode                         = reg180c4b80[9:8]        = 0      (0x0)
+ch9_urg2_wr_brk_en                       = reg180c4b80[7]          = 0      (0x0)
+ch9_urg2_strong_en                       = reg180c4b80[4]          = 0      (0x0)
+ch9_oldest_timer_2_en                    = reg180c4b80[3]          = 0      (0x0)
+ch9_oldest_timer_en                      = reg180c4b80[2]          = 0      (0x0)
+ch9_oldest_cmd_select_en                 = reg180c4b80[1]          = 1      (0x1)
+
+=== Address 0x180C4B84 (Value: 0x5f005f00) ===
+ch9_quota_bw_ini                         = reg180c4b84[31:24]      = 95     (0x5f)
+ch9_bw_quota_max                         = reg180c4b84[15:8]       = 95     (0x5f)
+
+=== Address 0x180C4B88 (Value: 0x10004008) ===
+ch9_oldest_time_2                        = reg180c4b88[31:20]      = 256    (0x100)
+ch9_oldest_time                          = reg180c4b88[19:8]       = 64     (0x40)
+ch9_bw_acc_unit                          = reg180c4b88[3:0]        = 8      (0x8)
+
+=== Address 0x180C4B90 (Value: 0x4c40000) ===
+ch9_wr_brk_time                          = reg180c4b90[9:0]        = 0      (0x0)
+
+=== Address 0x180C4B94 (Value: 0x4c40000) ===
+ch9_wms_bg_insert_mapping                = reg180c4b94[31:28]      = 0      (0x0)
+ch9_wms_page_insert_mapping              = reg180c4b94[27:24]      = 4      (0x4)
+ch9_wms_bank_free_mapping                = reg180c4b94[23:20]      = 12     (0xc)
+ch9_wms_dir_insert_mapping               = reg180c4b94[19:16]      = 4      (0x4)
+ch9_wms_r2w_dir_insert_mapping           = reg180c4b94[15:12]      = 0      (0x0)
+ch9_wmask_insert_mapping                 = reg180c4b94[11:8]       = 0      (0x0)
+
+====================================================================================================
+Summary: 891 signals across 203 addresses
+====================================================================================================
