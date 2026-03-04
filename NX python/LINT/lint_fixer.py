@@ -216,7 +216,8 @@ def find_signal_declaration(lines: List[str], signal_name: str) -> Tuple[Optiona
     # First pass: look for reg/wire declarations (typically outside port list)
     body_pattern = rf'\b(reg|wire)\s*{signed_part}{width_part}(?:\w+\s*,\s*)*{sig_escaped}\s*{trailing}'
     for i, line in enumerate(lines):
-        match = re.search(body_pattern, line)
+        stripped = re.sub(r'/\*.*?\*/', '', line)  # remove inline block comments
+        match = re.search(body_pattern, stripped)
         if match:
             decl_type = match.group(1)
             is_signed = match.group(2) is not None
@@ -227,7 +228,8 @@ def find_signal_declaration(lines: List[str], signal_name: str) -> Tuple[Optiona
     port_trailing = r'($|[;,)\[])'
     port_pattern = rf'\b(output\s+reg|output)\s*{signed_part}{width_part}(?:\w+\s*,\s*)*{sig_escaped}\s*{port_trailing}'
     for i, line in enumerate(lines):
-        match = re.search(port_pattern, line)
+        stripped = re.sub(r'/\*.*?\*/', '', line)  # remove inline block comments
+        match = re.search(port_pattern, stripped)
         if match:
             decl_type = 'reg' if 'reg' in match.group(1) else 'wire'
             is_signed = match.group(2) is not None
@@ -517,20 +519,6 @@ def find_first_if_block(lines: List[str], block_start: int, block_end: int
     return if_line, block_end   # fallback
 
 
-def strip_wire_inline_assign(line: str, signal_name: str) -> Tuple[str, Optional[str]]:
-    """
-    Split 'wire [7:0] sig = expr;' into stripped declaration and rhs_expr.
-    Returns (stripped_line, rhs_expr) or (line, None) if pattern does not match.
-    """
-    sig_escaped = re.escape(signal_name)
-    pattern = rf'^(\s*wire\s+(?:signed\s+)?(?:\[[^\]]+\]\s+)?{sig_escaped})\s*=\s*(.+?)\s*;'
-    match = re.match(pattern, line)
-    if not match:
-        return line, None
-    decl_part = match.group(1)
-    rhs_expr  = match.group(2)
-    return decl_part + ';', rhs_expr
-
 
 def process_verilog_file(lines: List[str], errors: List[Dict]) -> List[str]:
     """
@@ -585,28 +573,52 @@ def process_verilog_file(lines: List[str], errors: List[Dict]) -> List[str]:
 
         # Determine assignment type and handle accordingly
         if is_wire_inline_assign(lines[error_line], signal):
-            # Wire inline assign: split into declaration + _nc + assign
+            # Wire inline assign: substitute LHS in-place, insert wire decls before it
             print(f"  Wire inline assign at line {error_line + 1}")
 
-            # Step 1: strip inline assignment -> "wire [7:0] sig;"
-            stripped_decl, rhs_expr = strip_wire_inline_assign(lines[error_line], signal)
-            lines[error_line] = stripped_decl
-
-            # Step 2: insert _nc declaration after decl_line (== error_line)
-            lines = add_nc_declaration(
-                lines, signal, error_line, 'wire', max_nc_width, is_signed)
-            line_offset += 1
-
-            # Step 3: insert "assign {_nc, sig} = rhs_expr;" after _nc declaration
             _, _, nc_signal = parse_array_signal(signal)
             nc_expr = _nc_bits_expr(nc_signal, max_nc_width, max_nc_width)
-            indent = re.match(r'^(\s*)', stripped_decl).group(1)
-            assign_ln = (f"{indent}assign {{{nc_expr}, {signal}}} = {rhs_expr};"
-                         f" // W164a fixed by lint_fixer")
-            lines.insert(error_line + 2, assign_ln)
-            line_offset += 1
+            signed_str = ' signed' if is_signed else ''
 
-            print(f"    Fixed: split inline + _nc + assign")
+            # Match LHS up to '='
+            sig_escaped = re.escape(signal)
+            lhs_pattern = rf'^([ \t]*)wire\s+(?:signed\s+)?(?:\[[^\]]+\]\s+)?{sig_escaped}\s*='
+            m = re.match(lhs_pattern, lines[error_line])
+            if not m:
+                print(f"  Warning: Could not parse wire inline for {signal}, skipping")
+                continue
+
+            indent = m.group(1)
+            # wire_decl: everything before '=' trimmed, with ';'
+            wire_decl = lines[error_line][:m.end() - 1].rstrip() + ';'
+            # assign_line: substitute LHS, keep everything from '=' onward
+            rhs_from_eq = lines[error_line][m.end():].lstrip()
+            assign_line = f"{indent}assign {{{nc_expr}, {signal}}} = {rhs_from_eq}"
+
+            # Add comment on the ';' line
+            if ';' in assign_line:
+                # single-line: comment on same line
+                assign_line = re.sub(r';(\s*)$', '; // W164a fixed by lint_fixer', assign_line)
+            else:
+                # multi-line: scan ahead for the ';' line
+                for _j in range(error_line + 1, min(error_line + 50, len(lines))):
+                    if ';' in lines[_j]:
+                        lines[_j] = re.sub(r';(\s*)$', '; // W164a fixed by lint_fixer', lines[_j])
+                        break
+
+            # nc declaration
+            if max_nc_width > 1:
+                nc_decl = f"{indent}wire{signed_str} [{max_nc_width - 1}:0] {nc_signal};"
+            else:
+                nc_decl = f"{indent}wire{signed_str} {nc_signal};"
+
+            # Replace inline wire with assign, then insert declarations before it
+            lines[error_line] = assign_line
+            lines.insert(error_line, nc_decl)
+            lines.insert(error_line, wire_decl)
+            line_offset += 2
+
+            print(f"    Fixed: wire inline -> decl + nc + assign")
 
         elif is_assign_statement(lines[error_line]):
             # Continuous assign: insert _nc with max width, then fix assign per-line

@@ -268,9 +268,6 @@ When `max_nc_width > nc_width`, uses per-line bit-select on `_nc`.
 Transforms `assign signal = expr;` to `assign {signal_nc, signal} = expr; // W164a fixed by lint_fixer`
 When `max_nc_width > nc_width`, uses per-line bit-select on `_nc`.
 
-### `strip_wire_inline_assign(line, signal_name)`
-Splits `wire [7:0] sig = expr;` into `(wire [7:0] sig;, rhs_expr)`. Returns `(line, None)` if pattern does not match.
-
 ### `add_nc_declaration(lines, signal, decl_line, decl_type, nc_width, is_signed)`
 Inserts `_nc` declaration after original signal. If declaration is inside port list, inserts after `);`.
 
@@ -307,6 +304,10 @@ For always_block path:
 7. **wire inline assign widened signal width** - Old approach widened `wire [7:0] sig = expr;` to `wire [8:0] sig = expr;`. This changes the declared bit width, breaking downstream code that uses `sig` as LHS. Replaced with `_nc` split approach: strip to `wire [7:0] sig;` + insert `wire sig_nc;` + `assign {sig_nc, sig} = expr;`. `fix_wire_inline_assign` removed; replaced by `strip_wire_inline_assign`.
 
 8. **splitlines() convention** - `process_verilog_file` reads lines with `f.read().splitlines()` (no trailing `\n` on each element) and writes with `'\n'.join(fixed_lines) + '\n'`. All inserted/modified lines must NOT include `\n`; blank lines are stored as `''`. Violated by the new wire inline path — `strip_wire_inline_assign` was returning `decl_part + ';\n'` and `assign_ln` had `\n`. Fixed by removing all `\n` from inserted strings.
+
+9. **inline block comment breaks declaration search** - `find_signal_declaration` failed to match lines containing `/* ... */` block comments (e.g. `reg [6:0] /*idx_stage1,*/ idx_stage2, ...`). Fixed by stripping inline block comments with `re.sub(r'/\*.*?\*/', '', line)` before running the regex, while keeping the original line index for the return value.
+
+10. **multi-line wire inline assign produces `= None;`** - v2.3 `strip_wire_inline_assign` required `;` on the same line to extract `rhs_expr`. Multi-line assignments (RHS spans multiple lines, `;` on a later line) returned `rhs_expr = None`, corrupting RTL with `assign {sig_nc, sig} = None;`. Fixed in v2.4 by dropping `strip_wire_inline_assign` entirely: instead, regex-match only the LHS up to `=`, substitute it in-place to `assign {nc, sig} =`, keep everything after `=` on the first line verbatim, and scan ahead for the `;` line to append the comment.
 
 ---
 
@@ -385,3 +386,8 @@ All 4 test suites should produce empty diff (no differences).
   - Preserves original wire bit width so downstream LHS uses are not broken
   - Removed `fix_wire_inline_assign`; added `strip_wire_inline_assign`
   - `test/test_output.v` Case 7 updated (1 line → 3 lines)
+- **v2.4** - multi-line wire inline assign fix:
+  - v2.3 `strip_wire_inline_assign` failed for multi-line assignments (no `;` on first line), producing `assign {sig_nc, sig} = None;`
+  - New approach: regex-match only the LHS up to `=`, substitute in-place, keep rest of line verbatim, scan ahead for `;` to add comment
+  - Removed `strip_wire_inline_assign`; no new functions added
+  - Single-line wire inline output identical to v2.3
