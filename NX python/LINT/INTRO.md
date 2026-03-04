@@ -114,17 +114,22 @@ assign {sig_wire_nc, sig_wire} = data_in; // W164a fixed by lint_fixer
 
 ---
 
-### Case 3：wire inline assignment（直接加寬）
+### Case 3：wire inline assignment（拆開宣告 + _nc）
 
-這種寫法宣告和賦值在同一行，不需要 `_nc`，直接把 wire 位元數加寬：
+這種寫法宣告和賦值在同一行。v2.3 起改為拆開成三行，保留原始位元數：
 
 ```verilog
 // Before
 wire [7:0] sig_wire_inline = data_in;   // data_in 9-bit → W164a
 
-// After
-wire [8:0] sig_wire_inline = data_in;   // W164a fixed by lint_fixer
+// After (v2.3+)
+wire [7:0] sig_wire_inline;             // 保留原寬度
+wire sig_wire_inline_nc;                // _nc 吸收多餘 bit
+assign {sig_wire_inline_nc, sig_wire_inline} = data_in; // W164a fixed by lint_fixer
 ```
+
+> **為何不直接加寬？** 若把 `wire [7:0]` 改成 `wire [8:0]`，下游 RTL 中用到
+> `sig_wire_inline` 的所有 LHS 連線寬度都會跟著改變，可能造成新的連線錯誤。
 
 ---
 
@@ -221,12 +226,110 @@ end                           depth: 1→0  ← block 結尾在這行
 
 ---
 
+---
+
+## 版本演進 — 各版解決的 RTL 問題
+
+### Initial commit (v2.0 ~ v2.1) — 基礎修法建立
+
+**新增功能：**
+- 支援 ANSI / Non-ANSI port style
+- 支援 `module #(parameter)` 標頭
+- 支援 `reg signed` / `wire signed`（`_nc` 繼承 signed）
+- 支援 array element：`sig[0]` → `sig_0_nc`
+- 支援多 RHS 寬度（per-line nc bit-select）
+- 目錄批次處理模式（`-d` / `-i`）
+
+**解決的 RTL 問題：**
+- 基本 W164a 自動修復，手動改 RTL 容易漏掉或改錯
+- 多個 error 共用同一個 signal 時，`_nc` 寬度不夠大的問題
+
+---
+
+### v2.2 (commit `9e56842`) — posedge vs comb always 區分
+
+**新增功能：**
+- 偵測 always 是 posedge 還是 `always @(*)`
+- comb always：掃出 block 內**所有**對該 signal 的 assignment，全部補 `_nc`
+- posedge always：reset branch（第一個 `if`）無條件補 max_nc；其他行只補 err.txt 報的
+- `find_always_block` 新增 `has_begin` 回傳值；沒有 `begin...end` 的 always block 跳過並印警告
+
+**解決的 RTL 問題：**
+
+1. **comb always latch 問題**
+   ```verilog
+   // err.txt 只報 sel=1 那行，舊版只修那一行：
+   always @(*) begin
+       if (sel) {sig_nc, sig} = data_a;  // ← 有修
+       else          sig = data_b;        // ← 沒修 → sig_nc 在 else branch 沒有 driven
+   end
+   // 結果：synthesis 對 sig_nc 推斷出 latch！新版全部修掉。
+   ```
+
+2. **no-begin always block 殘破 RTL 問題**
+   ```verilog
+   // 舊版：插入 _nc 宣告後，找不到 assignment → RTL 半修不修
+   always @(posedge clk)
+       sig <= data_in;   // 沒有 begin/end → 舊版插了 _nc 但沒改 assignment
+   // 新版：直接跳過並印警告，不插入任何東西，讓使用者手動加 begin/end
+   ```
+
+---
+
+### v2.3 (commit `066ca57`) — wire inline assign 改用 _nc split 法
+
+**新增功能：**
+- `wire [7:0] sig = expr;` 改為拆成三行：宣告 + `wire sig_nc` + `assign {sig_nc, sig} = expr`
+- 移除舊的 `fix_wire_inline_assign`（加寬法）
+
+**解決的 RTL 問題：**
+
+直接加寬 wire 會改變該 signal 的宣告寬度，影響下游所有使用到它的連線：
+
+```verilog
+// 舊版加寬法造成的問題：
+// wire [7:0] sig_wire_inline 被改成 wire [8:0]
+// 下游有：assign {a, b} = sig_wire_inline;  // a 是 1-bit, b 是 8-bit
+// → sig_wire_inline 從 8-bit 變 9-bit，downstream LHS 總寬不夠 → 新的 W164a 或連線錯誤
+
+// 新版 _nc split 保留 wire [7:0]，下游完全不受影響
+```
+
+---
+
+### v2.4 (commit `8e1b2af`) — 多行 wire inline + block comment 支援
+
+**新增功能：**
+- wire inline assign 的 RHS 可以跨多行（`;` 不在同一行）
+- `find_signal_declaration` 在 match 前先 strip inline block comment `/* ... */`
+
+**解決的 RTL 問題：**
+
+1. **多行 RHS 產生 `= None;` 的 corrupt RTL**
+   ```verilog
+   // 實際 RTL 中常見多行 assign：
+   wire [7:0] sig = func_a(x) |
+                    func_b(y);   // ← ; 在第二行
+   // v2.3 的 strip 函式找不到 ; → rhs_expr = None
+   // → assign {sig_nc, sig} = None;  ← synthesis 直接報錯
+   // v2.4 改為 in-place LHS substitution，不需要解析 RHS，任意行數都能正確處理
+   ```
+
+2. **inline block comment 導致 signal 找不到**
+   ```verilog
+   reg [6:0] /*idx_stage1,*/ idx_stage2, idx_stage3;
+   // 舊版 regex 因為 /* ... */ 的存在無法 match → 該 signal 被靜默跳過
+   // → W164a 留在 RTL 裡沒修到
+   // v2.4 先用 re.sub 去掉 block comment 再 match，原始行不動
+   ```
+
+---
+
 ## 已知限制
 
 | 狀況 | 行為 |
 |------|------|
-| always 沒有 `begin...end`，assignment 在下一行 | 可以修（block 範圍剛好涵蓋到） |
-| always 沒有 `begin...end`，中間夾了 `if` 或其他行 | **不會修**（block 找到的範圍只有 always @ 後的第一行） |
+| always 沒有 `begin...end` | **跳過並印警告**，不插入 `_nc`（v2.2 後）|
 | 同一個 signal 被多個不同 always block 使用 | 只修有 error 那個 block |
 | parameter 寬度如 `[DATA_W-1:0]` | `_nc` 宣告為 1-bit（無法在 parse 階段計算 parameter 值） |
 | 一個檔案有多個 module | 只正確處理第一個 module 的 port list 結尾 |
@@ -253,11 +356,12 @@ python lint_fixer.py err.txt -d ./rtl -i
 ```bash
 cd "NX python/LINT"
 
-python lint_fixer.py test/test_err.txt       test/test_input.v       -o test/tmp.v && diff test/test_output.v       test/tmp.v
-python lint_fixer.py test/test_err_nonansi.txt test/test_input_nonansi.v -o test/tmp.v && diff test/test_output_nonansi.v test/tmp.v
-python lint_fixer.py test/test_err_param.txt  test/test_input_param.v  -o test/tmp.v && diff test/test_output_param.v  test/tmp.v
+python lint_fixer.py test/test_err.txt          test/test_input.v          -o test/tmp.v && diff test/test_output.v          test/tmp.v
+python lint_fixer.py test/test_err_nonansi.txt  test/test_input_nonansi.v  -o test/tmp.v && diff test/test_output_nonansi.v  test/tmp.v
+python lint_fixer.py test/test_err_param.txt    test/test_input_param.v    -o test/tmp.v && diff test/test_output_param.v    test/tmp.v
+python lint_fixer.py test/test_err_comb.txt     test/test_input_comb.v     -o test/tmp.v && diff test/test_output_comb.v     test/tmp.v
 
 rm test/tmp.v
 ```
 
-三條指令皆無輸出（diff 為空）代表全部 pass。
+四條指令皆無輸出（diff 為空）代表全部 pass。
