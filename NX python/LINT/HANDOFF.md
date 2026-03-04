@@ -25,7 +25,10 @@ LINT/
 │   ├── test_err_nonansi.txt         # Error file for non-ANSI test
 │   ├── test_input_param.v           # Module with #(parameters) test (4 cases)
 │   ├── test_output_param.v          # Expected output for param test
-│   └── test_err_param.txt           # Error file for param test
+│   ├── test_err_param.txt           # Error file for param test
+│   ├── test_input_comb.v            # Comb always test (2 cases)
+│   ├── test_output_comb.v           # Expected output for comb test
+│   └── test_err_comb.txt            # Error file for comb test
 ├── demo_*.v / demo_*.txt            # Legacy demo files (not in git)
 ├── err.txt                          # Legacy error file (not in git)
 └── bug2.png                         # Bug screenshot reference (not in git)
@@ -63,21 +66,50 @@ Also supports multi-line format where file path and error details are on separat
 ## Transformation Rules
 
 ### 1. reg / output reg (inside always block)
-Adds `_nc` declaration + concatenates on LHS for ALL assignments in the always block.
+Adds `_nc` declaration + concatenates on LHS. Behavior differs by always type:
+
+**posedge always** — reset branch (first `if`) always gets `max_nc_width`; other lines only if reported in err.txt:
 ```verilog
 // Before
 reg [7:0] counter;
-always @(posedge clk) begin
-    counter <= counter + 8'd1;
+always @(posedge clk or negedge rst_n) begin
+    if (!rst_n)
+        counter <= 8'd0;          // NOT in err.txt, but still fixed (reset)
+    else
+        counter <= data_in;       // in err.txt -> fixed with per-line nc
 end
 
 // After
 reg [7:0] counter;
 reg counter_nc;
-always @(posedge clk) begin
-    {counter_nc, counter} <= counter + 8'd1; // W164a fixed by lint_fixer
+always @(posedge clk or negedge rst_n) begin
+    if (!rst_n)
+        {counter_nc, counter} <= 8'd0;    // W164a fixed by lint_fixer (max_nc)
+    else
+        {counter_nc, counter} <= data_in; // W164a fixed by lint_fixer
 end
 ```
+
+**comb always** (`always @(*)`) — ALL assignments in the block get `max_nc_width`, even unreported ones.
+This prevents the `_nc` wire from becoming a latch (if `_nc` is not driven in every branch, synthesis infers a latch):
+```verilog
+// Before
+reg [7:0] sig;
+always @(*) begin
+    if (sel) sig = data_a;   // in err.txt (9-bit RHS)
+    else     sig = data_b;   // NOT in err.txt (8-bit RHS, same width)
+end
+
+// After
+reg [7:0] sig;
+reg sig_nc;
+always @(*) begin
+    if (sel) {sig_nc, sig} = data_a; // W164a fixed by lint_fixer
+    else     {sig_nc, sig} = data_b; // W164a fixed by lint_fixer (prevent latch)
+end
+```
+
+**no-begin always** — NOT supported. The tool skips these blocks with a warning message and does NOT insert any `_nc` declaration.
 
 ### 2. wire with assign
 Adds `wire _nc` declaration + concatenates on LHS.
@@ -186,6 +218,14 @@ This prevents LHS from becoming wider than RHS on lines with smaller width diffe
 | 3 | sig_internal | Internal reg |
 | 4 | sig_wire | Internal wire + assign |
 
+### test_input_comb.v (Comb always) - 2 cases
+| Case | Signal | Description |
+|------|--------|-------------|
+| comb-1 | sig_comb1 | comb `if/else`: reported branch (9-bit) + unreported branch (8-bit) |
+| comb-2 | sig_comb2 | comb `case`: two reported (9-bit, 10-bit) + two unreported (8-bit) |
+
+Both cases verify that ALL branches are fixed with max_nc to prevent latch on `_nc`.
+
 ---
 
 ## Core Functions
@@ -204,7 +244,12 @@ Finds `);` ending the module port list. Correctly skips `#(parameters)` by requi
 
 ### `find_always_block(lines, line_num)`
 Finds always block boundaries by counting begin/end depth.
-Returns: `(start_line, end_line)`
+Returns: `(start_line, end_line, has_begin)` — `has_begin=False` means no `begin/end` wrapper (not supported).
+
+### `find_first_if_block(lines, block_start, block_end)`
+Finds the first `if` statement body (reset branch) inside an always block.
+Uses `depth - ends <= 0` detection so `end else begin` on a single line is correctly handled.
+Returns: `(if_body_start, if_body_end)` or `(None, None)` if no `if` or no `begin`.
 
 ### `find_all_assignments_to_signal(lines, signal, start, end)`
 Finds all assignments to a signal within a range. Skips already-fixed lines.
@@ -233,6 +278,13 @@ Parses `prod[0]` -> `('prod', '0', 'prod_0_nc')`. Non-array signals return `(nam
 Main processing loop. Groups all errors per signal, uses max RHS width for `_nc` declaration, and passes per-line `nc_width`/`max_nc_width` to fix functions. Handles line offset tracking from insertions.
 Flow: wire_inline_assign -> assign -> always_block (in priority order).
 
+For always_block path:
+1. Call `find_always_block` **before** inserting `_nc` — if `has_begin=False`, skip with warning.
+2. Insert `_nc` declaration, re-find block (line numbers shifted).
+3. Detect posedge vs comb from always sensitivity list.
+4. **posedge**: fix reset branch via `find_first_if_block` with max_nc; fix err.txt lines with per-line nc.
+5. **comb**: fix all assignments via `find_all_assignments_to_signal` with max_nc.
+
 ---
 
 ## Bug Fixes History
@@ -243,12 +295,18 @@ Flow: wire_inline_assign -> assign -> always_block (in priority order).
 
 3. **find_signal_declaration for wire inline** - `wire [7:0] sig = expr;` wasn't matched because `=` wasn't in the allowed trailing characters. Fixed by adding `=` to pattern.
 
+4. **no-begin always block incorrectly modified** - Old code would insert `_nc` and attempt fixes even when the always block had no `begin/end`. Fixed by checking `has_begin` (new return value from `find_always_block`) BEFORE inserting `_nc`; skips with warning if false.
+
+5. **comb always missing unreported branches** - Old code only fixed lines reported in err.txt. For comb always, unreported branches (e.g., the `else` branch) must also get `_nc` concatenation or synthesis infers a latch on `_nc`. Fixed by scanning ALL assignments in comb always blocks.
+
+6. **nonansi err.txt line numbers off by 1** - `test_err_nonansi.txt` had wrong line numbers (31, 40, 49 instead of 30, 39, 48) for posedge assignment lines. Old scan-based code was immune to this; new per-line nc logic exposed it. Fixed by correcting line numbers in test file.
+
 ---
 
 ## Running Tests
 
 ```bash
-cd "D:\python_work\side_project\NX python\LINT"
+cd "C:\python_work\realtek_pc\NX python\LINT"
 
 # ANSI test
 python lint_fixer.py test/test_err.txt test/test_input.v -o test/tmp.v
@@ -262,11 +320,18 @@ diff test/test_output_nonansi.v test/tmp.v
 python lint_fixer.py test/test_err_param.txt test/test_input_param.v -o test/tmp.v
 diff test/test_output_param.v test/tmp.v
 
+# Comb always test
+python lint_fixer.py test/test_err_comb.txt test/test_input_comb.v -o test/tmp.v
+diff test/test_output_comb.v test/tmp.v
+
 # Clean up
 rm test/tmp.v
 ```
 
-All 3 test suites should produce empty diff (no differences).
+All 4 test suites should produce empty diff (no differences).
+
+> **Note on Windows diff:** `diff` on Windows may show false differences due to CRLF vs LF line endings.
+> Use `python -c "..."` comparison with `splitlines()` for reliable results on Windows.
 
 ---
 
@@ -275,6 +340,8 @@ All 3 test suites should produce empty diff (no differences).
 1. **Parameter width in _nc** - When signal uses parameter width like `[DATA_W-1:0]`, the `_nc` is declared as `reg sig_nc;` (1-bit) since we can't evaluate the parameter expression at parse time.
 2. **RHS not modified** - Only LHS gets `_nc` concatenation; RHS expression is kept as-is.
 3. **Single module per file** - `find_module_port_list_end` only finds the first module.
+4. **no-begin always block not supported** - `always @(...) signal <= expr;` (no `begin/end`) is skipped with a warning. The `_nc` declaration is NOT inserted. Must add `begin/end` manually first.
+5. **Single-line if body in reset branch** - `find_first_if_block` only finds reset branch when `if (!rst_n) begin ... end` uses `begin/end`. Single-line `if (!rst_n) sig <= 0;` (no begin) is not detected; reset line won't be fixed.
 
 ---
 
@@ -298,3 +365,11 @@ All 3 test suites should produce empty diff (no differences).
   - Per-line nc bit-select: `_nc` declared at max width, each line uses only needed bits
   - Prevents LHS > RHS overcorrection when same signal has different RHS widths
   - 3 test suites with 22 total test cases
+- **v2.2** - posedge vs comb always distinction + no-begin guard:
+  - `find_always_block` now returns `has_begin` (3rd value); no-begin blocks are skipped with warning
+  - New `find_first_if_block`: detects reset branch (first `if` body) inside posedge always
+  - **posedge always**: reset branch fixed with max_nc unconditionally; other lines only from err.txt
+  - **comb always**: ALL assignments fixed with max_nc to prevent `_nc` latch at synthesis
+  - New comb test suite (`test_input_comb.v`): if/else and case with mixed reported/unreported branches
+  - Fixed `test_err_nonansi.txt` line numbers (were off by 1, exposed by new per-line nc logic)
+  - 4 test suites with 24 total test cases

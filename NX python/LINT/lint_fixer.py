@@ -274,11 +274,13 @@ def find_module_port_list_end(lines: List[str]) -> Optional[int]:
     return last_close_line
 
 
-def find_always_block(lines: List[str], line_num: int) -> Tuple[int, int]:
+def find_always_block(lines: List[str], line_num: int) -> Tuple[int, int, bool]:
     """
     Find the always block containing the given line number.
 
-    Returns (start_line, end_line) - 0-indexed
+    Returns (start_line, end_line, has_begin) - 0-indexed.
+    has_begin is False when the always block has no begin/end wrapper,
+    meaning only a single statement follows the always @(...).
     """
     # Search backwards for 'always'
     start = line_num
@@ -290,16 +292,19 @@ def find_always_block(lines: List[str], line_num: int) -> Tuple[int, int]:
     # Search forwards for matching 'end'
     end = line_num
     depth = 0
+    has_begin = False
     for i in range(start, len(lines)):
         line = lines[i]
         # Count begin/end
         depth += len(re.findall(r'\bbegin\b', line))
         depth -= len(re.findall(r'\bend\b', line))
+        if depth > 0:
+            has_begin = True
         if depth <= 0 and i > start:
             end = i
             break
 
-    return start, end
+    return start, end, has_begin
 
 
 def find_all_assignments_to_signal(lines: List[str], signal_name: str,
@@ -515,6 +520,42 @@ def fix_assign_line(line: str, signal_name: str, old_width: int, new_width: int,
     return new_line
 
 
+def find_first_if_block(lines: List[str], block_start: int, block_end: int
+                        ) -> Tuple[Optional[int], Optional[int]]:
+    """
+    Find the first 'if' statement body within an always block.
+
+    Used to identify the reset branch in a posedge always block so that
+    _nc signals are properly reset even if the reset line is not in err.txt.
+
+    Detection method: stops when (depth - ends_on_this_line) drops to 0,
+    which correctly handles 'end else begin' on a single line.
+
+    Returns (if_body_start, if_body_end) as 0-indexed line numbers.
+    Returns (None, None) if no 'if' found or if body has no 'begin'.
+    """
+    # Find first 'if' line inside the always block (skip the always @ line)
+    if_line = None
+    for i in range(block_start + 1, block_end + 1):
+        if re.search(r'\bif\b', lines[i]):
+            if_line = i
+            break
+
+    if if_line is None or 'begin' not in lines[if_line]:
+        return None, None  # no if, or single-line if body (not supported)
+
+    # Find if body end: depth drops to 0 via 'end' before any 'begin' on same line
+    depth = 0
+    for i in range(if_line, block_end + 1):
+        ends   = len(re.findall(r'\bend\b', lines[i]))
+        begins = len(re.findall(r'\bbegin\b', lines[i]))
+        if depth - ends <= 0 and i > if_line:
+            return if_line, i   # body ends here (e.g. at 'end else begin' line)
+        depth += begins - ends
+
+    return if_line, block_end   # fallback
+
+
 def process_verilog_file(lines: List[str], errors: List[Dict]) -> List[str]:
     """
     Process all W164a errors and fix the Verilog file.
@@ -591,7 +632,16 @@ def process_verilog_file(lines: List[str], errors: List[Dict]) -> List[str]:
                 print(f"    Fixed line {error_line + 1}")
 
         else:
-            # Inside always block: insert _nc with max width, then fix all assignments
+            # Inside always block: check for begin/end before modifying anything
+            block_start, block_end, has_begin = find_always_block(lines, error_line)
+            print(f"  Always block: lines {block_start + 1} to {block_end + 1}")
+
+            if not has_begin:
+                print(f"  Warning: always block has no begin/end, skipping (not supported)")
+                processed_signals.add(signal)
+                continue
+
+            # Insert _nc with max width
             port_list_end = find_module_port_list_end(lines)
             if port_list_end is not None and decl_line <= port_list_end:
                 nc_insert_line = port_list_end + 1
@@ -602,23 +652,51 @@ def process_verilog_file(lines: List[str], errors: List[Dict]) -> List[str]:
             if nc_insert_line <= error_line:
                 error_line += 1
 
-            block_start, block_end = find_always_block(lines, error_line)
-            print(f"  Always block: lines {block_start + 1} to {block_end + 1}")
+            # Re-find block after insertion (line numbers shifted)
+            block_start, block_end, _ = find_always_block(lines, error_line)
 
-            assignment_lines = find_all_assignments_to_signal(lines, signal, block_start, block_end)
-            print(f"  Found {len(assignment_lines)} assignments to {signal}")
+            is_posedge = bool(re.search(r'\balways\s*@\s*\(posedge', lines[block_start]))
 
-            for asgn_line in assignment_lines:
-                # Determine per-line RHS width
-                # Map from current asgn_line back to original line number
-                orig_ln = asgn_line + 1 - line_offset  # Convert back to 1-indexed original
-                per_line_rhs = line_rhs_map.get(orig_ln, max_rhs_width)
-                original = lines[asgn_line]
-                lines[asgn_line] = fix_assignment_line(
-                    original, signal, old_width, per_line_rhs, max_nc_width)
-                if lines[asgn_line] != original:
-                    nc_w = per_line_rhs - old_width
-                    print(f"    Fixed line {asgn_line + 1} (nc bits: {nc_w} of {max_nc_width})")
+            if is_posedge:
+                # posedge: fix reset branch (first if) with max_nc, then fix
+                # only err.txt reported lines with per-line nc_width
+                reset_start, reset_end = find_first_if_block(lines, block_start, block_end)
+                if reset_start is not None:
+                    reset_lines = find_all_assignments_to_signal(
+                        lines, signal, reset_start, reset_end)
+                    for asgn_line in reset_lines:
+                        original = lines[asgn_line]
+                        lines[asgn_line] = fix_assignment_line(
+                            original, signal, old_width, max_rhs_width, max_nc_width)
+                        if lines[asgn_line] != original:
+                            print(f"    Fixed reset line {asgn_line + 1} "
+                                  f"(nc bits: {max_nc_width})")
+
+                already_fixed_pat = (r'\{[^}]*' + re.escape(signal) + r'\s*\}\s*(=|<=)')
+                for orig_ln, rhs_w in sorted(line_rhs_map.items()):
+                    asgn_line = orig_ln - 1 + line_offset
+                    if re.search(already_fixed_pat, lines[asgn_line]):
+                        continue  # already fixed in reset branch
+                    nc_w = rhs_w - old_width
+                    original = lines[asgn_line]
+                    lines[asgn_line] = fix_assignment_line(
+                        original, signal, old_width, rhs_w, max_nc_width)
+                    if lines[asgn_line] != original:
+                        print(f"    Fixed line {asgn_line + 1} "
+                              f"(nc bits: {nc_w} of {max_nc_width})")
+
+            else:
+                # comb always: fix ALL assignments with max_nc_width
+                # Every branch must drive _nc to avoid creating a latch on _nc
+                all_asgn_lines = find_all_assignments_to_signal(
+                    lines, signal, block_start, block_end)
+                print(f"  Comb block: {len(all_asgn_lines)} assignments to {signal}")
+                for asgn_line in all_asgn_lines:
+                    original = lines[asgn_line]
+                    lines[asgn_line] = fix_assignment_line(
+                        original, signal, old_width, max_rhs_width, max_nc_width)
+                    if lines[asgn_line] != original:
+                        print(f"    Fixed line {asgn_line + 1} (nc bits: {max_nc_width})")
 
         processed_signals.add(signal)
 

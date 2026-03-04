@@ -1,0 +1,3 @@
+[3001]  W164a  N.A  error  test_input_comb.v  16  10  LHS: 'sig_comb1' width 8 is less than RHS: 'data_a' width 9
+[3002]  W164a  N.A  error  test_input_comb.v  27  10  LHS: 'sig_comb2' width 8 is less than RHS: 'data_a' width 9
+[3003]  W164a  N.A  error  test_input_comb.v  28  10  LHS: 'sig_comb2' width 8 is less than RHS: '{1''b0, data_a}' width 10
