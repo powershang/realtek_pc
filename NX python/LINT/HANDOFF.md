@@ -125,13 +125,16 @@ assign {sig_wire_nc, sig_wire} = data_in; // W164a fixed by lint_fixer
 ```
 
 ### 3. wire inline assignment
-Widens the wire declaration to match RHS (no `_nc` needed).
+Splits the inline assignment into a separate declaration, `_nc` dummy signal, and `assign` statement.
+The original wire width is preserved (widening would change downstream LHS bit widths).
 ```verilog
 // Before
 wire [7:0] sig = data_in;      // data_in is 9-bit
 
 // After
-wire [8:0] sig = data_in; // W164a fixed by lint_fixer
+wire [7:0] sig;
+wire sig_nc;
+assign {sig_nc, sig} = data_in; // W164a fixed by lint_fixer
 ```
 
 ### 4. reg signed / wire signed
@@ -265,8 +268,8 @@ When `max_nc_width > nc_width`, uses per-line bit-select on `_nc`.
 Transforms `assign signal = expr;` to `assign {signal_nc, signal} = expr; // W164a fixed by lint_fixer`
 When `max_nc_width > nc_width`, uses per-line bit-select on `_nc`.
 
-### `fix_wire_inline_assign(line, signal, old_width, new_width)`
-Transforms `wire [7:0] sig = expr;` to `wire [8:0] sig = expr; // W164a fixed by lint_fixer`
+### `strip_wire_inline_assign(line, signal_name)`
+Splits `wire [7:0] sig = expr;` into `(wire [7:0] sig;, rhs_expr)`. Returns `(line, None)` if pattern does not match.
 
 ### `add_nc_declaration(lines, signal, decl_line, decl_type, nc_width, is_signed)`
 Inserts `_nc` declaration after original signal. If declaration is inside port list, inserts after `);`.
@@ -300,6 +303,10 @@ For always_block path:
 5. **comb always missing unreported branches** - Old code only fixed lines reported in err.txt. For comb always, unreported branches (e.g., the `else` branch) must also get `_nc` concatenation or synthesis infers a latch on `_nc`. Fixed by scanning ALL assignments in comb always blocks.
 
 6. **nonansi err.txt line numbers off by 1** - `test_err_nonansi.txt` had wrong line numbers (31, 40, 49 instead of 30, 39, 48) for posedge assignment lines. Old scan-based code was immune to this; new per-line nc logic exposed it. Fixed by correcting line numbers in test file.
+
+7. **wire inline assign widened signal width** - Old approach widened `wire [7:0] sig = expr;` to `wire [8:0] sig = expr;`. This changes the declared bit width, breaking downstream code that uses `sig` as LHS. Replaced with `_nc` split approach: strip to `wire [7:0] sig;` + insert `wire sig_nc;` + `assign {sig_nc, sig} = expr;`. `fix_wire_inline_assign` removed; replaced by `strip_wire_inline_assign`.
+
+8. **splitlines() convention** - `process_verilog_file` reads lines with `f.read().splitlines()` (no trailing `\n` on each element) and writes with `'\n'.join(fixed_lines) + '\n'`. All inserted/modified lines must NOT include `\n`; blank lines are stored as `''`. Violated by the new wire inline path — `strip_wire_inline_assign` was returning `decl_part + ';\n'` and `assign_ln` had `\n`. Fixed by removing all `\n` from inserted strings.
 
 ---
 
@@ -373,3 +380,8 @@ All 4 test suites should produce empty diff (no differences).
   - New comb test suite (`test_input_comb.v`): if/else and case with mixed reported/unreported branches
   - Fixed `test_err_nonansi.txt` line numbers (were off by 1, exposed by new per-line nc logic)
   - 4 test suites with 24 total test cases
+- **v2.3** - wire inline assign: `_nc` split approach (replaces width-widening):
+  - `wire [7:0] sig = expr;` now becomes `wire [7:0] sig;` + `wire sig_nc;` + `assign {sig_nc, sig} = expr;`
+  - Preserves original wire bit width so downstream LHS uses are not broken
+  - Removed `fix_wire_inline_assign`; added `strip_wire_inline_assign`
+  - `test/test_output.v` Case 7 updated (1 line → 3 lines)

@@ -418,7 +418,7 @@ def add_nc_declaration(lines: List[str], signal_name: str, decl_line: int,
         insert_line = decl_line + 1  # Default: insert after declaration
 
     # Get indentation
-    indent_match = re.match(r'^(\s*)', lines[insert_line] if insert_line < len(lines) else lines[decl_line])
+    indent_match = re.match(r'^([ \t]*)', lines[insert_line] if insert_line < len(lines) else lines[decl_line])
     indent = indent_match.group(1) if indent_match else ''
 
     signed_str = ' signed' if is_signed else ''
@@ -442,45 +442,6 @@ def is_wire_inline_assign(line: str, signal_name: str) -> bool:
     pattern = rf'^\s*wire\s+(\[.*?\]\s+)?{re.escape(signal_name)}\s*='
     return bool(re.search(pattern, line))
 
-
-def fix_wire_inline_assign(line: str, signal_name: str,
-                           old_width: int, new_width: int) -> str:
-    """
-    Fix wire inline assignment by widening the wire to match RHS width.
-
-    Before: wire [7:0] sig = expr;
-    After:  wire [8:0] sig = expr; // W164a fixed by lint_fixer
-    """
-    sig_escaped = re.escape(signal_name)
-
-    # Match: wire [msb:lsb] signal = expr;
-    pattern = rf'^(\s*wire\s+)\[([^\]]+):([^\]]+)\](\s+{sig_escaped}\s*=\s*.+?)(;.*)$'
-    match = re.match(pattern, line)
-    if not match:
-        return line
-
-    prefix = match.group(1)       # "wire "
-    msb_str = match.group(2)      # "7" or "WIDTH-1"
-    lsb_str = match.group(3)      # "0"
-    rest = match.group(4)         # " sig = expr"
-    trailing = match.group(5)     # ";" or "; // comment"
-
-    # Widen MSB by (new_width - old_width)
-    width_diff = new_width - old_width
-    try:
-        msb_val = int(msb_str)
-        new_msb = str(msb_val + width_diff)
-    except ValueError:
-        # Parameter-based width like WIDTH-1, just add offset
-        new_msb = f"{msb_str}+{width_diff}" if width_diff == 1 else f"{msb_str}+{width_diff}"
-
-    # Append comment
-    if '//' in trailing:
-        trailing = trailing.rstrip() + ' | W164a fixed by lint_fixer'
-    else:
-        trailing = trailing.rstrip() + ' // W164a fixed by lint_fixer'
-
-    return f"{prefix}[{new_msb}:{lsb_str}]{rest}{trailing}"
 
 
 def fix_assign_line(line: str, signal_name: str, old_width: int, new_width: int,
@@ -556,6 +517,21 @@ def find_first_if_block(lines: List[str], block_start: int, block_end: int
     return if_line, block_end   # fallback
 
 
+def strip_wire_inline_assign(line: str, signal_name: str) -> Tuple[str, Optional[str]]:
+    """
+    Split 'wire [7:0] sig = expr;' into stripped declaration and rhs_expr.
+    Returns (stripped_line, rhs_expr) or (line, None) if pattern does not match.
+    """
+    sig_escaped = re.escape(signal_name)
+    pattern = rf'^(\s*wire\s+(?:signed\s+)?(?:\[[^\]]+\]\s+)?{sig_escaped})\s*=\s*(.+?)\s*;'
+    match = re.match(pattern, line)
+    if not match:
+        return line, None
+    decl_part = match.group(1)
+    rhs_expr  = match.group(2)
+    return decl_part + ';', rhs_expr
+
+
 def process_verilog_file(lines: List[str], errors: List[Dict]) -> List[str]:
     """
     Process all W164a errors and fix the Verilog file.
@@ -609,12 +585,28 @@ def process_verilog_file(lines: List[str], errors: List[Dict]) -> List[str]:
 
         # Determine assignment type and handle accordingly
         if is_wire_inline_assign(lines[error_line], signal):
-            # Wire inline assign: widen wire width to match max RHS, no _nc needed
+            # Wire inline assign: split into declaration + _nc + assign
             print(f"  Wire inline assign at line {error_line + 1}")
-            original = lines[error_line]
-            lines[error_line] = fix_wire_inline_assign(original, signal, old_width, max_rhs_width)
-            if lines[error_line] != original:
-                print(f"    Fixed line {error_line + 1}")
+
+            # Step 1: strip inline assignment -> "wire [7:0] sig;"
+            stripped_decl, rhs_expr = strip_wire_inline_assign(lines[error_line], signal)
+            lines[error_line] = stripped_decl
+
+            # Step 2: insert _nc declaration after decl_line (== error_line)
+            lines = add_nc_declaration(
+                lines, signal, error_line, 'wire', max_nc_width, is_signed)
+            line_offset += 1
+
+            # Step 3: insert "assign {_nc, sig} = rhs_expr;" after _nc declaration
+            _, _, nc_signal = parse_array_signal(signal)
+            nc_expr = _nc_bits_expr(nc_signal, max_nc_width, max_nc_width)
+            indent = re.match(r'^(\s*)', stripped_decl).group(1)
+            assign_ln = (f"{indent}assign {{{nc_expr}, {signal}}} = {rhs_expr};"
+                         f" // W164a fixed by lint_fixer")
+            lines.insert(error_line + 2, assign_ln)
+            line_offset += 1
+
+            print(f"    Fixed: split inline + _nc + assign")
 
         elif is_assign_statement(lines[error_line]):
             # Continuous assign: insert _nc with max width, then fix assign per-line

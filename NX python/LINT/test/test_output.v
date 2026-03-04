@@ -77,7 +77,9 @@ end
 assign {sig_wire_nc, sig_wire} = data_in; // W164a fixed by lint_fixer
 
 // Case 7: wire inline assignment
-wire [8:0] sig_wire_inline = data_in; // W164a fixed by lint_fixer
+wire [7:0] sig_wire_inline;
+wire sig_wire_inline_nc;
+assign {sig_wire_inline_nc, sig_wire_inline} = data_in; // W164a fixed by lint_fixer
 
 // Case 8: reg signed
 reg signed [7:0] sig_signed;
