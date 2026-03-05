@@ -46,7 +46,7 @@ parse err.txt
 找 declaration（找 reg/wire 宣告在哪一行）
     ↓
 判斷 assignment 類型
-    ├── wire inline assign → 直接加寬 wire 位元數
+    ├── wire inline assign → 拆成三行（保留原寬度 + _nc + assign）
     ├── assign statement  → 插入 wire _nc + 改 assign 行
     └── always block       → 插入 reg _nc + 改 block 內所有 assignments
 ```
@@ -180,6 +180,107 @@ reg sig_arr_1_nc;
 {sig_arr_0_nc, sig_arr[0]} <= data_in; // W164a fixed
 {sig_arr_1_nc, sig_arr[1]} <= data_in; // W164a fixed
 ```
+
+---
+
+### Non-ANSI port style（output + 分開的 reg 宣告）
+
+Non-ANSI 寫法中，port 和 reg 宣告是分開的：
+
+```verilog
+module foo (sig_out);
+    output sig_out;          // port 宣告
+    reg [7:0] sig_out;       // reg 宣告（另一行）
+    ...
+```
+
+程式優先在 module body 找 `reg/wire` 宣告；找不到才往 port list 找 `output/output reg`。
+Non-ANSI 的 `reg` 宣告在 body，可以直接在其下方插入 `_nc`，不需要找 `);`。
+
+---
+
+### module #(parameter) 標頭
+
+有 parameter 的模組：
+
+```verilog
+module foo #(
+    parameter W = 8
+)(
+    output reg [7:0] sig_out_reg,
+    ...
+);
+```
+
+port list 結尾是 `);`（帶分號）。程式用「找到含分號的 `);`」來定位，
+避免誤把 `#(...)` 裡面的 `)` 當成 port list 結尾，把 `_nc` 插在錯誤位置。
+
+---
+
+### posedge always vs comb always 修法差異
+
+兩種 always 對 `_nc` 的處理策略不同：
+
+**posedge always**：
+
+```verilog
+always @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+        sig <= 8'd0;        // 不在 err.txt，但屬於 reset branch → 一律用 max_nc 修
+    end else begin
+        sig <= data_in;     // 在 err.txt → 按 per-line nc 修
+    end
+end
+```
+
+reset branch（第一個 `if` 的 body）無條件全修，避免 reset 行漏修。
+
+**comb always**：
+
+```verilog
+always @(*) begin
+    if (sel) sig = data_a;  // 在 err.txt（9-bit RHS）
+    else     sig = data_b;  // 不在 err.txt（8-bit RHS）← 仍需修
+end
+```
+
+block 內**所有** assignment 全部用 max_nc 修。若只修 err.txt 報的那行，
+`_nc` 在 else branch 沒有被 driven → synthesis 推斷出 latch。
+
+---
+
+### no-begin always（不支援，跳過）
+
+```verilog
+always @(posedge clk)
+    sig <= data_in;   // 沒有 begin/end
+```
+
+程式無法正確找出 block 範圍，**完全跳過並印警告**，不插入任何 `_nc`。
+需手動補上 `begin/end` 後再重跑工具。
+
+---
+
+### 宣告行有 inline block comment
+
+```verilog
+reg [6:0] /*old_sig,*/ new_sig;
+```
+
+`/* ... */` 夾在宣告中間會讓 regex 無法 match。
+程式在 match 前先用 `re.sub` 去掉 `/* ... */`，找到行號後不修改原始行內容。
+
+---
+
+### wire inline 多行 RHS
+
+```verilog
+wire [7:0] sig = func_a(x) |
+                 func_b(y);   // ← ; 在第二行
+```
+
+程式只替換第一行的 LHS 部分（`wire [7:0] sig =` → `assign {sig_nc, sig} =`），
+其餘行不動，並向後掃描找到 `;` 所在行補上 comment，不需要解析完整 RHS。
 
 ---
 
