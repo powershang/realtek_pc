@@ -138,14 +138,14 @@ assign {sig_nc, sig} = data_in; // W164a fixed by lint_fixer
 ```
 
 ### 4. reg signed / wire signed
-Preserves `signed` keyword in `_nc` declaration.
+The `signed` keyword is **NOT** inherited by `_nc`. The `_nc` signal is always declared unsigned because it is a discard bit — `signed` on `_nc` causes synthesis tools to misinterpret the concatenation and produces LEC failures (see Bug Fix #11).
 ```verilog
 // Before
 reg signed [7:0] sig_signed;
 
 // After
 reg signed [7:0] sig_signed;
-reg signed sig_signed_nc;
+reg sig_signed_nc;               // no 'signed' — _nc is always unsigned
 {sig_signed_nc, sig_signed} <= data_in; // W164a fixed by lint_fixer
 ```
 
@@ -309,6 +309,8 @@ For always_block path:
 
 10. **multi-line wire inline assign produces `= None;`** - v2.3 `strip_wire_inline_assign` required `;` on the same line to extract `rhs_expr`. Multi-line assignments (RHS spans multiple lines, `;` on a later line) returned `rhs_expr = None`, corrupting RTL with `assign {sig_nc, sig} = None;`. Fixed in v2.4 by dropping `strip_wire_inline_assign` entirely: instead, regex-match only the LHS up to `=`, substitute it in-place to `assign {nc, sig} =`, keep everything after `=` on the first line verbatim, and scan ahead for the `;` line to append the comment.
 
+11. **signed `_nc` causes LEC failure** - `_nc` was inheriting the `signed` keyword from the original signal declaration (e.g. `reg signed sig_nc;`). When synthesis optimizes away the unused `_nc` net, the `signed` attribute causes the tool to misinterpret bit distribution for the RHS expression, producing incorrect drivers for the high bits of the original signal (e.g. `out22_reg[51]`, `out22_reg[50]`). The resulting gate-level netlist diverges from golden RTL and fails LEC. Fixed in v2.5 by always declaring `_nc` without `signed`, regardless of the original signal's signedness.
+
 ---
 
 ## Running Tests
@@ -391,3 +393,8 @@ All 4 test suites should produce empty diff (no differences).
   - New approach: regex-match only the LHS up to `=`, substitute in-place, keep rest of line verbatim, scan ahead for `;` to add comment
   - Removed `strip_wire_inline_assign`; no new functions added
   - Single-line wire inline output identical to v2.3
+- **v2.5** - fix signed `_nc` causing LEC failure:
+  - `_nc` was inheriting `signed` from the original signal; synthesis tool misinterprets bit distribution, producing wrong drivers on high bits of the original signal → LEC Non-equivalent
+  - `_nc` is now always declared unsigned (`reg sig_nc;` / `wire sig_nc;`), regardless of original signal's signedness
+  - `signed_str` removed from `add_nc_declaration` and wire inline nc_decl path
+  - `test/test_output.v` updated: `sig_signed_nc`, `sig_arr_0_nc`, `sig_arr_1_nc` no longer have `signed`

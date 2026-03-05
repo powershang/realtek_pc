@@ -153,13 +153,18 @@ reg sig_out_reg_nc;                 // ← _nc 插在 ); 之後，而非 port li
 
 ### reg signed / wire signed
 
-`_nc` 會繼承 `signed` 關鍵字：
+`_nc` **不繼承** `signed`，永遠宣告為 unsigned：
 
 ```verilog
 reg signed [7:0] sig_signed;
-reg signed sig_signed_nc;          // ← signed 保留
+reg sig_signed_nc;                 // ← 沒有 signed
 {sig_signed_nc, sig_signed} <= data_in; // W164a fixed
 ```
+
+> **為何不繼承 signed？**
+> `_nc` 是廢棄 bit，synthesis tool 優化掉它時，若它帶有 `signed`，
+> tool 會對 RHS 做 signed 解讀，造成原始 signal 高位的 driver 與 golden 不同
+> → LEC Non-equivalent。`signed` 對廢棄 bit 毫無意義，反而有害。
 
 ---
 
@@ -169,8 +174,8 @@ array element 的 `_nc` 命名規則為 `信號名_index_nc`：
 
 ```verilog
 reg signed [7:0] sig_arr[0:3];
-reg signed sig_arr_0_nc;           // ← sig_arr[0] → sig_arr_0_nc
-reg signed sig_arr_1_nc;
+reg sig_arr_0_nc;                  // ← sig_arr[0] → sig_arr_0_nc（不繼承 signed）
+reg sig_arr_1_nc;
 
 {sig_arr_0_nc, sig_arr[0]} <= data_in; // W164a fixed
 {sig_arr_1_nc, sig_arr[1]} <= data_in; // W164a fixed
@@ -228,100 +233,153 @@ end                           depth: 1→0  ← block 結尾在這行
 
 ---
 
-## 版本演進 — 各版解決的 RTL 問題
+## 版本演進 — 各 commit 解決的 RTL 問題
 
-### Initial commit (v2.0 ~ v2.1) — 基礎修法建立
-
-**新增功能：**
-- 支援 ANSI / Non-ANSI port style
-- 支援 `module #(parameter)` 標頭
-- 支援 `reg signed` / `wire signed`（`_nc` 繼承 signed）
-- 支援 array element：`sig[0]` → `sig_0_nc`
-- 支援多 RHS 寬度（per-line nc bit-select）
-- 目錄批次處理模式（`-d` / `-i`）
-
-**解決的 RTL 問題：**
-- 基本 W164a 自動修復，手動改 RTL 容易漏掉或改錯
-- 多個 error 共用同一個 signal 時，`_nc` 寬度不夠大的問題
+> **注意：** v1.0 ~ v1.2 在 git 建立之前就已開發完成，沒有獨立 commit。
+> Initial commit (`b0d7e73`) 進入 git 時已是 v2.1 的狀態。
+> 以下依 git log 順序，逐一說明每個 commit 改了什麼、解決了哪些 RTL 問題。
 
 ---
 
-### v2.2 (commit `9e56842`) — posedge vs comb always 區分
+### commit `b0d7e73` — Initial commit（v1.x ~ v2.1 累積成果）
 
-**新增功能：**
-- 偵測 always 是 posedge 還是 `always @(*)`
-- comb always：掃出 block 內**所有**對該 signal 的 assignment，全部補 `_nc`
-- posedge always：reset branch（第一個 `if`）無條件補 max_nc；其他行只補 err.txt 報的
-- `find_always_block` 新增 `has_begin` 回傳值；沒有 `begin...end` 的 always block 跳過並印警告
+**v1.0 ~ v1.2（pre-git）的基礎功能：**
+- 解析 err.txt，支援單行與多行 W164a 錯誤格式
+- reg 在 always block 內：插入 `reg _nc` + 修所有 assignments
+- `wire + assign`：插入 `wire _nc` + 修 assign 行
+- `output reg`（port list 內宣告）：`_nc` 插在 `);` 之後
+- 支援 inline always（無 begin/end 但 assignment 緊跟在 always 同行）
+
+**v2.0 新增（pre-git）：**
+- 支援 Non-ANSI port style（`output sig; reg [7:0] sig;` 分開宣告）
+- 支援 `module #(parameter)` 標頭（舊版誤把 `#(...)` 的 `)` 當 port list 結尾）
+- 支援 `reg signed` / `wire signed`（`_nc` 繼承 `signed` 關鍵字）
+- 支援 wire inline assign：`wire [7:0] sig = expr;`（此版用加寬法，v2.3 再改）
+- 支援多 bit 寬度差（不限 1-bit）
+- 目錄批次模式（`-d` / `-i`）
+
+**v2.1 新增（pre-git）：**
+- 支援 array element：`sig[0]` → `sig_0_nc`
+- Per-line nc bit-select：同一 signal 有不同 RHS 寬度時，`_nc` 宣告用 max 寬度，每行只取實際需要的 bits，避免 LHS 比 RHS 更寬產生新的 W164a
+
+**解決的 RTL 問題：**
+- 手動修 W164a 容易漏行、改錯位元數，工具確保全部 assignments 一起改
+- Non-ANSI 風格的 port + reg 分開宣告，舊版找不到 reg 宣告位置
+- `#(param)` 模組：舊版誤把參數列的 `)` 當 port list 結尾，`_nc` 插錯位置
+- array element 的 `_nc` 命名衝突（多個 index 共用同一 `_nc` 名）
+- 同 signal 不同行 nc 寬度不同時，LHS 過寬導致新的 width mismatch
+
+---
+
+### commit `c48096b` — docs: add README（無 RTL 邏輯變更）
+
+各子目錄新增 README.md 說明用途，`lint_fixer.py` 本身沒有修改。
+
+---
+
+### commit `9e56842` — v2.2：posedge vs comb always 區分
+
+**改動：**
+- `find_always_block` 新增 `has_begin` 回傳值
+- 新增 `find_first_if_block`：找 posedge always 內的 reset branch（第一個 `if`）
+- posedge always：reset branch 無條件用 max_nc 修；其他行只修 err.txt 報的
+- comb always（`always @(*)`）：掃出 block 內**所有**對該 signal 的 assignment，全部用 max_nc 修
 
 **解決的 RTL 問題：**
 
-1. **comb always latch 問題**
+1. **comb always 產生 `_nc` latch**
    ```verilog
-   // err.txt 只報 sel=1 那行，舊版只修那一行：
+   // err.txt 只報 sel=1 那行，v2.1 只改那一行：
    always @(*) begin
        if (sel) {sig_nc, sig} = data_a;  // ← 有修
-       else          sig = data_b;        // ← 沒修 → sig_nc 在 else branch 沒有 driven
+       else          sig  = data_b;      // ← 沒修 → sig_nc 在 else branch 沒有 driven
    end
-   // 結果：synthesis 對 sig_nc 推斷出 latch！新版全部修掉。
+   // synthesis 看到 sig_nc 在某些路徑沒被 assign → 推斷出 latch！
+   // v2.2 強制把同 block 內所有 sig 的 assignments 全部補上 {sig_nc, sig}
    ```
 
-2. **no-begin always block 殘破 RTL 問題**
+2. **no-begin always 插了 `_nc` 但沒改 assignment → RTL 半殘**
    ```verilog
-   // 舊版：插入 _nc 宣告後，找不到 assignment → RTL 半修不修
    always @(posedge clk)
-       sig <= data_in;   // 沒有 begin/end → 舊版插了 _nc 但沒改 assignment
-   // 新版：直接跳過並印警告，不插入任何東西，讓使用者手動加 begin/end
+       sig <= data_in;   // 沒有 begin/end
+   // v2.1：插入 reg sig_nc; 但 find_always_block 範圍不含 assignment → assignment 沒改
+   // → sig_nc 宣告了但永遠沒被 drive，synthesis 報 undriven net
+   // v2.2：偵測到 has_begin=False 就整個 skip + 印警告，完全不動
    ```
 
 ---
 
-### v2.3 (commit `066ca57`) — wire inline assign 改用 _nc split 法
+### commit `066ca57` — v2.3：wire inline assign 改用 `_nc` split 法
 
-**新增功能：**
-- `wire [7:0] sig = expr;` 改為拆成三行：宣告 + `wire sig_nc` + `assign {sig_nc, sig} = expr`
-- 移除舊的 `fix_wire_inline_assign`（加寬法）
+**改動：**
+- 移除 `fix_wire_inline_assign`（加寬法）
+- `wire [7:0] sig = expr;` 改拆成三行：`wire [7:0] sig;` + `wire sig_nc;` + `assign {sig_nc, sig} = expr;`
 
 **解決的 RTL 問題：**
 
-直接加寬 wire 會改變該 signal 的宣告寬度，影響下游所有使用到它的連線：
-
 ```verilog
-// 舊版加寬法造成的問題：
-// wire [7:0] sig_wire_inline 被改成 wire [8:0]
-// 下游有：assign {a, b} = sig_wire_inline;  // a 是 1-bit, b 是 8-bit
-// → sig_wire_inline 從 8-bit 變 9-bit，downstream LHS 總寬不夠 → 新的 W164a 或連線錯誤
-
-// 新版 _nc split 保留 wire [7:0]，下游完全不受影響
+// v2.2 加寬法：wire [7:0] sig = expr; → wire [8:0] sig = expr;
+// 下游 RTL 若有：assign {flag, data} = sig;  (flag 1-bit, data 8-bit)
+// sig 從 8-bit 變 9-bit → {flag, data} 總寬 9-bit，剛好等於 9-bit sig，不報錯
+// 但語意改變：原本 sig[7:0] 對應 data[7:0]，現在 sig[8] 多出來對應 flag
+// → 連線關係靜默錯位，synthesis 不報錯但電路行為錯誤
+//
+// v2.3 保留 wire [7:0]，只加 _nc 吸收多餘 bit，下游連線完全不受影響
 ```
 
 ---
 
-### v2.4 (commit `8e1b2af`) — 多行 wire inline + block comment 支援
+### commit `8e1b2af` — v2.4：多行 wire inline + block comment 支援
 
-**新增功能：**
-- wire inline assign 的 RHS 可以跨多行（`;` 不在同一行）
-- `find_signal_declaration` 在 match 前先 strip inline block comment `/* ... */`
+**改動：**
+- 移除 `strip_wire_inline_assign`；改用 in-place LHS substitution
+- `find_signal_declaration` match 前先 `re.sub` 去掉 `/* ... */`
 
 **解決的 RTL 問題：**
 
-1. **多行 RHS 產生 `= None;` 的 corrupt RTL**
+1. **多行 RHS 產生 `= None;` → synthesis 直接報錯**
    ```verilog
-   // 實際 RTL 中常見多行 assign：
+   // 實際 RTL 常見多行 assign：
    wire [7:0] sig = func_a(x) |
                     func_b(y);   // ← ; 在第二行
-   // v2.3 的 strip 函式找不到 ; → rhs_expr = None
-   // → assign {sig_nc, sig} = None;  ← synthesis 直接報錯
-   // v2.4 改為 in-place LHS substitution，不需要解析 RHS，任意行數都能正確處理
+   // v2.3 strip 函式找不到 ; → rhs_expr = None
+   // 輸出：assign {sig_nc, sig} = None;  ← 非法 Verilog，synthesis 報 parse error
+   // v2.4 不解析 RHS，直接 in-place 替換 LHS 部分，; 在哪行都能正確加 comment
    ```
 
-2. **inline block comment 導致 signal 找不到**
+2. **inline block comment 導致 signal 靜默跳過、W164a 沒修到**
    ```verilog
-   reg [6:0] /*idx_stage1,*/ idx_stage2, idx_stage3;
-   // 舊版 regex 因為 /* ... */ 的存在無法 match → 該 signal 被靜默跳過
-   // → W164a 留在 RTL 裡沒修到
-   // v2.4 先用 re.sub 去掉 block comment 再 match，原始行不動
+   reg [6:0] /*old_sig,*/ new_sig;
+   // v2.3 regex 遇到 /* ... */ 無法 match → 找不到宣告 → skip + 不印警告
+   // → W164a 留在 RTL 裡，lint 還是報，使用者以為工具壞了
+   // v2.4 先 strip block comment 再 match，原始行不動，宣告正確找到
    ```
+
+---
+
+### commit（v2.5）— signed `_nc` 造成 LEC 失敗
+
+**改動：**
+- `_nc` 宣告移除 `signed`，永遠為 unsigned
+
+**解決的 RTL 問題：**
+
+```verilog
+// 原始 signal 是 signed，舊版產生：
+reg signed [51:0] out22_reg;
+reg signed [1:0] out22_nc;       // ← 有 signed（v2.4 以前的 bug）
+
+{out22_nc, out22_reg} <= 54_bit_expr;
+
+// synthesis tool 把 out22_nc 優化掉時，因為它是 signed，
+// 對 54_bit_expr 做 signed 解讀，把 sign bit（rhs[53]）
+// 傳播到 out22_reg 高位（out22_reg[51]、out22_reg[50]）
+// 與 golden RTL 不同 → LEC Non-equivalent
+
+// v2.5 修法：_nc 宣告改為 unsigned
+reg [1:0] out22_nc;              // ← 不繼承 signed
+// synthesis 不再做 signed 解讀，out22_reg 高位 driver 與 golden 一致
+```
 
 ---
 
