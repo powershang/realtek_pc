@@ -185,13 +185,20 @@ reg sig_arr_1_nc;
 
 ### Non-ANSI port style（output + 分開的 reg 宣告）
 
-Non-ANSI 寫法中，port 和 reg 宣告是分開的：
+Verilog 有兩種 port 宣告風格，兩種都支援：
 
+**ANSI style**（新式）— port 型別與位元數寫在 module header：
+```verilog
+module foo (
+    output reg [7:0] sig_out   // 一行包含型別 + 位元數
+);
+```
+
+**Non-ANSI style**（舊式）— port 名稱與型別分開宣告：
 ```verilog
 module foo (sig_out);
-    output sig_out;          // port 宣告
-    reg [7:0] sig_out;       // reg 宣告（另一行）
-    ...
+    output            sig_out;  // port 宣告（只有方向）
+    reg        [7:0]  sig_out;  // reg 宣告（另一行，在 body）
 ```
 
 程式優先在 module body 找 `reg/wire` 宣告；找不到才往 port list 找 `output/output reg`。
