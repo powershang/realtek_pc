@@ -83,7 +83,7 @@ assign {sig_wire_inline_nc, sig_wire_inline} = data_in; // W164a fixed by lint_f
 
 // Case 8: reg signed
 reg signed [7:0] sig_signed;
-reg sig_signed_nc;
+reg signed sig_signed_nc;
 
 // Case 8: reg signed - always block
 always @(posedge clk or negedge rst_n) begin
@@ -111,8 +111,8 @@ end
 
 // Case 10: array element (reg signed with array range)
 reg signed [7:0] sig_arr[0:3];
-reg sig_arr_1_nc;
-reg sig_arr_0_nc;
+reg signed sig_arr_1_nc;
+reg signed sig_arr_0_nc;
 
 // Case 10: array - always block
 always @(posedge clk or negedge rst_n) begin

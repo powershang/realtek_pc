@@ -423,10 +423,11 @@ def add_nc_declaration(lines: List[str], signal_name: str, decl_line: int,
     indent_match = re.match(r'^([ \t]*)', lines[insert_line] if insert_line < len(lines) else lines[decl_line])
     indent = indent_match.group(1) if indent_match else ''
 
+    signed_str = ' signed' if is_signed else ''
     if nc_width > 1:
-        new_decl = f"{indent}{decl_type} [{nc_width - 1}:0] {nc_signal};"
+        new_decl = f"{indent}{decl_type}{signed_str} [{nc_width - 1}:0] {nc_signal};"
     else:
-        new_decl = f"{indent}{decl_type} {nc_signal};"
+        new_decl = f"{indent}{decl_type}{signed_str} {nc_signal};"
 
     lines.insert(insert_line, new_decl)
 
@@ -604,10 +605,11 @@ def process_verilog_file(lines: List[str], errors: List[Dict]) -> List[str]:
                         break
 
             # nc declaration
+            signed_str = ' signed' if is_signed else ''
             if max_nc_width > 1:
-                nc_decl = f"{indent}wire [{max_nc_width - 1}:0] {nc_signal};"
+                nc_decl = f"{indent}wire{signed_str} [{max_nc_width - 1}:0] {nc_signal};"
             else:
-                nc_decl = f"{indent}wire {nc_signal};"
+                nc_decl = f"{indent}wire{signed_str} {nc_signal};"
 
             # Replace inline wire with assign, then insert declarations before it
             lines[error_line] = assign_line

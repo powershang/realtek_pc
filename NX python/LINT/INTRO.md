@@ -48,7 +48,11 @@ parse err.txt
 判斷 assignment 類型
     ├── wire inline assign → 拆成三行（保留原寬度 + _nc + assign）
     ├── assign statement  → 插入 wire _nc + 改 assign 行
-    └── always block       → 插入 reg _nc + 改 block 內所有 assignments
+    └── always block       → 插入 reg _nc
+            ├── 判斷 comb or sequential
+            ├── comb @(*)        → block 內所有 assignments 全部補修（防止 _nc latch）
+            └── sequential @(posedge) → 只修 err.txt 報的行
+                                        + reset branch 無條件補修
 ```
 
 ---
@@ -153,18 +157,18 @@ reg sig_out_reg_nc;                 // ← _nc 插在 ); 之後，而非 port li
 
 ### reg signed / wire signed
 
-`_nc` **不繼承** `signed`，永遠宣告為 unsigned：
+`_nc` **繼承** 原始 signal 的 `signed` 宣告：
 
 ```verilog
 reg signed [7:0] sig_signed;
-reg sig_signed_nc;                 // ← 沒有 signed
+reg signed sig_signed_nc;          // ← 繼承 signed
 {sig_signed_nc, sig_signed} <= data_in; // W164a fixed
 ```
 
-> **為何不繼承 signed？**
-> `_nc` 是廢棄 bit，synthesis tool 優化掉它時，若它帶有 `signed`，
-> tool 會對 RHS 做 signed 解讀，造成原始 signal 高位的 driver 與 golden 不同
-> → LEC Non-equivalent。`signed` 對廢棄 bit 毫無意義，反而有害。
+> **注意 LEC 風險：**
+> 若 synthesis tool 把 `_nc` 優化掉，且 `_nc` 帶有 `signed`，
+> tool 可能對 RHS 做 signed 解讀，影響原始 signal 高位 driver
+> → 可能造成 LEC Non-equivalent。使用前請確認 LEC 結果。
 
 ---
 
@@ -174,8 +178,8 @@ array element 的 `_nc` 命名規則為 `信號名_index_nc`：
 
 ```verilog
 reg signed [7:0] sig_arr[0:3];
-reg sig_arr_0_nc;                  // ← sig_arr[0] → sig_arr_0_nc（不繼承 signed）
-reg sig_arr_1_nc;
+reg signed sig_arr_0_nc;           // ← sig_arr[0] → sig_arr_0_nc（繼承 signed）
+reg signed sig_arr_1_nc;
 
 {sig_arr_0_nc, sig_arr[0]} <= data_in; // W164a fixed
 {sig_arr_1_nc, sig_arr[1]} <= data_in; // W164a fixed
@@ -465,7 +469,7 @@ end                           depth: 1→0  ← block 結尾在這行
 
 ---
 
-### commit（v2.5）— signed `_nc` 造成 LEC 失敗
+### commit（v2.5）— signed `_nc` 造成 LEC 失敗（已被 v2.6 覆蓋，僅供參考）
 
 **改動：**
 - `_nc` 宣告移除 `signed`，永遠為 unsigned
@@ -475,7 +479,7 @@ end                           depth: 1→0  ← block 結尾在這行
 ```verilog
 // 原始 signal 是 signed，舊版產生：
 reg signed [51:0] out22_reg;
-reg signed [1:0] out22_nc;       // ← 有 signed（v2.4 以前的 bug）
+reg signed [1:0] out22_nc;       // ← 有 signed（v2.4 以前的行為）
 
 {out22_nc, out22_reg} <= 54_bit_expr;
 
@@ -488,6 +492,27 @@ reg signed [1:0] out22_nc;       // ← 有 signed（v2.4 以前的 bug）
 reg [1:0] out22_nc;              // ← 不繼承 signed
 // synthesis 不再做 signed 解讀，out22_reg 高位 driver 與 golden 一致
 ```
+
+---
+
+### commit（v2.6）— 改回繼承 signed，沿用原始宣告定義
+
+**改動：**
+- `_nc` 宣告改回繼承原始 signal 的 `signed`（reverting v2.5 行為）
+
+**理由：**
+- 使用者確認了解 LEC 風險，決定讓 `_nc` 直接沿用原始宣告定義
+- 產生的程式碼與原始 signal 宣告一致，語意更清晰
+
+```verilog
+reg signed [51:0] out22_reg;
+reg signed [1:0] out22_nc;       // ← v2.6 起：繼承 signed
+
+{out22_nc, out22_reg} <= 54_bit_expr;
+```
+
+> **LEC 注意事項：** 若 synthesis tool 優化掉 `_nc` 時做 signed 解讀，
+> 可能造成 LEC Non-equivalent。請視 flow 需要決定是否接受此風險。
 
 ---
 
