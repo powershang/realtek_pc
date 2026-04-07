@@ -309,6 +309,26 @@ def find_always_block(lines: List[str], line_num: int) -> Tuple[int, int, bool]:
     return start, end, has_begin
 
 
+def find_begin_after_always(lines: List[str], always_line: int) -> Optional[int]:
+    """
+    Find the line containing the 'begin' that opens the always block.
+
+    Handles three cases:
+        1. always @(*) begin             -> returns always_line
+        2. always @(*)
+           begin                         -> returns always_line + 1
+        3. always @(a or b
+                    or c) begin          -> returns line with begin
+
+    Returns None if no 'begin' found within 10 lines (e.g. single-statement
+    always with no begin/end wrapper).
+    """
+    for i in range(always_line, min(always_line + 10, len(lines))):
+        if re.search(r'\bbegin\b', lines[i]):
+            return i
+    return None
+
+
 def find_all_assignments_to_signal(lines: List[str], signal_name: str,
                                     start_line: int, end_line: int) -> List[int]:
     """
@@ -689,17 +709,70 @@ def process_verilog_file(lines: List[str], errors: List[Dict]) -> List[str]:
                               f"(nc bits: {nc_w} of {max_nc_width})")
 
             else:
-                # comb always: fix ALL assignments with max_nc_width
-                # Every branch must drive _nc to avoid creating a latch on _nc
-                all_asgn_lines = find_all_assignments_to_signal(
-                    lines, signal, block_start, block_end)
-                print(f"  Comb block: {len(all_asgn_lines)} assignments to {signal}")
-                for asgn_line in all_asgn_lines:
+                # comb always: insert default assignment '_nc = 0;' right after
+                # 'begin', then only fix the err.txt reported lines.
+                #
+                # Why default assignment instead of fixing every branch:
+                #   - Avoids touching assignments that don't need wider LHS,
+                #     which would otherwise introduce new W164b (LHS wider
+                #     than RHS) errors on those lines.
+                #   - Default still prevents latch on _nc (every path has a
+                #     value via the default).
+                _, _, nc_signal = parse_array_signal(signal)
+
+                begin_line = find_begin_after_always(lines, block_start)
+                if begin_line is None:
+                    print(f"  Warning: no 'begin' found after always, skipping")
+                    processed_signals.add(signal)
+                    continue
+
+                # Check if default already exists (idempotent re-run)
+                default_pat = rf'^\s*{re.escape(nc_signal)}\s*=\s*[^=]'
+                default_exists = any(
+                    re.search(default_pat, lines[j])
+                    for j in range(begin_line + 1, min(begin_line + 5, len(lines)))
+                )
+
+                if not default_exists:
+                    # Indentation: try to match the next non-empty line inside the block
+                    indent = ''
+                    for j in range(begin_line + 1, min(begin_line + 5, len(lines))):
+                        if lines[j].strip():
+                            m = re.match(r'^([ \t]*)', lines[j])
+                            indent = m.group(1) if m else ''
+                            break
+                    if not indent:
+                        # Fallback: indent of always line + 4 spaces
+                        m = re.match(r'^([ \t]*)', lines[block_start])
+                        indent = (m.group(1) if m else '') + '    '
+
+                    if max_nc_width > 1:
+                        default_stmt = (f"{indent}{nc_signal} = {max_nc_width}'b0;"
+                                        f" // W164a default by lint_fixer")
+                    else:
+                        default_stmt = (f"{indent}{nc_signal} = 1'b0;"
+                                        f" // W164a default by lint_fixer")
+
+                    lines.insert(begin_line + 1, default_stmt)
+                    line_offset += 1
+                    print(f"  Comb block: inserted default '{nc_signal} = 0;'"
+                          f" at line {begin_line + 2}")
+                else:
+                    print(f"  Comb block: default for {nc_signal} already exists")
+
+                # Fix only the err.txt reported lines, with per-line nc width
+                already_fixed_pat = (r'\{[^}]*' + re.escape(signal) + r'\s*\}\s*(=|<=)')
+                for orig_ln, rhs_w in sorted(line_rhs_map.items()):
+                    asgn_line = orig_ln - 1 + line_offset
+                    if re.search(already_fixed_pat, lines[asgn_line]):
+                        continue
+                    nc_w = rhs_w - old_width
                     original = lines[asgn_line]
                     lines[asgn_line] = fix_assignment_line(
-                        original, signal, old_width, max_rhs_width, max_nc_width)
+                        original, signal, old_width, rhs_w, max_nc_width)
                     if lines[asgn_line] != original:
-                        print(f"    Fixed line {asgn_line + 1} (nc bits: {max_nc_width})")
+                        print(f"    Fixed line {asgn_line + 1} "
+                              f"(nc bits: {nc_w} of {max_nc_width})")
 
         processed_signals.add(signal)
 
